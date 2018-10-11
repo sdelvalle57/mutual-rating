@@ -1,35 +1,23 @@
-/**
- * "Rating" Zome Implementation/API
- *
- * Key Parameters
- ************************************************************
- * Individual Categorical Rating [ICR] (published by Rater)
- * Aggregate Individual Rating [AIR] (each Rater's rating
- *    aggregated over the categories of a selected Ratee)
- * Categorical Aggregate Rating [CAR] (each Ratee's ratings
- *    aggregated over a particular category)
- * Aggregate Community Rating [ACR] (every Rater's rating
- *    aggregated over a selected Ratee)
- ************************************************************
- */
-
-/* Genesis of the application
+/*
+    Genesis of the application
  */
 function genesis()
 {
   return true;
 }
 
-/* Accepts an Agent's Key (which is the Ratee), and returns the
- * ACR for that Agent.
- * @param arg is String(ratee)
- */
-function computeACR(arg)
+///@param{H_1, H_2, r}
+//arg must be json in order to pass in two ore more values; since,
+//Zome functions can have only one argument passed at a time.
+function rateHash(arg)
 {
-   var entry = get(ratee, { GetMask: HC.GetMask.EntryType })
-   if(entry.EntryType == "Status"){
-       return entry.Entry.ACR
-   }
+   checkIfUnique(arg.H_1, arg.H_2)
+}
+
+function checkIfUnique(arg.H_1, arg.H_2){
+    if(arg.H_1 === arg.H_2){
+        throw "Two of the same hashes has been passed in."
+    }
 }
 
 /* Accepts a Rater & Ratee's Keys, and returns the AIR for the value

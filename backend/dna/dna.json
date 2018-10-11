@@ -34,10 +34,17 @@
                     "Sharing": "public"
                 },
                 {
-                    "Name": "Status",
+                    "Name": "Uniqueness",
                     "DataFormat": "json",
                     "Schema": "",
-                    "SchemaFile": "StatusSchema.json",
+                    "SchemaFile": "UniquenessSchema.json",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "Link",
+                    "DataFormat": "link",
+                    "Schema": "",
+                    "SchemaFile": "LinkSchema.json",
                     "Sharing": "public"
                 }
             ],
