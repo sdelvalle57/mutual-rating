@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { INIT_UI } from './ducks/ui';
 import store from './../store';
 import Main from './components/Main/Main';
+import Slider from './components/Main/Slider';
 import './App.css';
 
 class App extends Component {
@@ -11,7 +12,10 @@ class App extends Component {
 
     render() {
         return (
-            <Main/>
+            <div>
+                <Main/>
+                <Slider/>
+            </div>
         );
     }
 }

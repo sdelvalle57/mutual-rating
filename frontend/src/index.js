@@ -4,7 +4,7 @@ import App from './App/App';
 import { Provider } from 'react-redux';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
-import './bootstrap.css'; // Using Bootstrap css, for reference visit https://bootswatch.com/materia/
+// import './bootstrap.css'; // Using Bootstrap css, for reference visit https://bootswatch.com/materia/
 
 render(
     <Provider store={store}>
