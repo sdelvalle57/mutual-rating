@@ -27,7 +27,7 @@ Install the javascript packages with
 cd frontend
 npm install
 ```
-Start frontend
+Start frontend on port 3000
 
 ```
 npm start
@@ -38,8 +38,9 @@ cd backend
 hcdev web 4141
 ```
 
-The app will be served at `http://localhost:3000 `. Frontend will hot reload, backend needs hcdev server restart after each change to the code.
+The front-end app is served at `http://localhost:3000`. Backend exposes API `http://localhost:4141`.
 
+Frontend is configured to reload during development, backend needs hcdev server restart after each change to it's code.
 
 ## Folder structure
 
