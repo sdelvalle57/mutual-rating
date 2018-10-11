@@ -41,10 +41,8 @@
                     "Sharing": "public"
                 },
                 {
-                    "Name": "Link",
+                    "Name": "Enroll",
                     "DataFormat": "link",
-                    "Schema": "",
-                    "SchemaFile": "LinkSchema.json",
                     "Sharing": "public"
                 }
             ],
