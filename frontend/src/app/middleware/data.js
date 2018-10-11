@@ -1,7 +1,7 @@
 import { COUNTER_CHANGE } from '../ducks/data';
 import { UI_WARNING } from '../ducks/ui';
 
-const dataReducer = ( { dispatch, getState } ) => next => action => {
+const dataMiddleware = ( { dispatch, getState } ) => next => action => {
 
     // See if numClicks is already 0 and emit warning
     if (action.type === COUNTER_CHANGE) {
@@ -13,4 +13,4 @@ const dataReducer = ( { dispatch, getState } ) => next => action => {
     return next(action);
 }
 
-export default dataReducer;
+export default dataMiddleware;

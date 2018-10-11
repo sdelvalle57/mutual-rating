@@ -12,10 +12,10 @@ let INIT_UI_STATE = {
 const uiReducer = (state = INIT_UI_STATE, action) => {
     switch (action.type) {
         case INIT_UI:
-            console.log('[UI] Init UI Now!');
+            // Do nothing as an api middleware already consumed this message
             return {...state};
         case UI_WARNING:
-            console.log('[UI] Display UI warning NOW!');
+            console.log('Displaying UI Warning');
             return {...state};
         default:
             return state;

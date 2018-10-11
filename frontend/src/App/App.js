@@ -6,9 +6,7 @@ import './App.css';
 
 class App extends Component {
     componentDidMount() {
-        setTimeout(() => {
-            store.dispatch({type: INIT_UI});
-        }, 2000);
+        store.dispatch({type: INIT_UI});
     }
 
     render() {

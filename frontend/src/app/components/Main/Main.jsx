@@ -30,8 +30,17 @@ class Main extends React.Component{
     // handler of <form> onSubmit (for React's Controlled Components Pattern)
     handleSubmit(e) {
         e.preventDefault();
-        this.props.onSubmit(this.state.item);
+        this.props.onSubmit(this.state.item, this.props.list.length);
         this.setState({item: ''});
+    }
+
+    printCheck(i) {
+        if(i === 2) 
+            return <div className="checkmark" title="Message saved in DHT">&#x2611;</div>
+        else if(i === 1)
+            return <div className="checkmark" title="Message sent to DHT">&#x2610;</div>
+        else 
+            return <div className="checkmark red" title="Message sending failed">!</div>
     }
 
     render(){
@@ -72,7 +81,7 @@ class Main extends React.Component{
                                 </div>
                                 <ul className="list-group">
                                     {this.props.list.map(
-                                        (text, i) => <li className="list-group-item" key={i}>{text}</li> 
+                                        (e, i) => <li className="list-group-item" key={i}>{e.text}{this.printCheck(e.status)}</li> 
                                     )}
                                 </ul>
                             </div>
@@ -93,8 +102,10 @@ const mapStateToProps = ( state ) => {
     }
 };
 
-// Functions dispatching Redux actions, which are passed to Component as props
+// Functions dispatching Redux actions for later consumption by middleware and reducers
+// Those functions are passed to Component as props with help of connect() below
 const mapDispatchToProps = ( dispatch ) => {
+    
     return {
         onPlusClick: () => {
             dispatch({
@@ -108,10 +119,10 @@ const mapDispatchToProps = ( dispatch ) => {
                 payload: -1
             });
         },
-        onSubmit: (val) => {
+        onSubmit: (val, i) => {
             dispatch({
                 type: NEW_LIST_ENTRY,
-                payload: val
+                payload: {entryID: i, text:val, status: 0}
             });
         }
     }
