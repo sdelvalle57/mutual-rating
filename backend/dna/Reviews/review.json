@@ -1,5 +1,5 @@
 {
-	"title": "sampleEntry Schema",
+	"title": "reviews Schema",
 	"type": "object",
 	"properties": {
 		"content": {
