@@ -30,50 +30,30 @@
                     "Name": "Rating",
                     "DataFormat": "json",
                     "Schema": "",
-                    "SchemaFile": "WhatCameronWroteForRating.json",
+                    "SchemaFile": "RatingSchema.json",
                     "Sharing": "public"
                 },
                 {
                     "Name": "Status",
                     "DataFormat": "json",
                     "Schema": "",
-                    "SchemaFile": "WhatCameronWroteForStatus.json",
+                    "SchemaFile": "StatusSchema.json",
                     "Sharing": "public"
                 }
             ],
             "Functions": [
                 {
-                    "Name": "computeACR",
+                    "Name": "rateHash",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
+                    "Name": "viewRating",
                     "CallingType": "string",
                     "Exposure": "public"
                 },
                 {
-                    "Name": "computeAIR",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "computeICR",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "computeCAR",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "publishRating",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "awaitRating",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "publishStatus",
+                    "Name": "getAllEnrolled",
                     "CallingType": "string",
                     "Exposure": "public"
                 }
