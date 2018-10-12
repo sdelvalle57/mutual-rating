@@ -1,7 +1,0 @@
-{
-  "name": "rating",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "ionic-angular"
-}

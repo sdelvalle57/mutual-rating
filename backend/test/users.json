@@ -1,0 +1,31 @@
+{
+  "Tests": [
+    {
+      "Convey": "auto-generated test for userCreate",
+      "Zome": "users",
+      "FnName": "userCreate",
+      "Input": {
+        "name": "PJ",
+        "email": "pj@email.com"
+      },
+      "Output": "%h%"
+    },
+    {
+      "Convey": "auto-generated test for userRead",
+      "Zome": "users",
+      "FnName": "userRead",
+      "Input": "%h%",
+      "Output": {
+        "name": "PJ",
+        "email": "pj@email.com"
+      }
+    },
+    {
+      "Convey": "auto-generated test for getAllUsers",
+      "Zome": "users",
+      "FnName": "getAllUsers",
+      "Input": "",
+      "Output": {}
+    }
+  ]
+}
