@@ -1,17 +1,14 @@
 import React from 'react';
 
 class Star extends React.Component {
-    
-
-
 
     render() {
-        let comment = <p>Your average rating</p>;
+        let comment = <div className="titles">Your average rating</div>;
         if (this.props.location !== 'home')
-            comment = <p>Rate {this.props.rated}</p>;
+            comment = <div className="titles">{this.props.ratedUser}</div>;
 
         return (
-            <div>
+            <div className="star-outer">
                 <div className="star-wrapper">
                     <div className="star-rating">8.0</div>
                     <svg className="svg-star" viewBox="0 0 200 200">

@@ -21,12 +21,16 @@ const MyHandle = (props) => {
 };
 
 
-const MySlider = () => {
+const MySlider = (props) => {
     return (
         <div>
             <div>
-                <p>Accuracy</p>
+                <p>What is your rating?</p>
                 <Slider min={0} max={10} defaultValue={5} handle={MyHandle} />
+            </div>
+            <div className="slider-buttons">
+              <button className="btn btn-secondary left" onClick={props.handleBackClick}>&larr; Back</button>
+              <button className="btn btn-secondary right">Rate &rarr;</button>
             </div>
         </div>
     );

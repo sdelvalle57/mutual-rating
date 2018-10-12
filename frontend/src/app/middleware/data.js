@@ -1,14 +1,11 @@
-import { COUNTER_CHANGE } from '../ducks/data';
-import { UI_WARNING } from '../ducks/ui';
+import { SWITCH_VIEW } from '../ducks/ui';
+import { SELECT_USER } from '../ducks/data';
 
 const dataMiddleware = ( { dispatch, getState } ) => next => action => {
-
     // See if numClicks is already 0 and emit warning
-    if (action.type === COUNTER_CHANGE) {
-        if ( action.payload && action.payload < 0 && getState().data.numClicks <= 0) {
-            dispatch({type: UI_WARNING});
-            return; // exit without calling next - stops propagating action all the way to the reducer
-        }
+    if (action.type === SELECT_USER) {
+        dispatch({type: SWITCH_VIEW, payload: 'rated'});
+        return next(action); // Pass event to data reducer
     }
     return next(action);
 }
