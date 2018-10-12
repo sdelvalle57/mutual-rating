@@ -15,7 +15,7 @@
       "Name": "Rating",
       "Description": "Interact with rating records",
       "RibosomeType": "js",
-      "CodeFile": "rating.js",
+      "CodeFile": "Rating.js",
       "Entries": [
         {
           "Name": "Rating",
@@ -67,7 +67,7 @@
         },
         {
           "Name": "enrollUser",
-          "CallingType": "json",
+          "CallingType": "string",
           "Exposure": "public"
         }
       ]
