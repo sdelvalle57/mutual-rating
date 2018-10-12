@@ -8,40 +8,45 @@
  */
 function genesis()
 {
-  return true;
+   commit("Enrollment", { Links: [ { Base: App.DNA.Hash,
+   Link: App.Agent.Hash,
+   Tag: "Enrollment" } ] })
+   return true;
 }
 
-///@param{H_1, H_2, r}
+///@param{ratee, rater, value}
 //arg must be json in order to pass in two ore more values; since,
 //Zome functions can have only one argument passed at a time.
 function rateHash(arg)
 {
-   checkIfUnique(arg.H_1, arg.H_2)
+   if(!checkIfUnique(arg.ratee arg.rater)){
+        return; // Stop the execution of the function when two hashes are the same.
+   }
    var rating = {
-      "rater": arg.H_1,
-      "": /* Will have to communicate with the front-end.*/,
+      "rater": arg.rater.toString(), // One who's being rated.
+      "value": arg.value.toString(),
       "category": "general"
    }
-   commit("Rating", rating)
+   var ratingLink = commit("Rating", rating) //Despite being having the values assigned to the rating being duplicate, the commit will always return a same hash
+                                             //because commit() returns the hash of the entry.
+   commit("RatingLink", {Links: [{Base: arg.ratee.toString(),
+      Link: ratingLink.toString(),
+      Tag:"RatingLink"}]})
+
    var uniqueness = {
-      "rater": arg.H_1,
-      "rateed": arg.H_2
+      "rater": arg.rater,
+      "ratee": arg.ratee
    }
    commit("Uniqueness", uniqueness)
-
-   commit("Enroll",
-    { Links: [ { Base: App.DNA.Hash,
-    Link: arg.H_1.toString(),
-    Tag: "Enrollment" } ] })
-    commit("Enroll",
-     { Links: [ { Base: App.DNA.Hash,
-     Link: arg.H_2.toString(),
-     Tag: "Enrollment" } ] })
+   commit("IsUnique",
+      { Links: [ { Base: App.DNA.Hash,
+      Link: arg.H_2.toString(),
+      Tag: "IsUnique" } ] })
 }
 
 function checkIfUnique(arg.H_1, arg.H_2){
     if(arg.H_1 === arg.H_2){
-        throw "Two of the same hashes has been passed in."
+        return false;
     }
 }
 
@@ -50,12 +55,22 @@ function viewRating(userHash){
 }
 
 function getAllEnrolled(){
-    getLinks(App.DNA.Hash, "Enrollment")
+    getLinks(App.DNA.Hash, "Enrollment", {Load: true})
 }
+
+//function getAllTheRatings(){}
 
 /*
     In order for the commit() to execute, there needs to be a validateCommit().
 */
 function validateCommit(){
+    return true;
+}
+
+function validateLink(){
+    return true;
+}
+
+function validatePut(){
     return true;
 }

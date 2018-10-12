@@ -34,6 +34,11 @@
                     "Sharing": "public"
                 },
                 {
+                    "Name": "RatingLink",
+                    "DataFormat": "link",
+                    "Sharing": "public"
+                },
+                {
                     "Name": "Uniqueness",
                     "DataFormat": "json",
                     "Schema": "",
@@ -41,7 +46,12 @@
                     "Sharing": "public"
                 },
                 {
-                    "Name": "Enroll",
+                    "Name": "TagIsUnique",
+                    "DataFormat": "link",
+                    "Sharing": "public"
+                },
+                {
+                    "Name": "Enrollment",
                     "DataFormat": "link",
                     "Sharing": "public"
                 }
