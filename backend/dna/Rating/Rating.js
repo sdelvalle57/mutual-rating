@@ -127,9 +127,9 @@ function getUserData (params)
  * @callingType {json}
  * @exposure {zome}
  * @param {json}
- ** { ["hashA": "7", ... ,"hashB": "6"] }
+ ** { "hashA": "7", ... ,"hashB": "6" }
  * @return {json}
- ** { ["average": "6.5"] }
+ ** { "average": "6.5" }
  */
 function computeAverage (params)
 {
