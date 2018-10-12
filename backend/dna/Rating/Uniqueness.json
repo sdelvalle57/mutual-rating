@@ -6,8 +6,7 @@
   "title": "The Root Schema",
   "required": [
     "rater",
-    "value",
-    "category"
+    "rated"
   ],
   "properties": {
     "rater": {
@@ -20,22 +19,13 @@
       ],
       "pattern": "^(.*)$"
     },
-    "value": {
-      "$id": "#/properties/value",
-      "type": "integer",
-      "title": "The Value Schema",
-      "default": 0,
-      "examples": [
-        5
-      ]
-    },
-    "category": {
-      "$id": "#/properties/category",
+    "rated": {
+      "$id": "#/properties/rated",
       "type": "string",
-      "title": "The Category Schema",
+      "title": "The Rated Schema",
       "default": "",
       "examples": [
-        "general"
+        "Hash2"
       ],
       "pattern": "^(.*)$"
     }

@@ -1,68 +1,76 @@
 {
-    "Version": 1,
-    "UUID": "b0bc9034-cabe-11e8-ab45-f45c89bd00e1",
-    "Name": "mutual-rating",
-    "Properties": {
-        "description": "provides an application template",
-        "language": "en"
-    },
-    "PropertiesSchemaFile": "properties_schema.json",
-    "BasedOn": "",
-    "RequiresVersion": 26,
-    "DHTConfig": {
-        "HashType": "sha2-256",
-        "RedundancyFactor": 0
-    },
-    "Progenitor": {
-        "Identity": "",
-        "PubKey": null
-    },
-    "Zomes": [
+  "Version": 1,
+  "UUID": "95654f55-cf94-467a-877e-a3fe7eb41042",
+  "Name": "Mutual-rating",
+  "Properties": {
+    "description": "An app for p2p rating",
+    "language": "en"
+  },
+  "PropertiesSchemaFile": "properties_schema.json",
+  "DHTConfig": {
+    "HashType": "sha2-256"
+  },
+  "Zomes": [
+    {
+      "Name": "Rating",
+      "Description": "Interact with rating records",
+      "RibosomeType": "js",
+      "CodeFile": "rating.js",
+      "Entries": [
         {
-            "Name": "Rating",
-            "Description": "Look up, inspect, and publish user.",
-            "CodeFile": "Rating.js",
-            "RibosomeType": "js",
-            "BridgeFuncs": null,
-            "Config": null,
-            "Entries": [
-                {
-                    "Name": "Rating",
-                    "DataFormat": "json",
-                    "Schema": "",
-                    "SchemaFile": "RatingSchema.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "Uniqueness",
-                    "DataFormat": "json",
-                    "Schema": "",
-                    "SchemaFile": "UniquenessSchema.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "Enroll",
-                    "DataFormat": "link",
-                    "Sharing": "public"
-                }
-            ],
-            "Functions": [
-                {
-                    "Name": "rateHash",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "viewRating",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "getAllEnrolled",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                }
-            ]
+          "Name": "Rating",
+          "Required": true,
+          "DataFormat": "json",
+          "Sharing": "public",
+          "SchemaFile": "Rating.json"
+        },
+        {
+          "Name": "Uniqueness",
+          "Required": true,
+          "DataFormat": "json",
+          "Sharing": "public",
+          "SchemaFile": "Uniqueness.json"
+        },
+        {
+          "Name": "EnrollLink",
+          "Required": true,
+          "DataFormat": "links",
+          "Sharing": "public"
+        },
+        {
+          "Name": "RatingLink",
+          "Required": true,
+          "DataFormat": "links",
+          "Sharing": "public"
         }
-    ]
+      ],
+      "Functions": [
+        {
+          "Name": "getAllEnrolled",
+          "CallingType": "json",
+          "Exposure": "public"
+        },
+        {
+          "Name": "getAgentsRating",
+          "CallingType": "json",
+          "Exposure": "public"
+        },
+        {
+          "Name": "getAgentsAverage",
+          "CallingType": "json",
+          "Exposure": "public"
+        },
+        {
+          "Name": "rateAgent",
+          "CallingType": "json",
+          "Exposure": "public"
+        },
+        {
+          "Name": "enrollUser",
+          "CallingType": "json",
+          "Exposure": "public"
+        }
+      ]
+    }
+  ]
 }

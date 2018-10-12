@@ -76,7 +76,6 @@ body {
   
   .App-header {}
   
-  
  .titles {
      color: white;
      line-height: 42px;
@@ -88,7 +87,7 @@ body {
   
   .form-control, .form-control button{
     color: white !important;
-    font-size: 3vmin !important;
+    font-size: calc( 10px + 2vmin) !important;
   }
 
   #userForm {
