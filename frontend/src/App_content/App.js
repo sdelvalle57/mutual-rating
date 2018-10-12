@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { INIT_UI } from './ducks/ui';
-import { SELECT_USER } from './ducks/data';
-import { SWITCH_VIEW } from './ducks/ui';
+import {  } from './ducks/data';
+import { SWITCH_VIEW, RATE_USER } from './ducks/ui';
 import store from './../store';
 import Star from './components/Main/Star';
 import Slider from './components/Main/Slider';
@@ -36,8 +36,7 @@ class App extends Component {
 const mapStateToProps = ( state ) => {
     return {
         location: state.ui.location,
-        ratedUser: state.data.ratedUser,
-        homeRating: state.data.homeRating
+        currentUser: state.ui.currentUser
     }
 };
 
@@ -45,10 +44,10 @@ const mapStateToProps = ( state ) => {
 // Those functions are passed to Component as props with help of connect() below
 const mapDispatchToProps = ( dispatch ) => {
     return {
-        handleSubmit: (e) => {
+        handleForwardClick: (Hash) => {
             dispatch({
-                type: SELECT_USER,
-                payload: "Mr. Cameron"
+                type: RATE_USER,
+                payload: Hash
             });
         },
         handleBackClick: () => {

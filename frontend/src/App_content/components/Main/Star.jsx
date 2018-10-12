@@ -5,12 +5,12 @@ class Star extends React.Component {
     render() {
         let comment = <div className="titles">Your average rating</div>;
         if (this.props.location !== 'home')
-            comment = <div className="titles">{this.props.ratedUser}</div>;
+            comment = <div className="titles">{this.props.currentUser.name}</div>;
 
         return (
             <div className="star-outer">
                 <div className="star-wrapper">
-                    <div className="star-rating">8.0</div>
+                    <div className="star-rating">{this.props.currentUser.value}</div>
                     <svg className="svg-star" viewBox="0 0 200 200">
                         <defs>
                             <linearGradient id="grad1" x1="0%" y1="100%" x2="0%" y2="0%">
