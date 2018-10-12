@@ -13,8 +13,8 @@ class MySlider extends React.Component {
             <div>
                 <div>
                     <div>Select user to rate</div>
-                    <form class="form-group" onSubmit={this.handleSubmit}>
-                        <select class="form-control" id="userForm">
+                    <form className="form-group" onSubmit={this.handleSubmit}>
+                        <select className="form-control" id="userForm">
                             <option value="">Suraj</option>
                             <option>Shiv</option>
                             <option>Dan</option>
