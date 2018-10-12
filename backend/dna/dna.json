@@ -25,11 +25,11 @@
           "SchemaFile": "Rating.json"
         },
         {
-          "Name": "Uniqueness",
+          "Name": "Interaction",
           "Required": true,
           "DataFormat": "json",
           "Sharing": "public",
-          "SchemaFile": "Uniqueness.json"
+          "SchemaFile": "Interaction.json"
         },
         {
           "Name": "EnrollLink",
@@ -66,9 +66,24 @@
           "Exposure": "public"
         },
         {
+          "Name": "interact",
+          "CallingType": "json",
+          "Exposure": "zome"
+        },
+        {
           "Name": "enrollUser",
           "CallingType": "json",
-          "Exposure": "public"
+          "Exposure": "zome"
+        },
+        {
+            "Name": "getUserData",
+            "CallingType": "json",
+            "Exposure": "public"
+        },
+        {
+            "Name": "computeAverage",
+            "CallingType": "json",
+            "Exposure": "zome"
         }
       ]
     }

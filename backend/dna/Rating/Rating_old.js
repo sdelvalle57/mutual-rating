@@ -23,16 +23,11 @@ function rateHash(arg)
       "": /* Will have to communicate with the front-end.*/,
       "category": "general"
    }
-    commit("Rating", {
-        "rater": arg.H_1,
-        "": "ss",
-        "category": "general"
-    }
- 
- 
- 
- 
- )
+   commit("Rating", {
+       "rater": arg.H_1,
+       "": "ss",
+       "category": "general"
+   })
    var uniqueness = {
       "rater": arg.H_1,
       "rateed": arg.H_2
@@ -43,7 +38,7 @@ function rateHash(arg)
     { Links: [ { Base: App.DNA.Hash,
     Link: arg.H_1.toString(),
     Tag: "Enrollment" } ] })
-    commit("Enroll",
+   commit("Enroll",
      { Links: [ { Base: App.DNA.Hash,
      Link: arg.H_2.toString(),
      Tag: "Enrollment" } ] })
@@ -57,7 +52,7 @@ function checkIfUnique(arg.H_1, arg.H_2){
 
 /**
  * @returns {hash}
- * 
+ *
  */
 function enrollUser() {
     return commit("EnrollLink", {
