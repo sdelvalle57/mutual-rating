@@ -3,11 +3,9 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import Tooltip from 'rc-tooltip';
 
-const createSliderWithTooltip = Slider.createSliderWithTooltip;
-const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
 
-const handle = (props) => {
+const MyHandle = (props) => {
   const { value, dragging, index, ...restProps } = props;
   return (
     <Tooltip
@@ -26,9 +24,9 @@ const handle = (props) => {
 const MySlider = () => {
     return (
         <div>
-            <div style={{ width: 600, margin: 95 }}>
+            <div>
                 <p>Accuracy</p>
-                <Slider min={0} max={10} defaultValue={5} handle={handle} />
+                <Slider min={0} max={10} defaultValue={5} handle={MyHandle} />
             </div>
         </div>
     );

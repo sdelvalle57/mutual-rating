@@ -7,8 +7,7 @@ export const UPDATE_ENTRY_STATUS = '[Data] Update list entry status';
 
 // Initial state of store.data (see reducers.js)
 let INIT_DATA_STATE = {
-    numClicks: 5,
-    list: []
+    rated: 'Mr. X'
 };
 
 const dataReducer = (state = INIT_DATA_STATE, action) => {

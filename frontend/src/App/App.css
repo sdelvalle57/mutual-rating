@@ -1,3 +1,7 @@
+html {
+  height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -6,11 +10,18 @@ body {
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    height: 100%;
   }
   
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
       monospace;
+  }
+
+  #root {
+    height: 100%;
+    width: 100%;
+    background-color: #2194b0;
   }
   
   #submitbutton {
@@ -22,56 +33,53 @@ body {
   
   .App {
     text-align: center;
-  }
-  
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 25vmin;
-  }
-  
-  .App-header {
-    background-color: #2194b0;
+    height: 100%;
+    width: 100%;
     min-height: 42vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
+    padding: 40px;
+  }
+
+  .star-wrapper {
+      height: 25vmin;
+      position: relative;
+      width: 25vmin;
+      margin: auto;
+      display: flex;
+    justify-content:center;
+    align-content:center;
+    flex-direction:column;
   }
   
-  h2.left {
+  .star-rating {
+    width: 25vmin;
+    z-index: 1;
+    font-size: 8vmin;
+    margin-top: 2vmin;
+  }
+
+  .svg-star {
+    height: 25vmin;
     position: absolute;
-    top: 25px;
-    left: -250px;
-    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
   }
   
-  h2.right {
-    position: absolute;
-    top: 25px;
-    left: 250px;
-    width: 100%;
-  }
+  .App-header {}
   
-  h2 p {
+  
+ p {
      color: white;
      line-height: 42px;
      text-align: center;
-     font-size: calc(45px + 1vmin);
+     font-size: calc(25px + 1vmin);
      letter-spacing: -1px;
      padding: 10px;
   }
   
-  #text {
-      color: white;
-      text-align: center;
-      line-height: 20px;
-      font-size: calc(10px + 1vmin);
-      letter-spacing: -1px;
-  }
-  
-  @keyframes App-logo-spin {
+  @keyframes Star-spin {
     from {
       transform: rotate(0deg);
     }

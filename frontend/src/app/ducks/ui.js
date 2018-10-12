@@ -6,7 +6,8 @@ export const UI_WARNING = '[UI] Display UI warning';
 
 // Initial state of store.ui (see reducers.js)
 let INIT_UI_STATE = {
-    loading: false
+    loading: false,
+    location: 'home'
 };
 
 const uiReducer = (state = INIT_UI_STATE, action) => {
