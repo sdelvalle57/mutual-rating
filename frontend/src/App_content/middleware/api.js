@@ -1,10 +1,10 @@
-import { NEW_LIST_ENTRY, UPDATE_ENTRY_STATUS, ADD_TO_DATA } from '../ducks/data';
+import {  } from '../ducks/data';
 import { INIT_UI } from '../ducks/ui';
 import { putEntry, getAllEntries } from '../hc_api/hc_api';
 
 const apiMiddleware = ( {dispatch} ) => next => action => {
     switch (action.type) {
-        case INIT_UI:
+        /*case INIT_UI:
             getAllEntries()
                 // on receive emit ADD_TO_DATA 
                 .then(r => {
@@ -57,7 +57,7 @@ const apiMiddleware = ( {dispatch} ) => next => action => {
 
             // Explicitly pass action down the redux flow
             return next(action);
-
+*/
         default:
             return next(action);
     }

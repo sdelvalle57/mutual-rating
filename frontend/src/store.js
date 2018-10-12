@@ -7,8 +7,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './reducers';
 
 // Import middleware
-import apiMiddleware from './App/middleware/api';
-import dataMiddleware from './App/middleware/data';
+import apiMiddleware from './App_content/middleware/api';
+import dataMiddleware from './App_content/middleware/data';
 
 // __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ - If redux devtools are installed then activate it
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
