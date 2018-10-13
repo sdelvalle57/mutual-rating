@@ -116,6 +116,7 @@ function getAgentsAverage (params)
  */
 function rateAgent (params)
 {
+
     var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
 
     var find = function(items, f) {
@@ -171,8 +172,10 @@ function rateAgent (params)
         return {"Success": false,
                     "EntryHash": null,
                     "InteractionHash": match.Hash};
+
     }
 }
+
 
 /*
  * Called at Genesis - additional load-time functionality goes here.
@@ -223,6 +226,7 @@ function computeAverage (params)
     return {};
 }
 
+
 // -----------------------------------------------------------------
 //  Validation functions for every change to the local chain or DHT
 // -----------------------------------------------------------------
@@ -239,9 +243,9 @@ function computeAverage (params)
 function validateCommit (entryName, entry, header, pkg, sources) {
   switch (entryName) {
     case "Rating":
-      // be sure to consider many edge cases for validating
-      // do not just flip this to true without considering what that means
-      // the action will ONLY be successfull if this returns true, so watch out!
+      if(getLinks(App.Agent.Hash, "RatingLink") == []){
+        return false;
+      }
       return false;
     case "Uniqueness":
       // be sure to consider many edge cases for validating
