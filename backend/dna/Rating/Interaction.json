@@ -6,7 +6,7 @@
   "title": "The Root Schema",
   "required": [
     "rater",
-    "rated"
+    "ratee"
   ],
   "properties": {
     "rater": {
@@ -19,10 +19,10 @@
       ],
       "pattern": "^(.*)$"
     },
-    "rated": {
-      "$id": "#/properties/rated",
+    "ratee": {
+      "$id": "#/properties/ratee",
       "type": "string",
-      "title": "The Rated Schema",
+      "title": "The Ratee Schema",
       "default": "",
       "examples": [
         "Hash2"

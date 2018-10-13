@@ -75,6 +75,11 @@
           "Name": "enrollUser",
           "CallingType": "json",
           "Exposure": "zome"
+        },
+        {
+          "Name": "computeAverage",
+          "CallingType": "json",
+          "Exposure": "zome"
         }
       ]
     }

@@ -22,12 +22,9 @@
  */
 function genesis ()
 {
-  commit("EnrollLink", { Links: [{
-      Base: App.DNA.Hash,
-      Link: App.Agent.Hash,
-      Tag: "EnrollLink"
-  }]})
-  return true;
+    enrollUser({});
+
+    return true;
 }
 
 
@@ -40,22 +37,50 @@ function genesis ()
  */
 function getAllEnrolled (params)
 {
-    return getLinks(App.DNA.Hash, "EnrollLink", { Load: true });
+    return getLinks(App.DNA.Hash, "Enrolled", { Load: true });
 }
 
 /*
  * Returns the latest rating you've rated the other user with.
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "Ratee": "<agenthash>", "Value":"7" }
- * @return {type}
+ * @param {json} { "Ratee": "<agenthash>" }
+ * @return {json} { "Success": true
+                            "EntryHash": "<entryhash>",
+                            "Value":"7" }
  */
 function getAgentsRating (params)
 {
-  var uniqueness={rater:param.rater,ratee:param.ratee}
-  var uniqueness_hash=makeHash("Uniqueness",uniqueness)
-  var rating=getLinks(uniqueness_hash,"UniqueLink",{Load:true})
-  return rating
+    var find = function(items, f) {
+        for (var i=0; i < items.length; i++)
+        {
+            var item = items[i];
+            if (f(item)) return item;
+        };
+        return null;
+    }
+
+    var match = find(interacts, function(x) {return x.Entry.ratee == params.Ratee;});
+    if (match != null)
+    {
+        var rating = getLinks(match.Hash, "Pairings", { Load: true });
+        var result = {
+            "Success": true,
+            "EntryHash": rating.Hash,
+            "Value": rating.Entry.value
+        };
+
+        return result;
+    }
+    else
+    {
+        var result = {
+            "Success": false,
+            "EntryHash": null,
+            "Value": null
+        };
+        return result;
+    }
 }
 
 /*
@@ -85,31 +110,68 @@ function getAgentsAverage (params)
  * @callingType {json}
  * @exposure {public}
  * @param {json} { "Ratee": "<agenthash>", "Value":"7" }
- * @return {json} { "Success": "true", "Hash": "<entryhash>" }
+ * @return {json} { "Success": true,
+                            "EntryHash": "<entryHash>",
+                            "InteractionHash": "<interactionHash>"}
  */
 function rateAgent (params)
 {
-    var ratingEntry = {
-        "rater": App.Agent.Hash, // More secure.
-        "value": params.value.toString(),
-        "category": params.category.toString()
+    var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
+
+    var find = function(items, f) {
+        for (var i=0; i < items.length; i++)
+        {
+            var item = items[i];
+            if (f(item)) return item;
+        };
+        return null;
     }
-    var rateAgentEntryHash = commit("Rating", ratingEntry)
-    commit("RatingLink", { Links: [{
-        Base: params.ratee,
-        Link: rateAgentEntryHash,
-        Tag: "RatingLink"
-    }]})
-    var uniqueness = {
-        rater: App.Agent.Hash,
-        ratee: params.ratee,
+
+    var match = find(interacts, function(x) {return x.Entry.ratee == params.Ratee;});
+    if (match == null)
+    {
+        var ratingEntry = {
+            "ratee": params.Ratee, // More secure.
+            "value": params.value.toString(),
+            "category": params.category.toString()
+        }
+        // TODO Try Catch around commits
+        var entryHash = commit("Rating", ratingEntry)
+        commit("RatedByLink", { Links: [{
+            Base: params.Ratee,
+            Link: entryHash,
+            Tag: "RatedBy"
+        }]})
+        var pairing = {
+            "rater": App.Agent.Hash,
+            "rated": params.Ratee
+        }
+        // TODO Try Catch around commits
+        var interactionHash = commit("Interaction", pairing)
+        commit("InteractionLink", { Links: [{
+            Base: App.Agent.Hash,
+            Link: interactionHash,
+            Tag: "Interactions"
+        }]})
+
+        commit("PairingLink", { Links: [{
+            Base: interactionHash,
+            Link: entryHash,
+            Tag: "Pairings"
+        }]})
+
+        return {"Success": true,
+                    "EntryHash": entryHash,
+                    "InteractionHash": interactionHash};
     }
-    var u_hash=commit("Uniqueness", uniqueness)
-    commit("RatingLink", { Links: [{
-        Base: u_hash,
-        Link: rateAgentEntryHash,
-        Tag: "UniqueLink"
-    }]})
+    else
+    {
+        console.log("Rating already exists.")
+
+        return {"Success": false,
+                    "EntryHash": null,
+                    "InteractionHash": match.Hash};
+    }
 }
 
 /*
@@ -121,7 +183,12 @@ function rateAgent (params)
  */
 function enrollUser (params)
 {
-
+    // TODO Add try-catch block around commits
+    commit("Enrollment", { Links: [{
+        Base: App.DNA.Hash,
+        Link: App.Agent.Hash,
+        Tag: "Enrolled"
+    }]})
     return {};
 }
 
@@ -154,7 +221,6 @@ function computeAverage (params)
 {
 
     return {};
->>>>>>> e2e75f9bb5a7bc03059238b534c99845bfd6b120
 }
 
 // -----------------------------------------------------------------

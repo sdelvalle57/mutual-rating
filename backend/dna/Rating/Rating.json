@@ -5,18 +5,18 @@
   "type": "object",
   "title": "The Root Schema",
   "required": [
-    "rater",
+    "ratee",
     "value",
     "category"
   ],
   "properties": {
-    "rater": {
-      "$id": "#/properties/rater",
+    "ratee": {
+      "$id": "#/properties/ratee",
       "type": "string",
-      "title": "The Rater Schema",
+      "title": "The Ratee Schema",
       "default": "",
       "examples": [
-        "Hash1"
+        "Hash2"
       ],
       "pattern": "^(.*)$"
     },
