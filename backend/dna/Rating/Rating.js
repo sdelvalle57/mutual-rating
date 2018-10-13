@@ -22,8 +22,12 @@
  */
 function genesis ()
 {
-    enrollUser({});
-    return true;
+  commit("EnrollLink", { Links: [{
+      Base: App.DNA.Hash,
+      Link: App.Agent.Hash,
+      Tag: "EnrollLink"
+  }]})
+  return true;
 }
 
 
@@ -40,15 +44,18 @@ function getAllEnrolled (params)
 }
 
 /*
- * [Description]
+ * Returns the latest rating you've rated the other user with.
  * @callingType {json}
  * @exposure {public}
- * @param {type}
+ * @param {json} { "Ratee": "<agenthash>", "Value":"7" }
  * @return {type}
  */
 function getAgentsRating (params)
 {
-    return {};
+  var uniqueness={rater:param.rater,ratee:param.ratee}
+  var uniqueness_hash=makeHash("Uniqueness",uniqueness)
+  var rating=getLinks(uniqueness_hash,"UniqueLink",{Load:true})
+  return rating
 }
 
 /*
@@ -60,14 +67,17 @@ function getAgentsRating (params)
  */
 function getAgentsAverage (params)
 {
-    var totalRating = 0
-    var entryArray = getLinks(params.ratee.toString(), "RatingLink", {Load: true})
-    var totalUsers = entryArray.length
-    for (var entryObject in entryArray){
-      totalgRating = totalRating + parseInt(entryObject.value, 10)
-    }
-    var avgRating = totalRating / totalUsers
-    return {};
+  var totalRating = 0
+  // Grab all the entries associated with the RatingLink of the specified ratee below.
+  var entryArray = getLinks(params.ratee.toString(), "RatingLink", {Load: true})
+  //Pretty self explanatory below.
+  var totalUsersRated = entryArray.length
+  //For each through the Rating entries and grab only the values, and add'em to the totalRating.
+  for (var entryObject in entryArray){
+    totalgRating = totalRating + parseInt(entryObject.Entry.value, 10)
+  }
+  var avgRating = totalRating / totalUsersRated //At the end, average things up,
+  return {"avgRating": avgRating.toString()}; //Because getAgentsAverage's calling type is json.
 }
 
 /*
@@ -80,61 +90,26 @@ function getAgentsAverage (params)
 function rateAgent (params)
 {
     var ratingEntry = {
-        "rater": params.rater.toString(),
+        "rater": App.Agent.Hash, // More secure.
         "value": params.value.toString(),
         "category": params.category.toString()
     }
     var rateAgentEntryHash = commit("Rating", ratingEntry)
     commit("RatingLink", { Links: [{
-        Base: params.ratee.toString(),
+        Base: params.ratee,
         Link: rateAgentEntryHash,
         Tag: "RatingLink"
     }]})
-    return {};
-}
-
-/*
- * Called at Genesis - additional load-time functionality goes here.
- * @callingType {json}
- * @exposure {zome}
- * @param {json} Empty JSON.
- * @return {json} Empty JSON.
- */
-function enrollUser (params)
-{
-
-    return {};
-}
-
-/*
- * Upon call with an empty JSON, returns the current user's metadata.
- * @callingType {json}
- * @exposure {public}
- * @param {type}
- * @return {json} { "Name": "user@mailserver.com",
-                            "Hash": "<agenthash>",
-                            "Rating": "7"}
- */
-function getUserData (params)
-{
-
-    return {};
-}
-
-/*
- * Calculates the average rating given a JSON
-  * mapping of userHashes to ratings.
- * @callingType {json}
- * @exposure {zome}
- * @param {json}
- ** { ["hashA": "7", ... ,"hashB": "6"] }
- * @return {json}
- ** { ["average": "6.5"] }
- */
-function computeAverage (params)
-{
-
-    return {};
+    var uniqueness = {
+        rater: App.Agent.Hash,
+        ratee: params.ratee,
+    }
+    var u_hash=commit("Uniqueness", uniqueness)
+    commit("RatingLink", { Links: [{
+        Base: u_hash,
+        Link: rateAgentEntryHash,
+        Tag: "UniqueLink"
+    }]})
 }
 
 // -----------------------------------------------------------------

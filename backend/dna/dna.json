@@ -15,7 +15,7 @@
       "Name": "Rating",
       "Description": "Interact with rating records",
       "RibosomeType": "js",
-      "CodeFile": "rating.js",
+      "CodeFile": "Rating.js",
       "Entries": [
         {
           "Name": "Rating",
@@ -42,6 +42,12 @@
           "Required": true,
           "DataFormat": "links",
           "Sharing": "public"
+        },
+        {
+          "Name": "Uniqueness",
+          "Required": true,
+          "DataFormat": "links",
+          "Sharing": "public"
         }
       ],
       "Functions": [
@@ -52,7 +58,7 @@
         },
         {
           "Name": "getAgentsRating",
-          "CallingType": "json",
+          "CallingType": "string",
           "Exposure": "public"
         },
         {
@@ -66,24 +72,9 @@
           "Exposure": "public"
         },
         {
-          "Name": "interact",
-          "CallingType": "json",
-          "Exposure": "zome"
-        },
-        {
           "Name": "enrollUser",
           "CallingType": "json",
           "Exposure": "zome"
-        },
-        {
-            "Name": "getUserData",
-            "CallingType": "json",
-            "Exposure": "public"
-        },
-        {
-            "Name": "computeAverage",
-            "CallingType": "json",
-            "Exposure": "zome"
         }
       ]
     }
