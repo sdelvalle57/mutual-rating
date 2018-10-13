@@ -5,7 +5,7 @@ class MySlider extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.handleSubmit("Johny");
+        this.props.handleForwardClick("Johny's hash");
     }
 
     render() {

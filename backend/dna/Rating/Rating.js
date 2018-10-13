@@ -89,17 +89,6 @@ function getAgentsAverage (params)
  */
 function rateAgent (params)
 {
-    var ratingEntry = {
-        "rater": App.Agent.Hash, // More secure.
-        "value": params.value.toString(),
-        "category": params.category.toString()
-    }
-    var rateAgentEntryHash = commit("Rating", ratingEntry)
-    commit("RatingLink", { Links: [{
-        Base: params.ratee,
-        Link: rateAgentEntryHash,
-        Tag: "RatingLink"
-    }]})
     var uniqueness = {
         rater: App.Agent.Hash,
         ratee: params.ratee,
@@ -110,7 +99,7 @@ function rateAgent (params)
         Link: rateAgentEntryHash,
         Tag: "UniqueLink"
     }]})
-}
+)
 
 // -----------------------------------------------------------------
 //  Validation functions for every change to the local chain or DHT

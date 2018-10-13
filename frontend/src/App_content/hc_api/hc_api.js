@@ -19,18 +19,48 @@ const fetchPOST = (endpoint, data) => {
 
 
 /**
- * Get all list elements from DHT
+ * Get all users enrolled in this app
  * @return {Promise} Promise of a fetched result in a form of an array of all the list elements
  */
-export const getAllEntries = () => {
-    return fetchPOST('/fn/sampleZome/getAllEntries').then(r => r.json());
+export const getAllEnrolled = () => {
+    return fetchPOST('/fn/sampleZome/getAllEnrolled').then(r => r.json());
 }
 
 /**
- * Commit list element as an entry into the DHT
- * @param {Object} obj - List element in a form of Object {'text': 'data'}
+ * Get all agents rating
+ * @param {Object} obj
+ * @param {string} obj.hash - Agent's hash
  * @return {Promise} Promise of a fetched result in a form of an array of all the entries
  */
-export const putEntry = (obj) => {
-    return fetchPOST('/fn/sampleZome/listEntryCreate', obj).then(r => r.json());
+export const getAgentsRating = (obj) => {
+    return fetchPOST('/fn/sampleZome/getAgentsRating', obj).then(r => r.json());
+}
+
+/**
+ * Get agent's average rating
+ * @param {Object} obj 
+ * @param {string} obj.hash - Agent's hash
+ * @return {Promise} Promise of a fetched result in a form of an array of all the entries
+ */
+export const getAgentsAverage = (obj) => {
+    return fetchPOST('/fn/sampleZome/getAgentsAverage', obj).then(r => r.json());
+}
+
+/**
+ * Record agent's new rating from other agent
+ * @param {Object} obj 
+ * @param {string} obj.hash - Rated Agent's hash
+ * @param {int} obj.value - numerical value of rating [1,10]
+ * @return {Promise} Promise of a fetched result in a form of an array of all the entries
+ */
+export const rateAgent = (obj) => {
+    return fetchPOST('/fn/sampleZome/rateAgent', obj).then(r => r.json());
+}
+
+/**
+ * Get current user's data
+ * @return {Promise} Promise of a fetched result in form of {hash: {string}, name: {string}, average: {number}}
+ */
+export const getCurrentUsersData = () => {
+    return fetchPOST('/fn/sampleZome/getCurrentUsersData').then(r => r.json());
 }
