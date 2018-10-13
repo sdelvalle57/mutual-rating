@@ -89,6 +89,17 @@ function getAgentsAverage (params)
  */
 function rateAgent (params)
 {
+    var ratingEntry = {
+        "rater": App.Agent.Hash, // More secure.
+        "value": params.value.toString(),
+        "category": params.category.toString()
+    }
+    var rateAgentEntryHash = commit("Rating", ratingEntry)
+    commit("RatingLink", { Links: [{
+        Base: params.ratee,
+        Link: rateAgentEntryHash,
+        Tag: "RatingLink"
+    }]})
     var uniqueness = {
         rater: App.Agent.Hash,
         ratee: params.ratee,
@@ -99,7 +110,52 @@ function rateAgent (params)
         Link: rateAgentEntryHash,
         Tag: "UniqueLink"
     }]})
-)
+}
+
+/*
+ * Called at Genesis - additional load-time functionality goes here.
+ * @callingType {json}
+ * @exposure {zome}
+ * @param {json} Empty JSON.
+ * @return {json} Empty JSON.
+ */
+function enrollUser (params)
+{
+
+    return {};
+}
+
+/*
+ * Upon call with an empty JSON, returns the current user's metadata.
+ * @callingType {json}
+ * @exposure {public}
+ * @param {type}
+ * @return {json} { "Name": "user@mailserver.com",
+                            "Hash": "<agenthash>",
+                            "Rating": "7"}
+ */
+function getUserData (params)
+{
+
+    return {};
+}
+
+/*
+ * Calculates the average rating given a JSON
+  * mapping of userHashes to ratings.
+ * @callingType {json}
+ * @exposure {zome}
+ * @param {json}
+ ** { "hashA": "7", ... ,"hashB": "6" }
+ * @return {json}
+ ** { "average": "6.5" }
+ */
+function computeAverage (params)
+{
+
+    return {};
+>>>>>>> e2e75f9bb5a7bc03059238b534c99845bfd6b120
+}
 
 // -----------------------------------------------------------------
 //  Validation functions for every change to the local chain or DHT
