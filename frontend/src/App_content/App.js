@@ -15,7 +15,6 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.props);
         let comp;
         if (this.props.location === 'home')
             comp = <Selector {...this.props}/>

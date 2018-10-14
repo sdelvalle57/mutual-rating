@@ -5,7 +5,8 @@ class MySlider extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.handleForwardClick("Johny's hash");
+        // TODO: read data from the select input
+        this.props.handleForwardClick("9ca8ad9763ea8c80ecb6297d94");
     }
 
     render() {

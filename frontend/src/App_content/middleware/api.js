@@ -1,8 +1,8 @@
 import { ADD_NEW_ENROLLED, UPDATE_USER_DATA, GET_USERS_AVERAGE } from '../ducks/data';
 import { INIT_UI, SET_CURRENT_USER } from '../ducks/ui';
-import { getAllEnrolled, getCurrentUsersData } from '../hc_api/hc_api';
+import { getAllEnrolled, getCurrentUsersData, getAgentsAverage } from '../hc_api/hc_api';
 
-const apiMiddleware = ( {dispatch} ) => next => action => {
+const apiMiddleware = ( {dispatch, getState} ) => next => action => {
     switch (action.type) {
         case INIT_UI:
             // Get all users enrolled in this app
@@ -34,10 +34,11 @@ const apiMiddleware = ( {dispatch} ) => next => action => {
 
         case GET_USERS_AVERAGE:
             // Get user's average
-            getAllEnrolled()
+            getAgentsAverage({hash: action.payload.hash})
                 // on receive emit SET_CURRENT_USER 
                 .then(value => {
-                    let name = "John"; // TODO Get users name from enrolments based on hash provided
+                    // Get users name from data.enrolments based on hash provided
+                    let name = getState().data.enrolled.filter(e => e.hash === action.payload)[0];
                     dispatch({
                         type: SET_CURRENT_USER, 
                         payload: {name, value}

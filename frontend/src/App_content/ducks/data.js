@@ -18,7 +18,7 @@ const dataReducer = (state = INIT_DATA_STATE, action) => {
     switch (action.type) {
         case ADD_NEW_ENROLLED:
             // Great, now we have to merge two arrays and remove duplicates
-            // TODO: how does it work exactly?
+            // TODO: how does it work exactly (new Set)?
             let arr = [action.payload, state.data.enrolled];
             return {
                 ...state, 
@@ -26,7 +26,7 @@ const dataReducer = (state = INIT_DATA_STATE, action) => {
             };
 
         case UPDATE_USER_DATA:
-            // TODO: If received user is a current user then update ui.currentUser
+            // TODO: If received user === current user then update ui.currentUser
             return {
                 ...state, 
                 user: action.payload

@@ -5,7 +5,7 @@ const dataMiddleware = ( { dispatch, getState } ) => next => action => {
     // 
     if (action.type === RATE_USER) {
         dispatch({type: SWITCH_VIEW, payload: 'rated'});
-        dispatch(...action, {type: GET_USERS_AVERAGE});
+        dispatch({type: GET_USERS_AVERAGE, payload: action.payload});
         return next(action); // Pass event to data reducer
     }
     return next(action);
