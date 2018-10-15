@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { INIT_UI } from './ducks/ui';
-import {  } from './ducks/data';
-import { SWITCH_VIEW, RATE_USER } from './ducks/ui';
+import { RATE_AGENT } from './ducks/data';
+import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL } from './ducks/ui';
 import store from './../store';
 import Star from './components/Main/Star';
 import Slider from './components/Main/Slider';
 import Selector from './components/Main/Selector';
+import Modal from './components/common/Modal';
 import './App.css';
 import { connect } from 'react-redux';
 
@@ -23,6 +24,7 @@ class App extends Component {
 
         return (
             <div className="App col-lg-5 m-auto">
+                <Modal {...this.props}/>
                 <header className="App-header"></header>
                 <Star {...this.props}/>
                 {comp}
@@ -35,7 +37,9 @@ class App extends Component {
 const mapStateToProps = ( state ) => {
     return {
         location: state.ui.location,
-        currentUser: state.ui.currentUser
+        currentAgent: state.data.currentAgent,
+        enrolled: state.data.enrolled,
+        modal: state.ui.modal
     }
 };
 
@@ -43,17 +47,29 @@ const mapStateToProps = ( state ) => {
 // Those functions are passed to Component as props with help of connect() below
 const mapDispatchToProps = ( dispatch ) => {
     return {
-        handleForwardClick: (Hash) => {
+        handleOptionChange: (Hash) => {
             dispatch({
-                type: RATE_USER,
+                type: GO_TO_RATING,
                 payload: Hash
             });
         },
         handleBackClick: () => {
             dispatch({
-                type: SWITCH_VIEW, 
+                type: GO_TO_HOME, 
                 payload: 'home'
             });
+        }, 
+        handleRateClick: () => {
+            dispatch({
+                type: RATE_AGENT,
+                payload: 5
+            });
+        },
+        closeModal: () => {
+            dispatch({type: CHANGE_MODAL, payload: {
+                isShowing: false,
+                text: ''
+            }});
         }
     }
 }

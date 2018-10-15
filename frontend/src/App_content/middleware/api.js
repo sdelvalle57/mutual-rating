@@ -1,6 +1,6 @@
-import { ADD_NEW_ENROLLED, UPDATE_USER_DATA, GET_USERS_AVERAGE } from '../ducks/data';
-import { INIT_UI, SET_CURRENT_USER } from '../ducks/ui';
-import { getAllEnrolled, getCurrentUsersData, getAgentsAverage } from '../hc_api/hc_api';
+import { ADD_NEW_ENROLLED, UPDATE_USER_DATA, GET_USERS_AVERAGE, SET_CURRENT_AGENT, RATE_AGENT } from '../ducks/data';
+import { INIT_UI, GO_TO_HOME, CHANGE_MODAL } from '../ducks/ui';
+import { getAllEnrolled, getUsersData, getAgentsAverage, rateAgent } from '../hc_api/hc_api';
 
 const apiMiddleware = ( {dispatch, getState} ) => next => action => {
     switch (action.type) {
@@ -18,7 +18,7 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                 .catch(e => console.log(e));
 
             // Get current user's data
-            getCurrentUsersData()
+            getUsersData()
                 // on receive emit UPDATE_USER_DATA
                 .then(r => {
                     dispatch({
@@ -35,20 +35,39 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
         case GET_USERS_AVERAGE:
             // Get user's average
             getAgentsAverage({hash: action.payload.hash})
-                // on receive emit SET_CURRENT_USER 
-                .then(value => {
-                    // Get users name from data.enrolments based on hash provided
-                    let name = getState().data.enrolled.filter(e => e.hash === action.payload)[0];
-                    dispatch({
-                        type: SET_CURRENT_USER, 
-                        payload: {name, value}
-                    })
+                // on receive emit SET_CURRENT_AGENT 
+                .then(obj => {
+                    if (getState().data.currentAgent.hash === obj.hash && obj.average !== undefined) {
+                        dispatch({
+                            type: SET_CURRENT_AGENT, 
+                            payload: {
+                                average: obj.average
+                            }
+                        });
+                    }
                 })
                 // Catch any errors 
                 .catch(e => console.log(e));   
 
             // Termitate action here
             return ;
+        
+        case RATE_AGENT:
+                // Make API Call first
+                rateAgent({
+                    hash: getState().data.currentAgent.hash,
+                    rating: action.payload
+                })
+                    .then(obj => {
+                        dispatch({type: CHANGE_MODAL, payload: {
+                            isShowing: true,
+                            text: 'Thanks for rating ' + getState().data.currentAgent.name
+                        }});
+                        dispatch({type: GO_TO_HOME});
+                    })
+                    // Catch any errors 
+                    .catch(e => console.log(e));
+            return next(action); // Pass event to data reducer
 
         default:
             return next(action);

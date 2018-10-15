@@ -30,7 +30,7 @@ const MySlider = (props) => {
             </div>
             <div className="slider-buttons">
               <button className="btn btn-secondary left" onClick={props.handleBackClick}>&larr; Back</button>
-              <button className="btn btn-secondary right">Rate &rarr;</button>
+              <button className="btn btn-secondary right" onClick={props.handleRateClick}>Rate &rarr;</button>
             </div>
         </div>
     );

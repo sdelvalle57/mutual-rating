@@ -3,26 +3,23 @@ import React from 'react';
 
 class MySlider extends React.Component {
 
-    handleSubmit = (e) => {
+    handleChange = (e) => {
         e.preventDefault();
         // TODO: read data from the select input
-        this.props.handleForwardClick("9ca8ad9763ea8c80ecb6297d94");
+        this.props.handleOptionChange(e.target.value);
     }
 
     render() {
         return(
             <div>
                 <div>
-                    <div>Select user to rate</div>
-                    <form className="form-group" onSubmit={this.handleSubmit}>
-                        <select className="form-control" id="userForm">
-                            <option value="">Suraj</option>
-                            <option>Shiv</option>
-                            <option>Dan</option>
-                            <option>Lee</option>
-                            <option>Cameron</option>
+                    <form className="form-group" onChange={this.handleChange}>
+                        <select className="form-control" id="userForm" defaultValue="placeholder">
+                            <option value="placeholder" disabled hidden>Select user to rate</option>
+                            {this.props.enrolled.map((el, i) => {
+                                return <option key={i} value={el.hash}>{el.name}</option>;
+                            })}
                         </select>
-                        <button type="submit" className="btn btn-secondary">Select &rarr;</button>
                     </form>
                 </div>
             </div>

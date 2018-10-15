@@ -4,17 +4,18 @@
 export const INIT_UI = '[UI] Init UI';
 export const UI_WARNING = '[UI] Display UI warning';
 export const SWITCH_VIEW = '[UI] Switch wiew';
-export const SET_CURRENT_USER = '[UI] Set Current User';
-export const RATE_USER = '[UI] Move to rating screen';
+export const GO_TO_RATING = '[UI] Move to rating screen';
+export const GO_TO_HOME = '[UI] Move to Home screen';
+export const CHANGE_MODAL = '[UI] Toggle modal state';
 
 // Initial state of store.ui (see reducers.js)
 let INIT_UI_STATE = {
     loading: false,
-    location: 'home',
-    currentUser: {
-        name: "",
-        value: 0
-    } 
+    modal: {
+        isShowing: false,
+        text: ""
+    },
+    location: 'home' 
 };
 
 const uiReducer = (state = INIT_UI_STATE, action) => {
@@ -27,10 +28,8 @@ const uiReducer = (state = INIT_UI_STATE, action) => {
             if (!action.payload) return state;
             return {...state, location: action.payload};
 
-        case SET_CURRENT_USER:
-            if (!action.payload) return state;
-            return {...state, currentUser: action.payload};
-
+        case CHANGE_MODAL:
+        return {...state, modal: action.payload};
         case UI_WARNING:
             console.log('Displaying UI Warning');
             return {...state};
