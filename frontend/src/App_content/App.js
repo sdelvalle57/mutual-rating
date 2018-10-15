@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { INIT_UI } from './ducks/ui';
 import { RATE_AGENT } from './ducks/data';
-import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL } from './ducks/ui';
+import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL, UPDATE_SLIDER } from './ducks/ui';
 import store from './../store';
 import Star from './components/Main/Star';
 import Slider from './components/Main/Slider';
@@ -61,8 +61,7 @@ const mapDispatchToProps = ( dispatch ) => {
         }, 
         handleRateClick: () => {
             dispatch({
-                type: RATE_AGENT,
-                payload: 5
+                type: RATE_AGENT
             });
         },
         closeModal: () => {
@@ -70,6 +69,12 @@ const mapDispatchToProps = ( dispatch ) => {
                 isShowing: false,
                 text: ''
             }});
+        },
+        handleSliderChange: (e) => {
+            dispatch({
+                type: UPDATE_SLIDER,
+                payload: e
+            });
         }
     }
 }

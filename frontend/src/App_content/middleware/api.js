@@ -56,7 +56,7 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                 // Make API Call first
                 rateAgent({
                     hash: getState().data.currentAgent.hash,
-                    rating: action.payload
+                    rating: getState().ui.sliderValue
                 })
                     .then(obj => {
                         dispatch({type: CHANGE_MODAL, payload: {

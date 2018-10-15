@@ -26,7 +26,7 @@ const MySlider = (props) => {
         <div>
             <div>
                 <p>What is your rating?</p>
-                <Slider min={0} max={10} defaultValue={5} handle={MyHandle} />
+                <Slider min={0} max={10} defaultValue={5} handle={MyHandle} onAfterChange={props.handleSliderChange}/>
             </div>
             <div className="slider-buttons">
               <button className="btn btn-secondary left" onClick={props.handleBackClick}>&larr; Back</button>

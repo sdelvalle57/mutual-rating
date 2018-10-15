@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Modal = (props) => {
-    console.log(props);
     let className = 'modal';
     if(props.modal.isShowing)
         className += ' modal-active';

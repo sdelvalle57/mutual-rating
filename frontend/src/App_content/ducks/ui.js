@@ -7,6 +7,7 @@ export const SWITCH_VIEW = '[UI] Switch wiew';
 export const GO_TO_RATING = '[UI] Move to rating screen';
 export const GO_TO_HOME = '[UI] Move to Home screen';
 export const CHANGE_MODAL = '[UI] Toggle modal state';
+export const UPDATE_SLIDER = '[UI] Update slider value';
 
 // Initial state of store.ui (see reducers.js)
 let INIT_UI_STATE = {
@@ -15,6 +16,7 @@ let INIT_UI_STATE = {
         isShowing: false,
         text: ""
     },
+    sliderValue: 0,
     location: 'home' 
 };
 
@@ -29,7 +31,11 @@ const uiReducer = (state = INIT_UI_STATE, action) => {
             return {...state, location: action.payload};
 
         case CHANGE_MODAL:
-        return {...state, modal: action.payload};
+            return {...state, modal: action.payload};
+
+        case UPDATE_SLIDER:
+            return {...state, sliderValue: action.payload};
+
         case UI_WARNING:
             console.log('Displaying UI Warning');
             return {...state};
