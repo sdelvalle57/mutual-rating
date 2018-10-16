@@ -77,9 +77,9 @@
           "Exposure": "zome"
         },
         {
-          "Name": "computeAverage",
+          "Name": "getUserData",
           "CallingType": "json",
-          "Exposure": "zome"
+          "Exposure": "public"
         }
       ]
     }

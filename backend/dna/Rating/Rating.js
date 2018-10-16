@@ -226,33 +226,21 @@ function enrollUser (params)
  * Upon call with an empty JSON, returns the current user's metadata.
  * @callingType {json}
  * @exposure {public}
- * @param {type}
+ * @param {json} {  }
  * @return {json} { "Name": "user@mailserver.com",
                             "Hash": "<agenthash>",
                             "Rating": "7"}
  */
 function getUserData (params)
 {
-
-    return {};
+    var result = getAgentsAverage({ "ratee": App.Agent.Hash });
+    var userData = {
+        "Name": App.Agent.Name,
+        "Hash": App.Agent.Hash,
+        "Rating": result.AverageRating
+    }
+    return userData;
 }
-
-/*
- * Calculates the average rating given a JSON
-  * mapping of userHashes to ratings.
- * @callingType {json}
- * @exposure {zome}
- * @param {json}
- ** { "hashA": "7", ... ,"hashB": "6" }
- * @return {json}
- ** { "average": "6.5" }
- */
-function computeAverage (params)
-{
-
-    return {};
-}
-
 
 // -----------------------------------------------------------------
 //  Validation functions for every change to the local chain or DHT
