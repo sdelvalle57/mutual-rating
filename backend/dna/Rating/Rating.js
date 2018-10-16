@@ -206,7 +206,7 @@ function enrollUser (params)
 {
     try
     {
-        commit("Enrollment", { Links: [{
+        commit("EnrollLink", { Links: [{
             Base: App.DNA.Hash,
             Link: App.Agent.Hash,
             Tag: "Enrolled"
