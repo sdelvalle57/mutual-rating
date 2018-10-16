@@ -6,7 +6,7 @@ class Star extends React.Component {
         return (
             <div className="star-outer">
                 <div className="star-wrapper">
-                    <div className="star-rating">{this.props.currentAgent.Rating}</div>
+                    <div className="star-rating">{(this.props.currentAgent.Rating) ? this.props.currentAgent.Rating.toString() : ""}</div>
                     <svg className="svg-star" viewBox="0 0 200 200">
                         <defs>
                             <linearGradient id="grad1" x1="0%" y1="100%" x2="0%" y2="0%">

@@ -20,7 +20,14 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                     })
                 })
                 // Catch any errors 
-                .catch(e => console.log(e));
+                .catch(e => {
+                    dispatch({type: CHANGE_MODAL, payload: {
+                        isShowing: true,
+                        error: true,
+                        text: "Can't connect to the server"
+                    }});
+                    console.log(e);
+                });
 
             // Get current user's data
             getUsersData()
@@ -65,10 +72,20 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                     Value: getState().ui.sliderValue
                 })
                     .then(obj => {
-                        dispatch({type: CHANGE_MODAL, payload: {
-                            isShowing: true,
-                            text: 'Thanks for rating ' + getState().data.currentAgent.name
-                        }});
+                        // If successful then cheer it up
+                        if (obj.Success) {
+                            dispatch({type: CHANGE_MODAL, payload: {
+                                isShowing: true,
+                                error: false,
+                                text: 'Thanks for rating ' + getState().data.currentAgent.Name
+                            }});
+                        } else {
+                            dispatch({type: CHANGE_MODAL, payload: {
+                                isShowing: true,
+                                error: false,
+                                text: 'Oops, you have already rated ' + getState().data.currentAgent.Name
+                            }});
+                        }
                         dispatch({type: GO_TO_HOME});
                     })
                     // Catch any errors 

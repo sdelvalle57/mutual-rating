@@ -39,7 +39,9 @@ const mapStateToProps = ( state ) => {
         location: state.ui.location,
         currentAgent: state.data.currentAgent,
         enrolled: state.data.enrolled,
-        modal: state.ui.modal
+        modal: state.ui.modal,
+        user: state.data.user,
+        sliderValue: state.ui.sliderValue
     }
 };
 
