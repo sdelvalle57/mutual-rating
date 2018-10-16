@@ -44,46 +44,44 @@ function getAllEnrolled (params)
 }
 
 /*
- * Returns the latest rating you've rated the other user with.
+ * Returns the list of Ratings of a particular Ratee.
+ *
  * @callingType {json}
  * @exposure {public}
  * @param {json} { "Ratee": "<agenthash>" }
- * @return {json} { "Success": true
-                            "EntryHash": "<entryhash>",
-                            "Value":"7" }
+ * @return {json}[] {"Result": true, "Entries": ["Rater": "<hash>", "Rating": "<string>"]}
  */
 function getAgentsRating (params)
 {
-    var interacts = getLinks(params.Ratee, "Interactions", { Load : true })
-
-    var find = function(items, f) {
-        for (var i=0; i < items.length; i++)
-        {
-            var item = items[i];
-            if (f(item)) return item;
-        };
-        return null;
+  try{
+    var listOfRatesAndRating = []
+    var listOfRatedBy = getLinks(params.Ratee, "RatedByLink", {Load: true})
+    var listOfRatngEntries = getLinks(params.Ratee, "InteractionLink", {Load: true})
+    /*
+      RatedByLink and InteractionLink should be same length because, at the moment,
+      commits of those two are only done in the rateAgent; thus, when one being commited to the local-chain,
+      the other should too.
+      Therefore, I should be able to implement nested for loop.
+    */
+    for (var interactionLinkEntry in listOfRatngEntries){
+      for(var ratedByLinkEntry in listOfRatedBy){
+        var rate = {
+            "Rater": interactionLinkEntry.Entry.rater,
+            "Value": ratedByLinkEntry.Entry.value
+        }
+        listOfRatesAndRating.push(rate)
+      }
     }
-
-    var match = find(interacts, function(x) {return x.Entry.ratee == params.Ratee;});
-    if (match != null)
-    {
-        var rating = getLinks(match.Hash, "Pairings", { Load: true });
-        var result = {
-            "Success": true,
-            "EntryHash": rating.Hash,
-            "Value": rating.Entry.value
-        };
-    }
-    else
-    {
-        var result = {
-            "Success": false,
-            "EntryHash": null,
-            "Value": null
-        };
+    var result = {
+      "Success": true,
+      "Entries": listOfRatesAndRating
     }
     return result;
+  }catch(error){
+    var result = {"Success": false,
+                  "Entries": null}
+    return result
+  }
 }
 
 /*
@@ -148,7 +146,7 @@ function rateAgent (params)
     // var params ={"Ratee": "QmVmkmiDRpunsDtsvxBRpkoEK9upcSyPi4rdE2onkrhiDE", "Value":7 }
     // Hard code category into params:
     params.category = 'general';
-    
+
     var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
 
     var find = function(items, f) {
