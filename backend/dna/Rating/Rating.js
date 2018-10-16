@@ -32,8 +32,11 @@ function genesis ()
  * Return all the enrolled users.
  * @callingType {json}
  * @exposure {public}
- * @param {type}
- * @return {type}
+ * @param {json} {  }
+ * @return {json} [ {Hash:"QmY...",
+                            EntryType:"<entry-type>",
+                            Entry:"<entry value here>",
+                            Source:"<source-hash>"} ]
  */
 function getAllEnrolled (params)
 {
@@ -51,6 +54,8 @@ function getAllEnrolled (params)
  */
 function getAgentsRating (params)
 {
+    var interacts = getLinks(params.Ratee, "Interactions", { Load : true })
+
     var find = function(items, f) {
         for (var i=0; i < items.length; i++)
         {
@@ -69,8 +74,6 @@ function getAgentsRating (params)
             "EntryHash": rating.Hash,
             "Value": rating.Entry.value
         };
-
-        return result;
     }
     else
     {
@@ -79,30 +82,45 @@ function getAgentsRating (params)
             "EntryHash": null,
             "Value": null
         };
-        return result;
     }
+    return result;
 }
 
 /*
- * [Description]
+ * Accepts a Ratee's hash, and returns the community average rating
+ * of that Ratee.
  * @callingType {json}
  * @exposure {public}
- * @param {type}
- * @return {type}
+ * @param {json} { "ratee": "<agenthash>" }
+ * @return {type} { "Success": true,
+                             "AverageRating: 7"}
  */
 function getAgentsAverage (params)
 {
-  var totalRating = 0
-  // Grab all the entries associated with the RatingLink of the specified ratee below.
-  var entryArray = getLinks(params.ratee.toString(), "RatingLink", {Load: true})
-  //Pretty self explanatory below.
-  var totalUsersRated = entryArray.length
-  //For each through the Rating entries and grab only the values, and add'em to the totalRating.
-  for (var entryObject in entryArray){
-    totalgRating = totalRating + parseInt(entryObject.Entry.value, 10)
-  }
-  var avgRating = totalRating / totalUsersRated //At the end, average things up,
-  return {"avgRating": avgRating.toString()}; //Because getAgentsAverage's calling type is json.
+    try
+    {
+        var totalRating = 0;
+        // Grab all the entries associated with the RatingLink of the specified ratee below.
+        var entryArray = getLinks(params.ratee.toString(), "RatedByLink", {Load: true});
+        //Pretty self explanatory below.
+        var totalUsersRated = entryArray.length;
+        //For each through the Rating entries and grab only the values, and add'em to the totalRating.
+        for (var entryObject in entryArray){
+            totalRating = totalRating + parseInt(entryObject.Entry.value, 10);
+        }
+        var avgRating = totalRating / totalUsersRated //At the end, average things up,
+
+        return {"Success": true,
+                    "AverageRating": avgRating.toString()}; //Because getAgentsAverage's calling type is json.
+    }
+    catch (error)
+    {
+        console.log("getAgentsAverage() errored out.");
+        console.log(error);
+
+        return {"Success": false,
+                    "AverageRating": null};
+    }
 }
 
 /*
@@ -182,17 +200,26 @@ function rateAgent (params)
  * @callingType {json}
  * @exposure {zome}
  * @param {json} Empty JSON.
- * @return {json} Empty JSON.
+ * @return {json} { "Success": true }
  */
 function enrollUser (params)
 {
-    // TODO Add try-catch block around commits
-    commit("Enrollment", { Links: [{
-        Base: App.DNA.Hash,
-        Link: App.Agent.Hash,
-        Tag: "Enrolled"
-    }]})
-    return {};
+    try
+    {
+        commit("Enrollment", { Links: [{
+            Base: App.DNA.Hash,
+            Link: App.Agent.Hash,
+            Tag: "Enrolled"
+        }]})
+
+        return { "Success": true };
+    }
+    catch (error)
+    {
+        console.log("enrollUser() errored out.");
+        console.log(error);
+        return { "Success": false }
+    }
 }
 
 /*
