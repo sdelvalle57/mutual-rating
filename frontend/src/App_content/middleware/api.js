@@ -39,7 +39,8 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
 
         case GET_USERS_AVERAGE:
             // Get user's average
-            getAgentsAverage({Hash: action.payload})
+            console.log(action.payload);
+            getAgentsAverage({Ratee: action.payload})
                 // on receive emit SET_CURRENT_AGENT 
                 .then(obj => {
                     if (obj.AverageRating !== undefined) {
