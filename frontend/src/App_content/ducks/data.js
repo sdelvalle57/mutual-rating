@@ -28,7 +28,7 @@ const dataReducer = (state = INIT_DATA_STATE, action) => {
             // TODO: how does it work exactly (new Set)?
             let arr = [action.payload, state.enrolled];
             return {
-                ...state, 
+                ...state,
                 enrolled: [...new Set([].concat(...arr))]
             };
 
