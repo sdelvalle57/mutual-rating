@@ -91,27 +91,37 @@ function getAgentsRating (params)
  * of that Ratee.
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "ratee": "<agenthash>" }
+ * @param {json} { "Ratee": "<agenthash>" }
  * @return {type} { "Success": true,
                              "AverageRating: 7"}
  */
 function getAgentsAverage (params)
 {
+    // var params ={'Ratee': 'QmVmkmiDRpunsDtsvxBRpkoEK9upcSyPi4rdE2onkrhiDE'};
     try
     {
         var totalRating = 0;
         // Grab all the entries associated with the RatingLink of the specified ratee below.
-        var entryArray = getLinks(params.ratee.toString(), "RatedByLink", {Load: true});
-        //Pretty self explanatory below.
+        var entryArray = getLinks(params.Ratee.toString(), "RatedBy", {Load: true});
+
+        // Pretty self explanatory below.
         var totalUsersRated = entryArray.length;
-        //For each through the Rating entries and grab only the values, and add'em to the totalRating.
-        for (var entryObject in entryArray){
-            totalRating = totalRating + parseInt(entryObject.Entry.value, 10);
+
+        var avgRating;
+
+        if(totalUsersRated > 0){
+            //For each through the Rating entries and grab only the values, and add'em to the totalRating.
+            for (var entryObject in entryArray){
+                totalRating = totalRating + parseInt(entryArray[entryObject].Entry.value, 10);
+            }
+            avgRating = totalRating / totalUsersRated //At the end, average things up,
         }
-        var avgRating = totalRating / totalUsersRated //At the end, average things up,
+        else{
+            avgRating = null;
+        }
 
         return {"Success": true,
-                    "AverageRating": avgRating.toString()}; //Because getAgentsAverage's calling type is json.
+                    "AverageRating": avgRating}; //Because getAgentsAverage's calling type is json.
     }
     catch (error)
     {
@@ -134,6 +144,8 @@ function getAgentsAverage (params)
  */
 function rateAgent (params)
 {
+
+    // var params ={"Ratee": "QmVmkmiDRpunsDtsvxBRpkoEK9upcSyPi4rdE2onkrhiDE", "Value":7 }
     // Hard code category into params:
     params.category = 'general';
     
@@ -235,7 +247,7 @@ function enrollUser (params)
  */
 function getUserData (params)
 {
-    var result = getAgentsAverage({ "ratee": App.Agent.Hash });
+    var result = getAgentsAverage({ "Ratee": App.Agent.Hash });
     var userData = {
         "Name": App.Agent.String,
         "Hash": App.Agent.Hash,
