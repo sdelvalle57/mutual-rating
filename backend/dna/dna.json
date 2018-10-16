@@ -19,13 +19,9 @@
       {
 
         "Name": "reviews",
- 
         "Description": "compose, publish, update and query reviews of another agent or event by the hash key",
-        
         "RibosomeType": "js",
-        
         "CodeFile": "review.js",
-
         "Entries": [
           {
             "Name": "review", 

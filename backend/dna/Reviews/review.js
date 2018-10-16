@@ -9,7 +9,6 @@
  * getAgentsAverage
  * rateAgent
  * enrollUser
- * getUserData
  ************************************************************
  */
 
@@ -22,8 +21,8 @@
  */
 function genesis ()
 {
+    
     enrollUser({});
-
     return true;
 }
 
@@ -195,37 +194,6 @@ function enrollUser (params)
     return {};
 }
 
-/*
- * Upon call with an empty JSON, returns the current user's metadata.
- * @callingType {json}
- * @exposure {public}
- * @param {type}
- * @return {json} { "Name": "user@mailserver.com",
-                            "Hash": "<agenthash>",
-                            "Rating": "7"}
- */
-function getUserData (params)
-{
-
-    return {};
-}
-
-/*
- * Calculates the average rating given a JSON
-  * mapping of userHashes to ratings.
- * @callingType {json}
- * @exposure {zome}
- * @param {json}
- ** { "hashA": "7", ... ,"hashB": "6" }
- * @return {json}
- ** { "average": "6.5" }
- */
-function computeAverage (params)
-{
-
-    return {};
-}
-
 
 // -----------------------------------------------------------------
 //  Validation functions for every change to the local chain or DHT
@@ -256,6 +224,7 @@ function validateCommit (entryName, entry, header, pkg, sources) {
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
+      if(getLinks(App.DNA.Hash, "Enrollment"))
       return false;
     case "RatingLink":
       // be sure to consider many edge cases for validating
