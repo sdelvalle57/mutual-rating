@@ -262,7 +262,7 @@ function validateCommit (entryName, entry, header, pkg, sources) {
         return false;
       }
       return false;
-    case "Uniqueness":
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
@@ -299,7 +299,7 @@ function validatePut (entryName, entry, header, pkg, sources) {
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
       return false;
-    case "Uniqueness":
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
@@ -337,7 +337,7 @@ function validateMod (entryName, entry, header, replaces, pkg, sources) {
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
       return false;
-    case "Uniqueness":
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
@@ -373,7 +373,7 @@ function validateDel (entryName, hash, pkg, sources) {
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
       return false;
-    case "Uniqueness":
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
@@ -410,7 +410,7 @@ function validateLink (entryName, baseHash, links, pkg, sources) {
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
       return false;
-    case "Uniqueness":
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
