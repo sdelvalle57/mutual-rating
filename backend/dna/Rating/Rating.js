@@ -165,7 +165,7 @@ function rateAgent (params)
         }]})
         var pairing = {
             "rater": App.Agent.Hash,
-            "rated": params.Ratee
+            "ratee": params.Ratee
         }
         // TODO Try Catch around commits
         var interactionHash = commit("Interaction", pairing)
