@@ -24,13 +24,12 @@ let INIT_DATA_STATE = {
 const dataReducer = (state = INIT_DATA_STATE, action) => {
     switch (action.type) {
         case ADD_NEW_ENROLLED:
-            // Great, now we have to merge two arrays and remove duplicates:
-            // 1. Concat two arrays with spread operator and pass as an argument to Set
-            // 2. Create ES6 Set (a collection of unordered distinct elements)
-            // 3. Insert values of this Set into an array with help of spread operator
+            // Great, now we have to merge two arrays and remove duplicates
+            // TODO: how does it work exactly (new Set)?
+            let arr = [action.payload, state.enrolled];
             return {
                 ...state, 
-                enrolled: [...new Set(...action.payload, ...state.enrolled)]
+                enrolled: [...new Set([].concat(...arr))]
             };
 
         case UPDATE_USER_DATA:
