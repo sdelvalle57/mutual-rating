@@ -55,15 +55,15 @@ export const getAgentsRating = (obj) => {
  * @return {Promise} Promise of a fetched result in a form of an array of all the entries
  */
 export const getAgentsAverage = (obj) => {
-    return new Promise((resolve, reject) => {
-        resolve(
-            {
-                hash: "b723974209bcd",
-                average: "9.9"
-            }
-        );
-    });
-    //return fetchPOST('/fn/sampleZome/getAgentsAverage', obj).then(r => r.json());
+    // return new Promise((resolve, reject) => {
+    //     resolve(
+    //         {
+    //             hash: "b723974209bcd",
+    //             average: "9.9"
+    //         }
+    //     );
+    // });
+    return fetchPOST('/fn/Rating/getAgentsAverage', obj).then(r => r.json());
 }
 
 /**
@@ -74,10 +74,12 @@ export const getAgentsAverage = (obj) => {
  * @return {Promise} Promise of a fetched result in a form of an array of all the entries
  */
 export const rateAgent = (obj) => {
-    return new Promise((resolve, reject) => {
-        resolve({});
-    });
-    // return fetchPOST('/fn/sampleZome/rateAgent', obj).then(r => r.json());
+    // return new Promise((resolve, reject) => {
+    //     resolve({});
+    // });
+    console.log(obj);
+    return fetchPOST('/fn/Rating/rateAgent', obj)
+        .then(r => r.json());
 }
 
 /**

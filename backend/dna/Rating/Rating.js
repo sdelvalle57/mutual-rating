@@ -151,7 +151,7 @@ function rateAgent (params)
     {
         var ratingEntry = {
             "ratee": params.Ratee, // More secure.
-            "value": params.value.toString(),
+            "value": params.Value.toString(),
             "category": params.category.toString()
         }
         // TODO Try Catch around commits

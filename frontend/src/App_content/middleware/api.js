@@ -41,14 +41,14 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
 
         case GET_USERS_AVERAGE:
             // Get user's average
-            getAgentsAverage({hash: action.payload.Hash})
+            getAgentsAverage({Hash: action.payload})
                 // on receive emit SET_CURRENT_AGENT 
                 .then(obj => {
-                    if (getState().data.currentAgent.Hash === obj.Hash && obj.Rating !== undefined) {
+                    if (obj.AverageRating !== undefined) {
                         dispatch({
                             type: SET_CURRENT_AGENT, 
                             payload: {
-                                average: obj.average
+                                Rating: obj.AverageRating
                             }
                         });
                     }
@@ -62,8 +62,8 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
         case RATE_AGENT:
                 // Make API Call first
                 rateAgent({
-                    hash: getState().data.currentAgent.hash,
-                    rating: getState().ui.sliderValue
+                    Ratee: getState().data.currentAgent.Hash,
+                    Value: getState().ui.sliderValue.toString()
                 })
                     .then(obj => {
                         dispatch({type: CHANGE_MODAL, payload: {
