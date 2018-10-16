@@ -134,7 +134,9 @@ function getAgentsAverage (params)
  */
 function rateAgent (params)
 {
-
+    // Hard code category into params:
+    params.category = 'general';
+    
     var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
 
     var find = function(items, f) {
