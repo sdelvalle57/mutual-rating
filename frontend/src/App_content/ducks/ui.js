@@ -16,7 +16,7 @@ let INIT_UI_STATE = {
         isShowing: false,
         text: ""
     },
-    sliderValue: 0,
+    sliderValue: 5,
     location: 'home' 
 };
 

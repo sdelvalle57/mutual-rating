@@ -16,8 +16,9 @@ class MySlider extends React.Component {
                     <form className="form-group" onChange={this.handleChange}>
                         <select className="form-control" id="userForm" defaultValue="placeholder">
                             <option value="placeholder" disabled >Select user to rate</option>
-                            {this.props.enrolled.map((el, i) => {
-                                return <option key={i} value={el.Hash}>{el.Name}</option>;
+                            {this.props.enrolled.map((el, i) => { 
+                                // Filter out yourself
+                                return (el.Hash !== this.props.user.Hash) ? <option key={i} value={el.Hash}>{el.Name}</option> : null
                             })}
                         </select>
                     </form>

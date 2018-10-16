@@ -64,10 +64,18 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                     Value: getState().ui.sliderValue
                 })
                     .then(obj => {
-                        dispatch({type: CHANGE_MODAL, payload: {
-                            isShowing: true,
-                            text: 'Thanks for rating ' + getState().data.currentAgent.name
-                        }});
+                        // If successful then cheer it up
+                        if (obj.Success) {
+                            dispatch({type: CHANGE_MODAL, payload: {
+                                isShowing: true,
+                                text: 'Thanks for rating ' + getState().data.currentAgent.Name
+                            }});
+                        } else {
+                            dispatch({type: CHANGE_MODAL, payload: {
+                                isShowing: true,
+                                text: 'Oops, you have already rated ' + getState().data.currentAgent.Name
+                            }});
+                        }
                         dispatch({type: GO_TO_HOME});
                     })
                     // Catch any errors 

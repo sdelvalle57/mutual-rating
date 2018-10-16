@@ -15,9 +15,9 @@ let INIT_DATA_STATE = {
         rating: 0
     },
     currentAgent: {
-        hash: "",
-        name: "",
-        value: 0
+        Hash: "",
+        Name: "",
+        Value: 0
     }
 };
 
