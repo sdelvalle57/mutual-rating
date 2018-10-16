@@ -1,78 +1,146 @@
 {
-    "Version": 1,
-    "UUID": "b0bc9034-cabe-11e8-ab45-f45c89bd00e1",
-    "Name": "mutual-rating",
+    "Version": 1,    
+    "UUID": "1e1b7fc2-b1d9-495d-8d8d-9c540ec6c969",
+    "Name": "agent-reviews",
     "Properties": {
-        "description": "provides an application template",
-        "language": "en"
+      "description": "A tool that can be included or bridged from other happs to support attaching, collecting and maintaining agent review/rate attachments by hash.",
+
+      "language": "en"
     },
-    "PropertiesSchemaFile": "properties_schema.json",
+
+    "PropertiesSchemaFile": "properties_schema.json", 
     "BasedOn": "",
-    "RequiresVersion": 26,
+    "RequiresVersion": 26,  
     "DHTConfig": {
-        "HashType": "sha2-256",
-        "RedundancyFactor": 0
+      "HashType": "sha2-256"
     },
-    "Progenitor": {
-        "Identity": "",
-        "PubKey": null
-    },
+
     "Zomes": [
-        {
-            "Name": "Rating",
-            "Description": "Look up, inspect, and publish user.",
-            "CodeFile": "Rating.js",
-            "RibosomeType": "js",
-            "BridgeFuncs": null,
-            "Config": null,
-            "Entries": [
-                {
-                    "Name": "Rating",
-                    "DataFormat": "json",
-                    "Schema": "",
-                    "SchemaFile": "RatingSchema.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "RatingLink",
-                    "DataFormat": "link",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "Uniqueness",
-                    "DataFormat": "json",
-                    "Schema": "",
-                    "SchemaFile": "UniquenessSchema.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "TagIsUnique",
-                    "DataFormat": "link",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "Enrollment",
-                    "DataFormat": "link",
-                    "Sharing": "public"
-                }
-            ],
-            "Functions": [
-                {
-                    "Name": "rateHash",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "viewRating",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "getAllEnrolled",
-                    "CallingType": "string",
-                    "Exposure": "public"
-                }
-            ]
-        }
+      {
+
+        "Name": "reviews",
+        "Description": "compose, publish, update and query reviews of another agent or event by the hash key",
+        "RibosomeType": "js",
+        "CodeFile": "review.js",
+        "Entries": [
+          {
+            "Name": "review", 
+            "Required": false, 
+            "DataFormat": "json", 
+            "Sharing": "public", 
+            "SchemaFile": "review.json", 
+            "_": "crud"
+          },
+          {
+            "Name": "unique_valid", 
+            "Required": false, 
+            "DataFormat": "links", 
+            "Sharing": "public", 
+            "_": "-"
+          },
+          {
+            "Name": "enrolledUser", 
+            "Required": true, 
+            "DataFormat": "json", 
+            "Sharing": "public", 
+            "_": "crd"
+          },
+          {
+            "Name": "receipt", 
+            "Required": true, 
+            "DataFormat": "json", 
+            "Sharing": "public", 
+            "_": "crd"
+          },
+          {
+            "Name": "attachedReview", 
+            "Required": true, 
+            "DataFormat": "links", 
+            "Sharing": "public", 
+            "_": "-"
+          },
+          {
+            "Name": "enrollment", 
+            "Required": true, 
+            "DataFormat": "links", 
+            "Sharing": "public", 
+            "_": "-"
+          }
+        ],
+
+        
+        
+        "Functions": [
+          {
+            "Name": "reviewCreate", 
+            "CallingType": "json", 
+            "Exposure": "public", 
+            "_": "c:review"
+          },
+          {
+            "Name": "reviewRead", 
+            "CallingType": "string", 
+            "Exposure": "public", 
+            "_": "r:review"
+          },
+          {
+            "Name": "reviewUpdate", 
+            "CallingType": "string", 
+            "Exposure": "public", 
+            "_": "u:review"
+          },
+          {
+            "Name": "reviewDelete", 
+            "CallingType": "json", 
+            "Exposure": "private", 
+            "_": "d:review"
+          },
+          {
+            "Name": "enrolledUserCreate", 
+            "CallingType": "json", 
+            "Exposure": "private", 
+            "_": "c:enrolledUser"
+          },
+          {
+            "Name": "enrolledUserRead", 
+            "CallingType": "json", 
+            "Exposure": "public", 
+            "_": "r:enrolledUser"
+          },
+          {
+            "Name": "receiptCreate", 
+            "CallingType": "string", 
+            "Exposure": "public", 
+            "_": "c:receipt"
+          },
+          {
+            "Name": "receiptRead", 
+            "CallingType": "json", 
+            "Exposure": "public", 
+            "_": "r:receipt"
+          },
+          {
+            "Name": "receiptDelete", 
+            "CallingType": "json", 
+            "Exposure": "public", 
+            "_": "d:receipt"
+          },
+          {
+            "Name": "reviewHash", 
+            "CallingType": "string", 
+            "Exposure": "public" 
+          },
+          {
+            "Name": "viewReview", 
+            "CallingType": "string", 
+            "Exposure": "public"
+          },
+          {
+            "Name": "getAllEnrolledUsers", 
+            "CallingType": "json", 
+            "Exposure": "public"
+          }
+        ]
+      }
     ]
-}
+  }

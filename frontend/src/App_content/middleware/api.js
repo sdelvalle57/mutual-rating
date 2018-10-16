@@ -1,63 +1,74 @@
-import {  } from '../ducks/data';
-import { INIT_UI } from '../ducks/ui';
-import { putEntry, getAllEntries } from '../hc_api/hc_api';
+import { ADD_NEW_ENROLLED, UPDATE_USER_DATA, GET_USERS_AVERAGE, SET_CURRENT_AGENT, RATE_AGENT } from '../ducks/data';
+import { INIT_UI, GO_TO_HOME, CHANGE_MODAL } from '../ducks/ui';
+import { getAllEnrolled, getUsersData, getAgentsAverage, rateAgent } from '../hc_api/hc_api';
 
-const apiMiddleware = ( {dispatch} ) => next => action => {
+const apiMiddleware = ( {dispatch, getState} ) => next => action => {
     switch (action.type) {
-        /*case INIT_UI:
-            getAllEntries()
-                // on receive emit ADD_TO_DATA 
+        case INIT_UI:
+            // Get all users enrolled in this app
+            getAllEnrolled()
+                // on receive emit ADD_NEW_ENROLLED 
                 .then(r => {
                     dispatch({
-                        type: ADD_TO_DATA, 
-                        payload: r.map((e, i) => {return {entryID: i, text:e.text, status: 2}})
+                        type: ADD_NEW_ENROLLED, 
+                        payload: r
                     })
                 })
                 // Catch any errors 
-                .catch(e => console.log(e));        
-            
-            return next(action);
+                .catch(e => console.log(e));
 
-        case NEW_LIST_ENTRY:
-            // Reject empty string
-            if (!action.payload.text) return;
-            
-            // Send API Call
-            putEntry({text: action.payload.text})
-                // Once putEntry is succesful update its status as saved
+            // Get current user's data
+            getUsersData()
+                // on receive emit UPDATE_USER_DATA
                 .then(r => {
-                    // This timeout is here to simulate network delay :-)
-                    setTimeout(() => {
-                        dispatch({
-                            type: UPDATE_ENTRY_STATUS, 
-                            payload: {
-                                entryID: action.payload.entryID, 
-                                status: 2
-                            }
-                        })
-                    },500);
-                })       
-                // Catch any errors   
-                .catch(e => {
-                    console.log(e);
-                    // This timeout is here to simulate network delay :-)
-                    setTimeout(() => {
-                        dispatch({
-                            type: UPDATE_ENTRY_STATUS, 
-                            payload: {
-                                entryID: action.payload.entryID, 
-                                status: 0
-                            }
-                        })
-                    },500);
-                });        
+                    dispatch({
+                        type: UPDATE_USER_DATA, 
+                        payload: r
+                    })
+                })
+                // Catch any errors 
+                .catch(e => console.log(e));
 
-            // Alter entry status to Sent
-            action.payload.status = 1;
-
-            // Explicitly pass action down the redux flow
+            // Pass event further down the chain in case you needed to update UI or something
             return next(action);
-*/
+
+        case GET_USERS_AVERAGE:
+            // Get user's average
+            getAgentsAverage({hash: action.payload.hash})
+                // on receive emit SET_CURRENT_AGENT 
+                .then(obj => {
+                    if (getState().data.currentAgent.hash === obj.hash && obj.average !== undefined) {
+                        dispatch({
+                            type: SET_CURRENT_AGENT, 
+                            payload: {
+                                average: obj.average
+                            }
+                        });
+                    }
+                })
+                // Catch any errors 
+                .catch(e => console.log(e));   
+
+            // Termitate action here
+            return ;
+        
+        case RATE_AGENT:
+                // Make API Call first
+                rateAgent({
+                    hash: getState().data.currentAgent.hash,
+                    rating: getState().ui.sliderValue
+                })
+                    .then(obj => {
+                        dispatch({type: CHANGE_MODAL, payload: {
+                            isShowing: true,
+                            text: 'Thanks for rating ' + getState().data.currentAgent.name
+                        }});
+                        dispatch({type: GO_TO_HOME});
+                    })
+                    // Catch any errors 
+                    .catch(e => console.log(e));
+            return next(action); // Pass event to data reducer
+
         default:
             return next(action);
     }

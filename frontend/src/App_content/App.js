@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { INIT_UI } from './ducks/ui';
-import { SELECT_USER } from './ducks/data';
-import { SWITCH_VIEW } from './ducks/ui';
+import { RATE_AGENT } from './ducks/data';
+import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL, UPDATE_SLIDER } from './ducks/ui';
 import store from './../store';
 import Star from './components/Main/Star';
 import Slider from './components/Main/Slider';
 import Selector from './components/Main/Selector';
+import Modal from './components/common/Modal';
 import './App.css';
 import { connect } from 'react-redux';
 
@@ -15,7 +16,6 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.props);
         let comp;
         if (this.props.location === 'home')
             comp = <Selector {...this.props}/>
@@ -24,6 +24,7 @@ class App extends Component {
 
         return (
             <div className="App col-lg-5 m-auto">
+                <Modal {...this.props}/>
                 <header className="App-header"></header>
                 <Star {...this.props}/>
                 {comp}
@@ -36,8 +37,9 @@ class App extends Component {
 const mapStateToProps = ( state ) => {
     return {
         location: state.ui.location,
-        ratedUser: state.data.ratedUser,
-        homeRating: state.data.homeRating
+        currentAgent: state.data.currentAgent,
+        enrolled: state.data.enrolled,
+        modal: state.ui.modal
     }
 };
 
@@ -45,16 +47,33 @@ const mapStateToProps = ( state ) => {
 // Those functions are passed to Component as props with help of connect() below
 const mapDispatchToProps = ( dispatch ) => {
     return {
-        handleSubmit: (e) => {
+        handleOptionChange: (Hash) => {
             dispatch({
-                type: SELECT_USER,
-                payload: "Mr. Cameron"
+                type: GO_TO_RATING,
+                payload: Hash
             });
         },
         handleBackClick: () => {
             dispatch({
-                type: SWITCH_VIEW, 
+                type: GO_TO_HOME, 
                 payload: 'home'
+            });
+        }, 
+        handleRateClick: () => {
+            dispatch({
+                type: RATE_AGENT
+            });
+        },
+        closeModal: () => {
+            dispatch({type: CHANGE_MODAL, payload: {
+                isShowing: false,
+                text: ''
+            }});
+        },
+        handleSliderChange: (e) => {
+            dispatch({
+                type: UPDATE_SLIDER,
+                payload: e
             });
         }
     }

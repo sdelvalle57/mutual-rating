@@ -76,7 +76,6 @@ body {
   
   .App-header {}
   
-  
  .titles {
      color: white;
      line-height: 42px;
@@ -88,7 +87,7 @@ body {
   
   .form-control, .form-control button{
     color: white !important;
-    font-size: 3vmin !important;
+    font-size: calc( 10px + 2vmin) !important;
   }
 
   #userForm {
@@ -115,3 +114,21 @@ body {
     border-width: 4px;
   }
   
+  .modal-active {
+    display: initial !important;
+  }
+
+  .modal-dialog {
+    color: #404040 !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translate(0, -50%);
+    left: 0 !important;
+    right: 0 !important;
+    margin: auto !important;
+  }
+
+  .modal-body p {
+    margin: 0;
+  }
+
