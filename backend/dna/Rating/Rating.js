@@ -269,7 +269,17 @@ function validateCommit (entryName, entry, header, pkg, sources) {
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
       return true;
-    case "RatingLink":
+    case "RatedByLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
+    case "PairingLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
+    case "InteractionLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
@@ -401,31 +411,31 @@ function validateDel (entryName, hash, pkg, sources) {
  * @return {boolean} is valid?
  */
 function validateLink (entryName, baseHash, links, pkg, sources) {
-  //switch (entryName) {
-  //  case "Rating":
-  //    // be sure to consider many edge cases for validating
-  //    // do not just flip this to true without considering what that means
-  //    // the action will ONLY be successfull if this returns true, so watch out!
-  //    return false;
-  //  case "Interaction":
-  //    // be sure to consider many edge cases for validating
-  //    // do not just flip this to true without considering what that means
-  //    // the action will ONLY be successfull if this returns true, so watch out!
-  //    return false;
-  //  case "EnrollLink":
-  //    // be sure to consider many edge cases for validating
-  //    // do not just flip this to true without considering what that means
-  //    // the action will ONLY be successfull if this returns true, so watch out!
-  //    return false;
-  //  case "RatingLink":
-  //    // be sure to consider many edge cases for validating
-  //    // do not just flip this to true without considering what that means
-  //    // the action will ONLY be successfull if this returns true, so watch out!
-  //    return false;
-  //  default:
-  //    // invalid entry name
-  //    return false;
-  //}
+  switch (entryName) {
+    case "EnrollLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
+    case "RatedByLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
+    case "PairingLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
+    case "InteractionLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
+    default:
+      // invalid entry name
+      return false;
+  }
   return true
 }
 
