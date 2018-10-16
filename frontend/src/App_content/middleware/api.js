@@ -9,13 +9,11 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
             getAllEnrolled()
                 // on receive emit ADD_NEW_ENROLLED 
                 .then(r => {
-
                     var data = [];
                     for (var i = 0; i < r.length; ++i){
                         var d = {Name: r[i].Entry.Identity , Hash: r[i].Hash, Rating: r[i].rating}
                         data.push(d);
                     }
-
                     dispatch({
                         type: ADD_NEW_ENROLLED, 
                         payload: data
@@ -63,7 +61,7 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                 // Make API Call first
                 rateAgent({
                     Ratee: getState().data.currentAgent.Hash,
-                    Value: getState().ui.sliderValue.toString()
+                    Value: getState().ui.sliderValue
                 })
                     .then(obj => {
                         dispatch({type: CHANGE_MODAL, payload: {
