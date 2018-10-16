@@ -235,7 +235,7 @@ function getUserData (params)
 {
     var result = getAgentsAverage({ "ratee": App.Agent.Hash });
     var userData = {
-        "Name": App.Agent.Name,
+        "Name": App.Agent.String,
         "Hash": App.Agent.Hash,
         "Rating": result.AverageRating
     }
