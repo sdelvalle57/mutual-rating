@@ -10,9 +10,9 @@ export const RATE_AGENT  = '[Data] Rate Selected Agent';
 let INIT_DATA_STATE = {
     enrolled: [],
     user: {
-        hash: "",
-        name: "",
-        rating: 0
+        Hash: "",
+        Name: "",
+        Rating: 0
     },
     currentAgent: {
         Hash: "",

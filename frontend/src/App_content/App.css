@@ -137,3 +137,7 @@ code {
     margin: 0;
 }
 
+.modal.error .modal-content {
+    color: #e51c23;
+}
+
