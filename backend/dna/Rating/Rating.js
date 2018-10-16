@@ -134,7 +134,9 @@ function getAgentsAverage (params)
  */
 function rateAgent (params)
 {
-
+    // Hard code category into params:
+    params.category = 'general';
+    
     var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
 
     var find = function(items, f) {
@@ -151,7 +153,7 @@ function rateAgent (params)
     {
         var ratingEntry = {
             "ratee": params.Ratee, // More secure.
-            "value": params.Value.toString(),
+            "value": parseInt(params.Value),
             "category": params.category.toString()
         }
         // TODO Try Catch around commits
