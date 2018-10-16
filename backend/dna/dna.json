@@ -38,13 +38,19 @@
           "Sharing": "public"
         },
         {
-          "Name": "RatingLink",
+          "Name": "RatedByLink",
           "Required": true,
           "DataFormat": "links",
           "Sharing": "public"
         },
         {
-          "Name": "Uniqueness",
+          "Name": "PairingLink",
+          "Required": true,
+          "DataFormat": "links",
+          "Sharing": "public"
+        },
+        {
+          "Name": "InteractionLink",
           "Required": true,
           "DataFormat": "links",
           "Sharing": "public"
@@ -77,9 +83,9 @@
           "Exposure": "zome"
         },
         {
-          "Name": "computeAverage",
+          "Name": "getUserData",
           "CallingType": "json",
-          "Exposure": "zome"
+          "Exposure": "public"
         }
       ]
     }

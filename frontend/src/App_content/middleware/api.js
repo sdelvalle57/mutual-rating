@@ -9,9 +9,16 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
             getAllEnrolled()
                 // on receive emit ADD_NEW_ENROLLED 
                 .then(r => {
+
+                    var data = [];
+                    for (var i = 0; i < r.length; ++i){
+                        var d = {Name: r[i].Entry.Identity , Hash: r[i].Hash, Rating: r[i].rating}
+                        data.push(d);
+                    }
+
                     dispatch({
                         type: ADD_NEW_ENROLLED, 
-                        payload: r
+                        payload: data
                     })
                 })
                 // Catch any errors 
@@ -34,10 +41,10 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
 
         case GET_USERS_AVERAGE:
             // Get user's average
-            getAgentsAverage({hash: action.payload.hash})
+            getAgentsAverage({hash: action.payload.Hash})
                 // on receive emit SET_CURRENT_AGENT 
                 .then(obj => {
-                    if (getState().data.currentAgent.hash === obj.hash && obj.average !== undefined) {
+                    if (getState().data.currentAgent.Hash === obj.Hash && obj.Rating !== undefined) {
                         dispatch({
                             type: SET_CURRENT_AGENT, 
                             payload: {

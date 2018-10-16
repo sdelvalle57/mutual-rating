@@ -23,19 +23,19 @@ const fetchPOST = (endpoint, data) => {
  * @return {Promise} Promise of a fetched result in a form of an array of all the list elements
  */
 export const getAllEnrolled = () => {
-    return new Promise((resolve, reject) => {
-        resolve([
-            {
-                name: "Alice",
-                hash: "a723974209abc"
-            },
-            {
-                name: "Bob",
-                hash: "b723974209bcd"
-            }
-        ]);
-    });
-    // return fetchPOST('/fn/sampleZome/getAllEnrolled').then(r => r.json());
+    // return new Promise((resolve, reject) => {
+    //     resolve([
+    //         {
+    //             name: "Alice",
+    //             hash: "a723974209abc"
+    //         },
+    //         {
+    //             name: "Bob",
+    //             hash: "b723974209bcd"
+    //         }
+    //     ]);
+    // });
+    return fetchPOST('/fn/Rating/getAllEnrolled').then(r => r.json());
 }
 
 /**
@@ -92,19 +92,27 @@ export const rateAgent = (obj) => {
  * @return {Promise} Promise of a fetched result in form of {hash: {string}, name: {string}, average: {number}}
  */
 export const getUsersData = (obj) => {
-    return new Promise((resolve, reject) => {
-        if (obj === undefined) 
-            resolve({
-                name: 'PJ',
-                hash: 'p2349872349872498',
-                average: '3.7'
-            })
-        else 
-        resolve({
-            name: 'Bob',
-            hash: 'b723974209bcd',
-            average: '9.2'
-        })
-    });
-    //return fetchPOST('/fn/sampleZome/getUsersData', obj).then(r => r.json());
+
+    return fetch('/fn/Rating/getUserData', obj)
+        .then(r => r.json());
+
+    // return data;
+
+    // console.log(data);
+
+    // return new Promise((resolve, reject) => {
+    //     if (obj === undefined)
+    //         resolve({
+    //             name: 'PJ',
+    //             hash: 'p2349872349872498',
+    //             average: '3.7'
+    //         })
+    //     else
+    //     resolve({
+    //         name: 'Bob',
+    //         hash: 'b723974209bcd',
+    //         average: '9.2'
+    //     })
+    // });
+
 }

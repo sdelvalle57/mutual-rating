@@ -17,7 +17,7 @@ class MySlider extends React.Component {
                         <select className="form-control" id="userForm" defaultValue="placeholder">
                             <option value="placeholder" disabled >Select user to rate</option>
                             {this.props.enrolled.map((el, i) => {
-                                return <option key={i} value={el.hash}>{el.name}</option>;
+                                return <option key={i} value={el.Hash}>{el.Name}</option>;
                             })}
                         </select>
                     </form>
