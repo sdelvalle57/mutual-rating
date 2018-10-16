@@ -17,6 +17,16 @@ const fetchPOST = (endpoint, data) => {
     });
 }
 
+/**
+ * Handle errors from server
+ * @param  {Object} response - response form server
+ */
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response;
+}
 
 /**
  * Get all users enrolled in this app
@@ -35,7 +45,7 @@ export const getAllEnrolled = () => {
     //         }
     //     ]);
     // });
-    return fetchPOST('/fn/Rating/getAllEnrolled').then(r => r.json());
+    return fetchPOST('/fn/Rating/getAllEnrolled').then(handleErrors).then(r => r.json());
 }
 
 /**
@@ -45,7 +55,7 @@ export const getAllEnrolled = () => {
  * @return {Promise} Promise of a fetched result in a form of an array of all the entries
  */
 export const getAgentsRating = (obj) => {
-    return fetchPOST('/fn/sampleZome/getAgentsRating', obj).then(r => r.json());
+    return fetchPOST('/fn/sampleZome/getAgentsRating', obj).then(handleErrors).then(r => r.json());
 }
 
 /**
@@ -63,7 +73,7 @@ export const getAgentsAverage = (obj) => {
     //         }
     //     );
     // });
-    return fetchPOST('/fn/Rating/getAgentsAverage', obj).then(r => r.json());
+    return fetchPOST('/fn/Rating/getAgentsAverage', obj).then(handleErrors).then(r => r.json());
 }
 
 /**
@@ -78,8 +88,7 @@ export const rateAgent = (obj) => {
     //     resolve({});
     // });
     console.log(obj);
-    return fetchPOST('/fn/Rating/rateAgent', obj)
-        .then(r => r.json());
+    return fetchPOST('/fn/Rating/rateAgent', obj).then(handleErrors).then(r => r.json());
 }
 
 /**
@@ -95,8 +104,7 @@ export const rateAgent = (obj) => {
  */
 export const getUsersData = (obj) => {
 
-    return fetch('/fn/Rating/getUserData', obj)
-        .then(r => r.json());
+    return fetch('/fn/Rating/getUserData', obj).then(handleErrors).then(r => r.json());
 
     // return data;
 
