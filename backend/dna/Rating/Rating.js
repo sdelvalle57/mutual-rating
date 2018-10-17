@@ -56,24 +56,21 @@ function getAgentsRating (params)
   try{
     var listOfRatesAndRating = []
     var listOfRatedBy = getLinks(params.Ratee, "RatedBy", {Load: true})
-    var listOfRatngEntries = getLinks(params.Ratee, "Interactions", {Load: true})
+    // var listOfRatngEntries = getLinks(params.Ratee, "Interactions", {Load: true})
     /*
       RatedByLink and InteractionLink should be same length because, at the moment,
       commits of those two are only done in the rateAgent; thus, when one being commited to the local-chain,
       the other should too.
       Therefore, I should be able to implement nested for loop.
     */
-    for (var interactionLinkEntry in listOfRatngEntries){
       for(var ratedByLinkEntry in listOfRatedBy){
           debug(listOfRatedBy[ratedByLinkEntry]);
-          debug(listOfRatngEntries[interactionLinkEntry]);
-        var rate = {
-            "Rater": listOfRatngEntries[interactionLinkEntry].Entry.rater,
-            "Value": listOfRatedBy[ratedByLinkEntry].Entry.value
-        }
-        listOfRatesAndRating.push(rate)
+          var rate = {
+              "Rater": listOfRatedBy[ratedByLinkEntry].Entry.rater,
+              "Value": listOfRatedBy[ratedByLinkEntry].Entry.value
+          }
+          listOfRatesAndRating.push(rate)
       }
-    }
     var result = {
       "Success": true,
       "Entries": listOfRatesAndRating
