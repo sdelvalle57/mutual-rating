@@ -78,6 +78,7 @@ function getAgentsRating (params)
     }
     return result;
   }catch(error){
+    debug(error);
     var result = {"Success": false,
                   "Entries": null}
     return result

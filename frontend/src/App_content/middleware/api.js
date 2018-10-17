@@ -121,17 +121,25 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
         case SHOW_ALL_RATINGS:
             // Make API Call first
             getAgentsRating({
-                Hash: getState().data.currentAgent.Hash
+                Ratee: getState().data.currentAgent.Hash
             })
                 .then(obj => {
                     // If successful then cheer it up
                     if (obj.Success) {
-                        dispatch({type: RECEIVE_RATINGS, payload: obj.Results});
+                        if ( obj.Entries.length && obj.Entries)
+                            dispatch({type: RECEIVE_RATINGS, payload: obj.Results})
+                        else 
+                            dispatch({type: CHANGE_MODAL, payload: {
+                                isShowing: true,
+                                error: false,
+                                text: "Couldn't find any ratings for " + getState().data.currentAgent.Name
+                            }});
+
                     } else {
                         dispatch({type: CHANGE_MODAL, payload: {
                             isShowing: true,
                             error: true,
-                            text: "Couldn't find any ratings for " + getState().data.currentAgent.Name
+                            text: "Connection error, try again."
                         }});
                     }
                 })
