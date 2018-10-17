@@ -165,7 +165,7 @@ function rateAgent (params)
     if (match == null)
     {
         var ratingEntry = {
-            "ratee": params.Ratee, // More secure.
+            "rater": App.Agent.Hash, 
             "value": parseInt(params.Value),
             "category": params.category.toString()
         }

@@ -5,13 +5,13 @@
   "type": "object",
   "title": "The Root Schema",
   "required": [
-    "ratee",
+    "rater",
     "value",
     "category"
   ],
   "properties": {
     "ratee": {
-      "$id": "#/properties/ratee",
+      "$id": "#/properties/rater",
       "type": "string",
       "title": "The Ratee Schema",
       "default": "",
