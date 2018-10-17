@@ -65,6 +65,8 @@ function getAgentsRating (params)
     */
     for (var interactionLinkEntry in listOfRatngEntries){
       for(var ratedByLinkEntry in listOfRatedBy){
+          debug(listOfRatedBy[ratedByLinkEntry]);
+          debug(listOfRatngEntries[interactionLinkEntry]);
         var rate = {
             "Rater": listOfRatngEntries[interactionLinkEntry].Entry.rater,
             "Value": listOfRatedBy[ratedByLinkEntry].Entry.value
