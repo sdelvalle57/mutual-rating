@@ -126,8 +126,8 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                 .then(obj => {
                     // If successful then cheer it up
                     if (obj.Success) {
-                        if ( obj.Entries.length && obj.Entries)
-                            dispatch({type: RECEIVE_RATINGS, payload: obj.Results})
+                        if (obj.Entries && obj.Entries.length)
+                            dispatch({type: RECEIVE_RATINGS, payload: obj.Entries})
                         else 
                             dispatch({type: CHANGE_MODAL, payload: {
                                 isShowing: true,

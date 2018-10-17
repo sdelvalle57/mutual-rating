@@ -20,7 +20,7 @@ const Star = () => {
 const Modal = (props) => {
     return (
         <ul className="list-group list-of-stars">
-            {props.ReceivedReviews.map((e, i) => <li key={i} className="list-group-item d-flex align-items-center"><Star /><span class="badge">{e.Rating}</span>from {e.Rater}</li>)}
+            {props.ReceivedReviews.map((e, i) => <li key={i} className="list-group-item d-flex align-items-center"><Star /><span className="badge">{e.Rating}</span>from {e.Rater}</li>)}
         </ul>
     )
 }

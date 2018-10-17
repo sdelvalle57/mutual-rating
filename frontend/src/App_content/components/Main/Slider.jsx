@@ -22,7 +22,6 @@ const MyHandle = (props) => {
 };
 
 const MySlider = (props) => {
-  console.log(props.currentAgent);
     return (
         <div>
             <div>

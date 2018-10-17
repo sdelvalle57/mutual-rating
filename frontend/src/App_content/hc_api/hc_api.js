@@ -87,7 +87,6 @@ export const rateAgent = (obj) => {
     // return new Promise((resolve, reject) => {
     //     resolve({});
     // });
-    console.log(obj);
     return fetchPOST('/fn/Rating/rateAgent', obj).then(handleErrors).then(r => r.json());
 }
 

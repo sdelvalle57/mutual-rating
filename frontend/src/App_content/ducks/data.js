@@ -48,10 +48,22 @@ const dataReducer = (state = INIT_DATA_STATE, action) => {
 
             let hashTable = {};
             for (var e in state.enrolled) {
-                hashTable = {...hashTable, ...{[e.Hash]: [e.Name]}};
+                hashTable[state.enrolled[e].Hash] = state.enrolled[e].Name;
             }
             console.log(hashTable);
-            return {...state, currentAgent: {...state.currentAgent, ReceivedReviews: action.payload}};
+            return {
+                ...state, 
+                currentAgent: {
+                    ...state.currentAgent, 
+                    ReceivedReviews: action.payload.map(e => {
+                        console.log(e);
+                        return {
+                            Rater: hashTable[e.Rater],
+                            Value: e.Value
+                        };
+                    })
+                }
+            };
 
         case SET_CURRENT_AGENT:
             if (!action.payload) return state;
