@@ -51,38 +51,28 @@ function getAllEnrolled (params)
  * @param {json} { "Ratee": "<agenthash>" }
  * @return {json}[] {"Result": true, "Entries": ["Rater": "<hash>", "Rating": "<string>"]}
  */
-function getAgentsRating (params)
-{
-  try{
-    var listOfRatesAndRating = []
-    var listOfRatedBy = getLinks(params.Ratee, "RatedByLink", {Load: true})
-    var listOfRatngEntries = getLinks(params.Ratee, "InteractionLink", {Load: true})
-    /*
-      RatedByLink and InteractionLink should be same length because, at the moment,
-      commits of those two are only done in the rateAgent; thus, when one being commited to the local-chain,
-      the other should too.
-      Therefore, I should be able to implement nested for loop.
-    */
-    for (var interactionLinkEntry in listOfRatngEntries){
-      for(var ratedByLinkEntry in listOfRatedBy){
-        var rate = {
-            "Rater": interactionLinkEntry.Entry.rater,
-            "Value": ratedByLinkEntry.Entry.value
+function getAgentsRating(params) {
+    try {
+        var listOfRatedBy = getLinks(params.Ratee, "RatedByLink", { Load: true })
+        debug(listOfRatedBy);
+        var result = {
+            "Success": true,
+            "Entries": listOfRatedBy.map(function(e){
+                return {
+                    "Rater": e.ratee,
+                    "Value": e.value
+                }
+            })
         }
-        listOfRatesAndRating.push(rate)
-      }
+        return result;
+    } catch (error) {
+        debug(error);
+        var result = {
+            "Success": false,
+            "Entries": null
+        }
+        return result
     }
-    var result = {
-      "Success": true,
-      "Entries": listOfRatesAndRating
-    }
-    return result;
-  }catch(error){
-    debug(error);
-    var result = {"Success": false,
-                  "Entries": null}
-    return result
-  }
 }
 
 /*
