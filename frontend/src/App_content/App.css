@@ -143,6 +143,7 @@ code {
     color: #404040 !important;
     font-size: calc(7px + 2vmin);
     font-weight: 200;
+    overflow: hidden;
 }
 
 .list-group.list-of-stars .badge {

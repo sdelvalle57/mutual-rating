@@ -57,7 +57,7 @@ const dataReducer = (state = INIT_DATA_STATE, action) => {
                     ...state.currentAgent, 
                     ReceivedReviews: action.payload.map(e => {
                         return {
-                            Rater: e.Rater,//hashTable[e.Rater],
+                            Rater: hashTable[e.Rater],
                             Value: e.Value
                         };
                     })
