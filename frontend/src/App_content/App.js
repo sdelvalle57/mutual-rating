@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { INIT_UI } from './ducks/ui';
+import { INIT_UI, SHOW_ALL_RATINGS } from './ducks/ui';
 import { RATE_AGENT } from './ducks/data';
 import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL, UPDATE_SLIDER } from './ducks/ui';
 import store from './../store';
@@ -64,6 +64,11 @@ const mapDispatchToProps = ( dispatch ) => {
         handleRateClick: () => {
             dispatch({
                 type: RATE_AGENT
+            });
+        },
+        handleDownClick: () => {
+            dispatch({
+                type: SHOW_ALL_RATINGS
             });
         },
         closeModal: () => {

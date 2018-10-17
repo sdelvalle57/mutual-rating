@@ -8,6 +8,7 @@ export const GO_TO_RATING = '[UI] Move to rating screen';
 export const GO_TO_HOME = '[UI] Move to Home screen';
 export const CHANGE_MODAL = '[UI] Toggle modal state';
 export const UPDATE_SLIDER = '[UI] Update slider value';
+export const SHOW_ALL_RATINGS  = '[UI] Show all ratings for current agent';
 
 // Initial state of store.ui (see reducers.js)
 let INIT_UI_STATE = {

@@ -1,5 +1,9 @@
 html {
-    height: 100%;
+    min-height: 100%;
+    background: #1393af; /* Old browsers */
+    background: -moz-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);
+    background: -webkit-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);
+    background: linear-gradient(135deg, #1393af 0%, #57c4df 100%);
 }
 
 body {
@@ -10,7 +14,8 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    height: 100%;
+    min-height: 100%;
+    background: none !important;
 }
 
 code {
@@ -21,10 +26,6 @@ code {
 #root {
     height: 100%;
     width: 100%;
-    background: #1393af; /* Old browsers */
-    background: -moz-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);
-    background: -webkit-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);
-    background: linear-gradient(135deg, #1393af 0%, #57c4df 100%);
 }
 
 #submitbutton {
@@ -72,9 +73,6 @@ code {
     top: 0;
     left: 0;
     right: 0;
-}
-
-.App-header {
 }
 
 .titles {
@@ -141,3 +139,20 @@ code {
     color: #e51c23;
 }
 
+.list-group.list-of-stars {
+    color: #404040 !important;
+    font-size: calc(7px + 2vmin);
+}
+
+.list-group.list-of-stars .badge {
+    z-index: 1;
+    margin-right: 0.5rem;
+}
+
+.list-group.list-of-stars .svg-star {
+    height: calc(27px + 2vmin);
+    top: 0.27rem;
+    left: 1.0rem;
+    right: 0;
+    z-index: 0;
+}
