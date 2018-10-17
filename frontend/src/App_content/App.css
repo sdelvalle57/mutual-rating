@@ -142,11 +142,13 @@ code {
 .list-group.list-of-stars {
     color: #404040 !important;
     font-size: calc(7px + 2vmin);
+    font-weight: 200;
 }
 
 .list-group.list-of-stars .badge {
     z-index: 1;
-    margin-right: 0.5rem;
+    margin-right: 0.7rem;
+    min-width: 1.5rem;
 }
 
 .list-group.list-of-stars .svg-star {
