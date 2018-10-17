@@ -56,7 +56,7 @@ function getAgentsRating (params)
   try{
     var listOfRatesAndRating = []
     var listOfRatedBy = getLinks(params.Ratee, "RatedBy", {Load: true})
-    var listOfRatngEntries = getLinks(params.Ratee, "InteractionLink", {Load: true})
+    var listOfRatngEntries = getLinks(params.Ratee, "Interactions", {Load: true})
     /*
       RatedByLink and InteractionLink should be same length because, at the moment,
       commits of those two are only done in the rateAgent; thus, when one being commited to the local-chain,
