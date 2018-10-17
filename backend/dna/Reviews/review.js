@@ -31,8 +31,11 @@ function genesis ()
  * Return all the enrolled users.
  * @callingType {json}
  * @exposure {public}
- * @param {type}
- * @return {type}
+ * @param {json} {  }
+ * @return {json} [ {Hash:"QmY...",
+                            EntryType:"<entry-type>",
+                            Entry:"<entry value here>",
+                            Source:"<source-hash>"} ]
  */
 function getAllEnrolled (params)
 {
@@ -40,68 +43,83 @@ function getAllEnrolled (params)
 }
 
 /*
- * Returns the latest rating you've rated the other user with.
+ * Returns the list of Ratings of a particular Ratee.
+ *
  * @callingType {json}
  * @exposure {public}
  * @param {json} { "Ratee": "<agenthash>" }
- * @return {json} { "Success": true
-                            "EntryHash": "<entryhash>",
-                            "Value":"7" }
+ * @return {json}[] {"Result": true, "Entries": ["Rater": "<hash>", "Rating": "<string>"]}
  */
 function getAgentsRating (params)
 {
-    var find = function(items, f) {
-        for (var i=0; i < items.length; i++)
-        {
-            var item = items[i];
-            if (f(item)) return item;
-        };
-        return null;
-    }
+  try{
+    var listOfRatesAndRating = []
+    var listOfRatedBy = getLinks(params.Ratee, "RatedBy", {Load: true})
 
-    var match = find(interacts, function(x) {return x.Entry.ratee == params.Ratee;});
-    if (match != null)
-    {
-        var rating = getLinks(match.Hash, "Pairings", { Load: true });
-        var result = {
-            "Success": true,
-            "EntryHash": rating.Hash,
-            "Value": rating.Entry.value
-        };
-
-        return result;
+      for(var ratedByLinkEntry in listOfRatedBy){
+          var rate = {
+              "Rater": listOfRatedBy[ratedByLinkEntry].Entry.rater,
+              "Value": listOfRatedBy[ratedByLinkEntry].Entry.value
+          }
+          listOfRatesAndRating.push(rate)
+      }
+    var result = {
+      "Success": true,
+      "Entries": listOfRatesAndRating
     }
-    else
-    {
-        var result = {
-            "Success": false,
-            "EntryHash": null,
-            "Value": null
-        };
-        return result;
-    }
+    return result;
+  }catch(error){
+    debug(error);
+    var result = {"Success": false,
+                  "Entries": null}
+    return result
+  }
 }
 
 /*
- * [Description]
+ * Accepts a Ratee's hash, and returns the community average rating
+ * of that Ratee.
  * @callingType {json}
  * @exposure {public}
- * @param {type}
- * @return {type}
+ * @param {json} { "Ratee": "<agenthash>" }
+ * @return {type} { "Success": true,
+                             "AverageRating: 7"}
  */
 function getAgentsAverage (params)
 {
-  var totalRating = 0
-  // Grab all the entries associated with the RatingLink of the specified ratee below.
-  var entryArray = getLinks(params.ratee.toString(), "RatingLink", {Load: true})
-  //Pretty self explanatory below.
-  var totalUsersRated = entryArray.length
-  //For each through the Rating entries and grab only the values, and add'em to the totalRating.
-  for (var entryObject in entryArray){
-    totalgRating = totalRating + parseInt(entryObject.Entry.value, 10)
-  }
-  var avgRating = totalRating / totalUsersRated //At the end, average things up,
-  return {"avgRating": avgRating.toString()}; //Because getAgentsAverage's calling type is json.
+    try
+    {
+        var totalRating = 0;
+        // Grab all the entries associated with the RatingLink of the specified ratee below.
+        var entryArray = getLinks(params.Ratee.toString(), "RatedBy", {Load: true});
+
+        // Pretty self explanatory below.
+        var totalUsersRated = entryArray.length;
+
+        var avgRating;
+
+        if(totalUsersRated > 0){
+            //For each through the Rating entries and grab only the values, and add'em to the totalRating.
+            for (var entryObject in entryArray){
+                totalRating = totalRating + parseInt(entryArray[entryObject].Entry.value, 10);
+            }
+            avgRating = totalRating / totalUsersRated //At the end, average things up,
+        }
+        else{
+            avgRating = null;
+        }
+
+        return {"Success": true,
+                    "AverageRating": avgRating}; //Because getAgentsAverage's calling type is json.
+    }
+    catch (error)
+    {
+        console.log("getAgentsAverage() errored out.");
+        console.log(error);
+
+        return {"Success": false,
+                    "AverageRating": null};
+    }
 }
 
 /*
@@ -115,6 +133,8 @@ function getAgentsAverage (params)
  */
 function rateAgent (params)
 {
+    // Hard code category into params:
+    params.category = 'general';
 
     var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
 
@@ -131,8 +151,8 @@ function rateAgent (params)
     if (match == null)
     {
         var ratingEntry = {
-            "ratee": params.Ratee, // More secure.
-            "value": params.value.toString(),
+            "rater": App.Agent.Hash, 
+            "value": parseInt(params.Value),
             "category": params.category.toString()
         }
         // TODO Try Catch around commits
@@ -144,7 +164,7 @@ function rateAgent (params)
         }]})
         var pairing = {
             "rater": App.Agent.Hash,
-            "rated": params.Ratee
+            "ratee": params.Ratee
         }
         // TODO Try Catch around commits
         var interactionHash = commit("Interaction", pairing)
@@ -181,19 +201,47 @@ function rateAgent (params)
  * @callingType {json}
  * @exposure {zome}
  * @param {json} Empty JSON.
- * @return {json} Empty JSON.
+ * @return {json} { "Success": true }
  */
 function enrollUser (params)
 {
-    // TODO Add try-catch block around commits
-    commit("Enrollment", { Links: [{
-        Base: App.DNA.Hash,
-        Link: App.Agent.Hash,
-        Tag: "Enrolled"
-    }]})
-    return {};
+    try
+    {
+        commit("EnrollLink", { Links: [{
+            Base: App.DNA.Hash,
+            Link: App.Agent.Hash,
+            Tag: "Enrolled"
+        }]})
+
+        return { "Success": true };
+    }
+    catch (error)
+    {
+        console.log("enrollUser() errored out.");
+        console.log(error);
+        return { "Success": false }
+    }
 }
 
+/*
+ * Upon call with an empty JSON, returns the current user's metadata.
+ * @callingType {json}
+ * @exposure {public}
+ * @param {json} {  }
+ * @return {json} { "Name": "user@mailserver.com",
+                            "Hash": "<agenthash>",
+                            "Rating": "7"}
+ */
+function getUserData (params)
+{
+    var result = getAgentsAverage({ "Ratee": App.Agent.Hash });
+    var userData = {
+        "Name": App.Agent.String,
+        "Hash": App.Agent.Hash,
+        "Rating": result.AverageRating
+    }
+    return userData;
+}
 
 // -----------------------------------------------------------------
 //  Validation functions for every change to the local chain or DHT
@@ -211,26 +259,32 @@ function enrollUser (params)
 function validateCommit (entryName, entry, header, pkg, sources) {
   switch (entryName) {
     case "Rating":
-      if(getLinks(App.Agent.Hash, "RatingLink") == []){
-        return false;
-      }
-      return false;
-    case "Uniqueness":
+      return true;
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
+      return true;
     case "EnrollLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      if(getLinks(App.DNA.Hash, "Enrollment"))
-      return false;
-    case "RatingLink":
+      return true;
+    case "RatedByLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
+      return true;
+    case "PairingLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
+    case "InteractionLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
     default:
       // invalid entry name
       return false;
@@ -252,22 +306,22 @@ function validatePut (entryName, entry, header, pkg, sources) {
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
-    case "Uniqueness":
+      return true;
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
+      return true;
     case "EnrollLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
+      return true;
     case "RatingLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
+      return true;
     default:
       // invalid entry name
       return false;
@@ -291,7 +345,7 @@ function validateMod (entryName, entry, header, replaces, pkg, sources) {
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
       return false;
-    case "Uniqueness":
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
@@ -327,7 +381,7 @@ function validateDel (entryName, hash, pkg, sources) {
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
       return false;
-    case "Uniqueness":
+    case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
@@ -359,30 +413,31 @@ function validateDel (entryName, hash, pkg, sources) {
  */
 function validateLink (entryName, baseHash, links, pkg, sources) {
   switch (entryName) {
-    case "Rating":
-      // be sure to consider many edge cases for validating
-      // do not just flip this to true without considering what that means
-      // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
-    case "Uniqueness":
-      // be sure to consider many edge cases for validating
-      // do not just flip this to true without considering what that means
-      // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
     case "EnrollLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
-    case "RatingLink":
+      return true;
+    case "RatedByLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return false;
+      return true;
+    case "PairingLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
+    case "InteractionLink":
+      // be sure to consider many edge cases for validating
+      // do not just flip this to true without considering what that means
+      // the action will ONLY be successfull if this returns true, so watch out!
+      return true;
     default:
       // invalid entry name
       return false;
   }
+  return true
 }
 
 /**

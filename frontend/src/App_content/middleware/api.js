@@ -1,6 +1,17 @@
-import { ADD_NEW_ENROLLED, UPDATE_USER_DATA, GET_USERS_AVERAGE, SET_CURRENT_AGENT, RATE_AGENT } from '../ducks/data';
-import { INIT_UI, GO_TO_HOME, CHANGE_MODAL } from '../ducks/ui';
-import { getAllEnrolled, getUsersData, getAgentsAverage, rateAgent } from '../hc_api/hc_api';
+import { 
+    ADD_NEW_ENROLLED, 
+    UPDATE_USER_DATA, 
+    GET_USERS_AVERAGE, 
+    SET_CURRENT_AGENT, 
+    RATE_AGENT,
+    RECEIVE_RATINGS } from '../ducks/data';
+import { INIT_UI, GO_TO_HOME, CHANGE_MODAL, SHOW_ALL_RATINGS } from '../ducks/ui';
+import { 
+    getAllEnrolled, 
+    getUsersData, 
+    getAgentsAverage, 
+    rateAgent, 
+    getAgentsRating } from '../hc_api/hc_api';
 
 const apiMiddleware = ( {dispatch, getState} ) => next => action => {
     switch (action.type) {
@@ -9,13 +20,25 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
             getAllEnrolled()
                 // on receive emit ADD_NEW_ENROLLED 
                 .then(r => {
+                    var data = [];
+                    for (var i = 0; i < r.length; ++i){
+                        var d = {Name: r[i].Entry.Identity , Hash: r[i].Hash, Rating: r[i].rating}
+                        data.push(d);
+                    }
                     dispatch({
                         type: ADD_NEW_ENROLLED, 
-                        payload: r
+                        payload: data
                     })
                 })
                 // Catch any errors 
-                .catch(e => console.log(e));
+                .catch(e => {
+                    dispatch({type: CHANGE_MODAL, payload: {
+                        isShowing: true,
+                        error: true,
+                        text: "Can't connect to the server"
+                    }});
+                    console.log(e);
+                });
 
             // Get current user's data
             getUsersData()
@@ -34,20 +57,28 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
 
         case GET_USERS_AVERAGE:
             // Get user's average
-            getAgentsAverage({hash: action.payload.hash})
+            getAgentsAverage({Ratee: action.payload})
                 // on receive emit SET_CURRENT_AGENT 
                 .then(obj => {
-                    if (getState().data.currentAgent.hash === obj.hash && obj.average !== undefined) {
+                    if (obj.AverageRating !== undefined) {
                         dispatch({
                             type: SET_CURRENT_AGENT, 
                             payload: {
-                                average: obj.average
+                                Rating: obj.AverageRating,
+                                ReceivedReviews: []
                             }
                         });
                     }
                 })
                 // Catch any errors 
-                .catch(e => console.log(e));   
+                .catch(e => {
+                    dispatch({type: CHANGE_MODAL, payload: {
+                        isShowing: true,
+                        error: true,
+                        text: "Can't connect to the server"
+                    }});
+                    console.log(e);
+                });   
 
             // Termitate action here
             return ;
@@ -55,18 +86,73 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
         case RATE_AGENT:
                 // Make API Call first
                 rateAgent({
-                    hash: getState().data.currentAgent.hash,
-                    rating: getState().ui.sliderValue
+                    Ratee: getState().data.currentAgent.Hash,
+                    Value: getState().ui.sliderValue
                 })
                     .then(obj => {
-                        dispatch({type: CHANGE_MODAL, payload: {
-                            isShowing: true,
-                            text: 'Thanks for rating ' + getState().data.currentAgent.name
-                        }});
-                        dispatch({type: GO_TO_HOME});
+                        // If successful then cheer it up
+                        if (obj.Success) {
+                            dispatch({type: CHANGE_MODAL, payload: {
+                                isShowing: true,
+                                error: false,
+                                text: 'Thanks for rating ' + getState().data.currentAgent.Name
+                            }});
+                            dispatch({type: GO_TO_HOME});
+                        } else {
+                            dispatch({type: CHANGE_MODAL, payload: {
+                                isShowing: true,
+                                error: true,
+                                text: 'Oops, you have already rated ' + getState().data.currentAgent.Name
+                            }});
+                        }
                     })
                     // Catch any errors 
-                    .catch(e => console.log(e));
+                .catch(e => {
+                    dispatch({type: CHANGE_MODAL, payload: {
+                        isShowing: true,
+                        error: true,
+                        text: "Can't connect to the server"
+                    }});
+                    console.log(e);
+                });
+
+            return next(action); // Pass event to data reducer
+
+        case SHOW_ALL_RATINGS:
+            // Make API Call first
+            getAgentsRating({
+                Ratee: getState().data.currentAgent.Hash
+            })
+                .then(obj => {
+                    // If successful then cheer it up
+                    if (obj.Success) {
+                        if (obj.Entries && obj.Entries.length)
+                            dispatch({type: RECEIVE_RATINGS, payload: obj.Entries})
+                        else 
+                            dispatch({type: CHANGE_MODAL, payload: {
+                                isShowing: true,
+                                error: false,
+                                text: "Couldn't find any ratings for " + getState().data.currentAgent.Name
+                            }});
+
+                    } else {
+                        dispatch({type: CHANGE_MODAL, payload: {
+                            isShowing: true,
+                            error: true,
+                            text: "Connection error, try again."
+                        }});
+                    }
+                })
+                // Catch any errors 
+                .catch(e => {
+                    dispatch({type: CHANGE_MODAL, payload: {
+                        isShowing: true,
+                        error: true,
+                        text: "Can't connect to the server"
+                    }});
+                    console.log(e);
+                });
+
             return next(action); // Pass event to data reducer
 
         default:

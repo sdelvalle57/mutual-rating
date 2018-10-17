@@ -2,8 +2,14 @@ import React from 'react';
 
 const Modal = (props) => {
     let className = 'modal';
-    if(props.modal.isShowing)
+
+    // Show or not?
+    if (props.modal.isShowing)
         className += ' modal-active';
+
+    // Error or not?
+    if (props.modal.error)
+    className += ' error';
 
     return (
         <div className={className}>
