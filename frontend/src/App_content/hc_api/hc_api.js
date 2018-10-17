@@ -55,7 +55,7 @@ export const getAllEnrolled = () => {
  * @return {Promise} Promise of a fetched result in a form of an array of all the entries
  */
 export const getAgentsRating = (obj) => {
-    return fetchPOST('/fn/sampleZome/getAgentsRating', obj).then(handleErrors).then(r => r.json());
+    return fetchPOST('/fn/Rating/getAgentsRating', obj).then(handleErrors).then(r => r.json());
 }
 
 /**
