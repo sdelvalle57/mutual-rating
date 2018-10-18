@@ -47,13 +47,12 @@ function getAllEnrolled (params)
 
  * @callingType {json}
  * @exposure {public}
- * @param {json} {  }
- * @return {json} [ {Hash:"QmY...",
-                            EntryType:"<entry-type>",
-                            Entry:"<entry value here>",
-                            Source:"<source-hash>"} ]
+ * @param {json} { "categoryName": "<categorystring>" }
+ * @return {json} [ {AnchorHash:"QmY...",
+                            AnchorType:"<created-anchor-type>",
+                            AnchorText:"<created-anchor-text>"} ]
  */
-function getAllEnrolled (params)
+function createCategory (params)
 {
 
 }
