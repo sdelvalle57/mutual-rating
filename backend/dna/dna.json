@@ -81,6 +81,11 @@
           "Exposure": "public"
         },
         {
+          "Name": "createCategory",
+          "CallingType": "json",
+          "Exposure": "public"
+        },
+        {
           "Name": "getAgentsRating",
           "CallingType": "json",
           "Exposure": "public"
