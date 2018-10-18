@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import Tooltip from 'rc-tooltip';
-import List from '../common/List'
+import List from './List'
 
 const Handle = Slider.Handle;
 
