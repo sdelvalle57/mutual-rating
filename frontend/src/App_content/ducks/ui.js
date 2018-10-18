@@ -9,10 +9,11 @@ export const GO_TO_HOME = '[UI] Move to Home screen';
 export const CHANGE_MODAL = '[UI] Toggle modal state';
 export const UPDATE_SLIDER = '[UI] Update slider value';
 export const SHOW_ALL_RATINGS  = '[UI] Show all ratings for current agent';
+export const CHANGE_LOADER = '[UI] Toggle loader state';
 
 // Initial state of store.ui (see reducers.js)
 let INIT_UI_STATE = {
-    loading: false,
+    loading: true,
     modal: {
         isShowing: false,
         text: ""
@@ -23,6 +24,9 @@ let INIT_UI_STATE = {
 
 const uiReducer = (state = INIT_UI_STATE, action) => {
     switch (action.type) {
+        case CHANGE_LOADER:
+            return {...state, loading: action.payload};
+
         case INIT_UI:
             // Do nothing as an api middleware already consumed this message
             return {...state};

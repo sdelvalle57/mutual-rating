@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { INIT_UI, SHOW_ALL_RATINGS } from './ducks/ui';
-import { RATE_AGENT } from './ducks/data';
-import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL, UPDATE_SLIDER } from './ducks/ui';
-import store from './../store';
-import Star from './components/Main/Star';
-import Slider from './components/Main/Slider';
-import Selector from './components/Main/Selector';
-import Modal from './components/common/Modal';
-import './App.css';
+import { INIT_UI, SHOW_ALL_RATINGS } from '../../ducks/ui';
+import { RATE_AGENT } from '../../ducks/data';
+import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL, UPDATE_SLIDER } from '../../ducks/ui';
+import store from '../../../store';
+import Star from '../common/Star'
+import Slider from '../common/Slider';
+import Selector from '../common/Selector';
+import Modal from '../common/Modal';
 import { connect } from 'react-redux';
 
 class App extends Component {

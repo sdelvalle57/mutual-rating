@@ -5,7 +5,6 @@ import MyProfile from './components/MyProfile/MyProfile';
 import SignUp from './components/SignUp/SignUp';
 import Rate from './components/Rate/Rate';
 import User from './components/User/User';
-
 import './App.css';
 
 class App extends Component {
@@ -14,7 +13,6 @@ class App extends Component {
         return (
             <HashRouter>
                 <Switch>
-                    {/*<Route exact path='/' render={() => (<Redirect to='/signup' />)} />*/}
                     <Route exact path='/' component={StartPage}/>
                     <Route exact path='/SignUp/' component={SignUp} />
                     <Route exact path='/MyProfile/' component={MyProfile} />

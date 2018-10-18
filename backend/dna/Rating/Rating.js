@@ -22,8 +22,6 @@
  */
 function genesis ()
 {
-    enrollUser({});
-
     return true;
 }
 
@@ -254,19 +252,23 @@ function rateAgent (params)
  * Called at Genesis - additional load-time functionality goes here.
  * @callingType {json}
  * @exposure {zome}
- * @param {json} Empty JSON.
+ * @param {json} {"UserName": "<username>"}
  * @return {json} { "Success": true }
  */
-function enrollUser (params)
+function enrollUser (param)
 {
     try
     {
-        commit("EnrollLink", { Links: [{
-            Base: App.DNA.Hash,
-            Link: App.Agent.Hash,
-            Tag: "Enrolled"
-        }]})
-
+        if(!anchorExists("User", param.UserName)){
+          var userAnchorHash = anchor("User", param.UserName)
+          commit("EnrollLink", { Links: [{
+              Base: userAnchorHash,
+              Link: App.Agent.Hash,
+              Tag: "Enrolled"
+          }]})
+        }else{
+          return { "Success": false };
+        }
         return { "Success": true };
     }
     catch (error)
