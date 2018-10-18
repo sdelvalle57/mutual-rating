@@ -106,9 +106,26 @@ export const getUsersData = (obj) => {
     // return fetch('/fn/Rating/getUserData', obj).then(handleErrors).then(r => r.json());
 
     return new Promise((resolve, reject) => {
-        resolve({
-            success: 'false'
-        })
+        setTimeout(() => {
+            resolve({
+                success: 'true',
+                user: {
+                    name: 'Bob',
+                    hash: 'b723974209bcd',
+                    overallRating: 9.2,
+                    categoryRatings: [
+                        {
+                            categoryName: 'Stubbornness',
+                            categoryValue: 9.9
+                        },
+                        {
+                            categoryName: 'Tidiness',
+                            categoryValue: 0.1
+                        }
+                    ]
+                }
+            })
+        }, 200);
     });
 
     // return new Promise((resolve, reject) => {

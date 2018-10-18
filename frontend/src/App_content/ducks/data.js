@@ -11,15 +11,15 @@ export const RECEIVE_RATINGS = '[Data] Save ratings for current agent';
 let INIT_DATA_STATE = {
     enrolled: [],
     user: {
-        Hash: "",
-        Name: "",
-        Rating: 0
+        hash: "",
+        name: "",
+        average: 0
     },
     currentAgent: {
-        Hash: null,
-        Name: null,
-        Value: null,
-        ReceivedReviews: []
+        hash: null,
+        name: null,
+        overallRating: null,
+        categoryRatings: []
     }
 };
 
@@ -35,8 +35,8 @@ const dataReducer = (state = INIT_DATA_STATE, action) => {
             };
 
         case UPDATE_USER_DATA:
-            // Reset ReceivedReviews
-            action.payload.ReceivedReviews = [];
+            // Reset receivedReviews
+            action.payload.receivedReviews = [];
             return {
                 ...state, 
                 user: action.payload,
@@ -55,7 +55,7 @@ const dataReducer = (state = INIT_DATA_STATE, action) => {
                 ...state, 
                 currentAgent: {
                     ...state.currentAgent, 
-                    ReceivedReviews: action.payload.map(e => {
+                    receivedReviews: action.payload.map(e => {
                         return {
                             Rater: hashTable[e.Rater],
                             Value: e.Value

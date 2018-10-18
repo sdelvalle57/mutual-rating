@@ -45,7 +45,7 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                     if (r.success)
                         dispatch({
                             type: UPDATE_USER_DATA, 
-                            payload: r
+                            payload: r.user
                         });
                     // Let UI know loading's finished
                     dispatch({
@@ -76,7 +76,7 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                             type: SET_CURRENT_AGENT, 
                             payload: {
                                 Rating: obj.AverageRating,
-                                ReceivedReviews: []
+                                receivedReviews: []
                             }
                         });
                     }
