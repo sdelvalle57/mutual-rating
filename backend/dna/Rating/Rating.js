@@ -30,6 +30,7 @@ function genesis ()
 
 /*
  * Return all the enrolled users.
+
  * @callingType {json}
  * @exposure {public}
  * @param {json} {  }
@@ -49,7 +50,7 @@ function getAllEnrolled (params)
  * @callingType {json}
  * @exposure {public}
  * @param {json} { "Ratee": "<agenthash>" }
- * @return {json}[] {"Result": true, "Entries": ["Rater": "<hash>", "Rating": "<string>"]}
+ * @return {json}[] {"Success": true, "Entries": ["Rater": "<hash>", "Rating": "<string>"]}
  */
 function getAgentsRating (params)
 {
@@ -75,6 +76,26 @@ function getAgentsRating (params)
                   "Entries": null}
     return result
   }
+}
+
+/*
+ * Accepts a Ratee hash-string and a Category string,
+ * and returns all of the ratings that Ratee received in that Category.
+ *
+ * @callingType {json}
+ * @exposure {public}
+ * @param {json} { "Ratee": "<agenthash>",
+                            "Category": "<categoryAnchorText>"}
+ * @return {json} {"Success": true,
+                            "Entries": [
+                                            "Rater": "<hash>",
+                                            "Rating": "<string>"
+                                        ]
+                            }
+ */
+function getAgentsRatingInCategory (params)
+{
+
 }
 
 /*
@@ -124,7 +145,24 @@ function getAgentsAverage (params)
 }
 
 /*
+* Accepts a Ratee hash-string & a Category string, for which
+* Ratee all ratings in that category are aggregated and returned.
+
+* @callingType {json}
+* @exposure {public}
+* @param {json} { "Ratee": "<agenthash>",
+                            "Category": "<categoryAnchorText>"}
+* @return {type} { "Success": true,
+                            "AverageRating: 7"}
+ */
+function getAgentsAverageInCategory (params)
+{
+    
+}
+
+/*
  * Publishes a rating entry. Accepts the Ratee's Hash & Rating Value.
+
  * @callingType {json}
  * @exposure {public}
  * @param {json} { "Ratee": "<agenthash>", "Value":"7" }
@@ -137,6 +175,7 @@ function rateAgent (params)
     // Hard code category into params:
     params.category = 'general';
 
+    // TODO Change this code below to lookup interactions by hash
     var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
 
     var find = function(items, f) {
@@ -152,7 +191,7 @@ function rateAgent (params)
     if (match == null)
     {
         var ratingEntry = {
-            "rater": App.Agent.Hash, 
+            "rater": App.Agent.Hash,
             "value": parseInt(params.Value),
             "category": params.category.toString()
         }
@@ -242,6 +281,22 @@ function getUserData (params)
         "Rating": result.AverageRating
     }
     return userData;
+}
+
+function anchor(anchorType, anchorText)
+{
+    return call('anchors', 'anchor', {
+        anchorType: anchorType,
+        anchorText: anchorText
+    }).replace(/"/g, '');
+}
+
+function anchorExists(anchorType, anchorText)
+{
+    return call('anchors', 'exists', {
+        anchorType: anchorType,
+        anchorText: anchorText
+    });
 }
 
 // -----------------------------------------------------------------
