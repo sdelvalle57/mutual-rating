@@ -43,6 +43,22 @@ function getAllEnrolled (params)
 }
 
 /*
+ * Create a new Category Anchor - and return Anchor details.
+
+ * @callingType {json}
+ * @exposure {public}
+ * @param {json} {  }
+ * @return {json} [ {Hash:"QmY...",
+                            EntryType:"<entry-type>",
+                            Entry:"<entry value here>",
+                            Source:"<source-hash>"} ]
+ */
+function getAllEnrolled (params)
+{
+
+}
+
+/*
  * Returns the list of Ratings of a particular Ratee.
  *
  * @callingType {json}
@@ -168,19 +184,16 @@ function getAgentsAverageInCategory (params)
 
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "Ratee": "<agenthash>",
-                            "Value": "7",
-                            "Category": "<anchorText>"
-                            "CategoryAnchor": "<anchorHash>"}
- * @return {json} { "Success": true,
-                            "EntryHash": "<entryHash>",
-                            "InteractionHash": "<interactionHash>"}
+ * @param {json} { "ratee": "<agenthash>",
+                            "value": "7",
+                            "category": "<anchorText>",
+                            "categoryAnchor": "<anchorHash>"}
+ * @return {json} { "success": true,
+                            "entryHash": "<entryHash>",
+                            "interactionHash": "<interactionHash>"}
  */
 function rateAgent (params)
 {
-    // Hard code category into params:
-    params.category = 'general';
-
     // TODO Change this code below to lookup interactions by hash
     var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
 
@@ -198,25 +211,33 @@ function rateAgent (params)
     {
         var ratingEntry = {
             "rater": App.Agent.Hash,
-            "value": parseInt(params.Value),
+            "value": parseInt(params.value),
             "category": params.category.toString()
         }
         // TODO Try Catch around commits
         var entryHash = commit("Rating", ratingEntry)
         commit("RatedByLink", { Links: [{
-            Base: params.Ratee,
+            Base: params.ratee,
             Link: entryHash,
             Tag: "RatedBy"
         }]})
 
         commit("RatedInLink", { Links: [{
-            Base: params.Ratee,
-            Link: ,
-            Tag: "RatedBy"
+            Base: params.ratee,
+            Link: params.categoryAnchor,
+            Tag: "RatedIn"
         }]})
+
+        commit("RateeHashLink", { Links: [{
+            Base: params.categoryAnchor,
+            Link: entryHash,
+            Tag: "RatedIn"
+        }]})
+
         var pairing = {
             "rater": App.Agent.Hash,
-            "ratee": params.Ratee
+            "ratee": params.Ratee,
+            "category": params.category
         }
         // TODO Try Catch around commits
         var interactionHash = commit("Interaction", pairing)
@@ -283,14 +304,23 @@ function enrollUser (param)
  * Upon call with an empty JSON, returns the current user's metadata.
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "Ratee": <agenthash> } (defaults to `App.Agent.Hash` if nothing provided)
- * @return {json} { "Name": "user@mailserver.com",
-                                  "Hash": "<agenthash>",
-                                  "CategoryRatings": [
-                                      "CategoryAnchor": 7,
-                                      "CategoryAnchor": 3,
-                                      "CategoryAnchor": 9],
-                                  "OverallRating": 7.83
+ * @param {json} { "ratee": <agenthash> } (defaults to `App.Agent.Hash` if nothing provided)
+ * @return {json} {
+                                success: 'true',
+                                user: {
+                                            name: 'Bob',
+                                            hash: 'b723974209bcd',
+                                            overallRating: 9.2,
+                                            categoryRatings:
+                                            [{
+                                                    categoryName: 'Stubbornness',
+                                                    categoryValue: 9.9
+                                            },
+                                            {
+                                                categoryName: 'Tidiness',
+                                                categoryValue: 0.1
+                                            }]
+                                        }
                             }
  */
 function getUserData (params)
