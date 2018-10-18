@@ -80,7 +80,8 @@ function getAgentsRating (params)
       for(var ratedByLinkEntry in listOfRatedBy){
           var rate = {
               "Rater": listOfRatedBy[ratedByLinkEntry].Entry.rater,
-              "Value": listOfRatedBy[ratedByLinkEntry].Entry.value
+              "Value": listOfRatedBy[ratedByLinkEntry].Entry.value,
+              "Category": listOfRatedBy[ratedByLinkEntry].Entry.category
           }
           listOfRatesAndRating.push(rate)
       }
