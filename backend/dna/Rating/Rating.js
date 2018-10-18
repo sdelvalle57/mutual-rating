@@ -50,7 +50,12 @@ function getAllEnrolled (params)
  * @callingType {json}
  * @exposure {public}
  * @param {json} { "Ratee": "<agenthash>" }
- * @return {json}[] {"Success": true, "Entries": ["Rater": "<hash>", "Rating": "<string>"]}
+ * @return {json} {"Success": true, 
+                                          "Entries": [
+                                                              "Rater": "<hash>": ["Rating": "<string>", "Category": "<categorystring>"],
+                                                              "Rater": "<hash>": ["Rating": "<string>", "Category": "<categorystring>"]
+                                                           ]
+                                          }
  */
 function getAgentsRating (params)
 {
@@ -157,7 +162,7 @@ function getAgentsAverage (params)
  */
 function getAgentsAverageInCategory (params)
 {
-    
+
 }
 
 /*
@@ -267,10 +272,15 @@ function enrollUser (params)
  * Upon call with an empty JSON, returns the current user's metadata.
  * @callingType {json}
  * @exposure {public}
- * @param {json} {  }
+ * @param {json} { "Ratee": <agenthash> } (defaults to `App.Agent.Hash` if nothing provided)
  * @return {json} { "Name": "user@mailserver.com",
-                            "Hash": "<agenthash>",
-                            "Rating": "7"}
+                                  "Hash": "<agenthash>",
+                                  "CategoryRatings": [
+                                      "CategoryAnchor": 7,
+                                      "CategoryAnchor": 3,
+                                      "CategoryAnchor": 9],
+                                  "OverallRating": 7.83
+                            }
  */
 function getUserData (params)
 {
