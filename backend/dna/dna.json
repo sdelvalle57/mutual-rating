@@ -86,6 +86,16 @@
           "Name": "getUserData",
           "CallingType": "json",
           "Exposure": "public"
+        },
+        {
+          "Name": "getAgentsRatingInCategory",
+          "CallingType": "json",
+          "Exposure": "public"
+        },
+        {
+          "Name": "getAgentsAverageInCategory",
+          "CallingType": "json",
+          "Exposure": "public"
         }
       ]
     },
