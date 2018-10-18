@@ -54,6 +54,24 @@
           "Required": true,
           "DataFormat": "links",
           "Sharing": "public"
+        },
+        {
+          "Name": "RatedInLink",
+          "Required": true,
+          "DataFormat": "links",
+          "Sharing": "public"
+        },
+        {
+          "Name": "CategoriesLink",
+          "Required": true,
+          "DataFormat": "links",
+          "Sharing": "public"
+        },
+        {
+          "Name": "RateeHashLink",
+          "Required": true,
+          "DataFormat": "links",
+          "Sharing": "public"
         }
       ],
       "Functions": [
