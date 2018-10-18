@@ -50,7 +50,7 @@ function getAllEnrolled (params)
  * @callingType {json}
  * @exposure {public}
  * @param {json} { "Ratee": "<agenthash>" }
- * @return {json} {"Success": true, 
+ * @return {json} {"Success": true,
                                           "Entries": [
                                                               "Rater": "<hash>": ["Rating": "<string>", "Category": "<categorystring>"],
                                                               "Rater": "<hash>": ["Rating": "<string>", "Category": "<categorystring>"]
@@ -156,7 +156,7 @@ function getAgentsAverage (params)
 * @callingType {json}
 * @exposure {public}
 * @param {json} { "Ratee": "<agenthash>",
-                            "Category": "<categoryAnchorText>"}
+                            "Category": "<categoryAnchor>"}
 * @return {type} { "Success": true,
                             "AverageRating: 7"}
  */
@@ -170,7 +170,10 @@ function getAgentsAverageInCategory (params)
 
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "Ratee": "<agenthash>", "Value":"7" }
+ * @param {json} { "Ratee": "<agenthash>",
+                            "Value": "7",
+                            "Category": "<anchorText>"
+                            "CategoryAnchor": "<anchorHash>"}
  * @return {json} { "Success": true,
                             "EntryHash": "<entryHash>",
                             "InteractionHash": "<interactionHash>"}
@@ -205,6 +208,12 @@ function rateAgent (params)
         commit("RatedByLink", { Links: [{
             Base: params.Ratee,
             Link: entryHash,
+            Tag: "RatedBy"
+        }]})
+
+        commit("RatedInLink", { Links: [{
+            Base: params.Ratee,
+            Link: ,
             Tag: "RatedBy"
         }]})
         var pairing = {
