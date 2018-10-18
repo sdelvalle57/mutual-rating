@@ -160,16 +160,16 @@ code {
     z-index: 0;
 }
 
-.summary-spinner {
+.opening-spinner {
     position: absolute;
-    top: 5px;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background: #ffffffde;
+    background: #ffffff77;
 }
 
-.summary-spinner > div {
+.opening-spinner > div {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);

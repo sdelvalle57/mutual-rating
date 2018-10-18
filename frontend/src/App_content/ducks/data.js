@@ -16,9 +16,9 @@ let INIT_DATA_STATE = {
         Rating: 0
     },
     currentAgent: {
-        Hash: "",
-        Name: "",
-        Value: 0,
+        Hash: null,
+        Name: null,
+        Value: null,
         ReceivedReviews: []
     }
 };
