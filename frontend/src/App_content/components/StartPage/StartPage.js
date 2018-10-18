@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
-import store from './../store';
-import { INIT_UI } from './ducks/ui';
+import store from '../../../store';
+import { INIT_UI } from '../../ducks/ui';
 
 class StartPage extends Component {
     componentDidMount() {

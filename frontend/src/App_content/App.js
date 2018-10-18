@@ -5,7 +5,6 @@ import MyProfile from './components/MyProfile/MyProfile';
 import SignUp from './components/SignUp/SignUp';
 import Rate from './components/Rate/Rate';
 import User from './components/User/User';
-
 import './App.css';
 
 class App extends Component {
