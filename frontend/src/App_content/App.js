@@ -16,8 +16,8 @@ class App extends Component {
                     <Route exact path='/' component={StartPage}/>
                     <Route exact path='/SignUp/' component={SignUp} />
                     <Route exact path='/MyProfile/' component={MyProfile} />
-                    <Route exact path='/Rate/:userName' component={Rate} />
-                    <Route exact path='/User/:userName' component={User} />
+                    <Route exact path='/Rate/' component={Rate} />
+                    <Route exact path='/User/' component={User} />
                 </Switch>
             </HashRouter>
         );

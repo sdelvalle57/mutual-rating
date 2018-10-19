@@ -1,0 +1,35 @@
+.sign-up-page{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #28dee9;
+}
+
+.sign-up-page-header{
+    text-align: center;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+}
+
+.sign-up-page-header2{
+    text-align: center;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+}
+
+.sign-up-page-form {
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    padding: 2rem;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+}
+
+#sign-up-page-input {
+    color:black !important;
+}

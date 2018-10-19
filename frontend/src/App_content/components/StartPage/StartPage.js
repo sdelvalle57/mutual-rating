@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import store from '../../../store';
 import { INIT_UI } from '../../ducks/ui';
+import './StartPage.css';
 
 class StartPage extends Component {
     componentDidMount() {
@@ -12,8 +13,11 @@ class StartPage extends Component {
 
     render() {
         if (this.props.loading)
-            return (<div className="opening-spinner"><Loader type="TailSpin" color="#01a2eb" height={80} width={80} /></div>);
-        else if(this.props.currentAgent.name)
+            return (
+                <div className="opening-spinner">
+                    <Loader type="TailSpin" color="#01a2eb" height={80} width={80} />
+                </div>);
+        else if(this.props.currentAgent && this.props.currentAgent.name)
             return (<Redirect to='/MyProfile' />)
         else
             return (<Redirect to='/SignUp' />)
