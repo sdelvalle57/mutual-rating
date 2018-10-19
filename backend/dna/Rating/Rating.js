@@ -118,10 +118,8 @@ function getAgentsAverage (params)
         var totalRating = 0;
         // Grab all the entries associated with the RatingLink of the specified ratee below.
         var entryArray = getLinks(params.Ratee.toString(), "RatedBy", {Load: true});
-
         // Pretty self explanatory below.
         var totalUsersRated = entryArray.length;
-
         var avgRating;
 
         if(totalUsersRated > 0){
@@ -134,7 +132,6 @@ function getAgentsAverage (params)
         else{
             avgRating = null;
         }
-
         return {"Success": true,
                     "AverageRating": avgRating}; //Because getAgentsAverage's calling type is json.
     }
@@ -142,7 +139,6 @@ function getAgentsAverage (params)
     {
         console.log("getAgentsAverage() errored out.");
         console.log(error);
-
         return {"Success": false,
                     "AverageRating": null};
     }
@@ -154,14 +150,35 @@ function getAgentsAverage (params)
 
 * @callingType {json}
 * @exposure {public}
-* @param {json} { "Ratee": "<agenthash>",
-                            "Category": "<categoryAnchor>"}
+* @param {json} { "ratee": "<agenthash>",
+                            "category": "<categoryAnchor>"}
 * @return {type} { "Success": true,
                             "AverageRating: 7"}
  */
 function getAgentsAverageInCategory (params)
 {
+  var totalRatingInCategory = 0;
+  // Grab all the entries associated with the RatingLink of the specified ratee below.
+  var entryArray = getLinks(params.Ratee.toString(), "RatedBy", {Load: true});
+  var totalUsersRated = entryArray.length;
+  var avgRatingInCategory;
 
+  if(totalUsersRated > 0){
+      //For each through the Rating entries and grab only the values, and add'em to the totalRating.
+      for (var entryObject in entryArray){
+        if(entryArray[entryObject].Entry.category == params.category){
+          totalRatingInCategory = totalRatingInCategory
+            + parseInt(entryArray[entryObject].Entry.value, 10);
+        }
+      }
+      avgRatingInCategory = totalRating / totalUsersRated //At the end, average things up,
+  }else{
+      avgRating = null;
+  }
+  var ratingEntry = {
+    "rater": "<hash>",
+    "rating": "<string>"
+  }
 }
 
 /*
@@ -298,9 +315,9 @@ function getUserData (params)
 {
     var result = getAgentsAverage({ "Ratee": App.Agent.Hash });
     var userData = {
-        "Name": App.Agent.String,
-        "Hash": App.Agent.Hash,
-        "Rating": result.AverageRating
+        "name": App.Agent.String,
+        "hash": App.Agent.Hash,
+        "rating": result.AverageRating
     }
     return userData;
 }
