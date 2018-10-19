@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { SHOW_ALL_RATINGS } from '../../ducks/ui';
 import { RATE_AGENT } from '../../ducks/data';
 import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL, UPDATE_SLIDER } from '../../ducks/ui';
-import store from '../../../store';
 import Star from '../common/Star'
-import Slider from '../common/Slider';
-import Selector from '../common/Selector';
+// import Slider from '../common/Slider';
 import Modal from '../common/Modal';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
@@ -23,7 +21,7 @@ class App extends Component {
 
     render() {
         // First we have to check if user is already loaded from server
-        if(!this.props.currentAgent.name)
+        if(!this.props.user.name)
             return (<Redirect to='/' />)
 
         return (

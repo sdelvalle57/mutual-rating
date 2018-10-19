@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { SHOW_ALL_RATINGS } from '../../ducks/ui';
-import { RATE_AGENT } from '../../ducks/data';
-import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL, UPDATE_SLIDER } from '../../ducks/ui';
-import store from '../../../store';
+import { CHANGE_OPTION } from '../../ducks/ui';
+import { GO_TO_RATING, GO_TO_HOME } from '../../ducks/ui';
 import Star from '../common/Star'
-import Slider from '../common/Slider';
+import List from '../common/List';
 import Selector from '../common/Selector';
 import Modal from '../common/Modal';
 import { connect } from 'react-redux';
@@ -12,26 +10,31 @@ import { Redirect, withRouter } from 'react-router-dom';
 
 const Header = withRouter(({ history, ...props  }) => (
     <header className="App-header">
-        <button className="btn btn-secondary left" onClick={() => { history.push('/MyProfile') }}>&larr; Back</button>
+        <button className="btn btn-secondary left" onClick={() => { props.handelGoToHome(); history.push('/MyProfile') }}>&larr; Back</button>
         <Selector {...props}/>
-        <button className="btn btn-secondary right" onClick={() => { history.push('/Rate') }}>Rate &rarr;</button>
+        <button className="btn btn-secondary right" onClick={() => { 
+            props.handelGoToRating();
+            if (props.currentAgent && props.currentAgent.hash) 
+                history.push('/Rate');
+        }}>Rate &rarr;</button>
     </header>
 ));
 
-class App extends Component {
+class Users extends Component {
     componentDidMount() {
     }
 
     render() {
         // First we have to check if user is already loaded from server
-        if(!this.props.currentAgent.name)
-            return (<Redirect to='/' />)
+        if(!this.props.user.name)
+            return (<Redirect to='/' />);
 
         return (
             <div className="App col-lg-5 m-auto">
                 <Modal {...this.props}/>
                 <Header {...this.props} />
                 <Star {...this.props}/>
+                <List {...this.props.currentAgent}/>
             </div>
         );
     }
@@ -40,9 +43,8 @@ class App extends Component {
 // Mapping of Redux state to Component's props
 const mapStateToProps = ( state ) => {
     return {
-        currentAgent: state.data.currentAgent,
         enrolled: state.data.enrolled,
-        modal: state.ui.modal,
+        currentAgent: state.data.currentAgent,
         user: state.data.user
     }
 };
@@ -53,36 +55,18 @@ const mapDispatchToProps = ( dispatch ) => {
     return {
         handleOptionChange: (Hash) => {
             dispatch({
-                type: GO_TO_RATING,
+                type: CHANGE_OPTION,
                 payload: Hash
             });
         },
-        handleBackClick: () => {
+        handelGoToHome: () => {
             dispatch({
-                type: GO_TO_HOME, 
-                payload: 'home'
-            });
-        }, 
-        handleRateClick: () => {
-            dispatch({
-                type: RATE_AGENT
+                type: GO_TO_HOME
             });
         },
-        handleDownClick: () => {
+        handelGoToRating: () => {
             dispatch({
-                type: SHOW_ALL_RATINGS
-            });
-        },
-        closeModal: () => {
-            dispatch({type: CHANGE_MODAL, payload: {
-                isShowing: false,
-                text: ''
-            }});
-        },
-        handleSliderChange: (e) => {
-            dispatch({
-                type: UPDATE_SLIDER,
-                payload: e
+                type: GO_TO_RATING
             });
         }
     }
@@ -92,4 +76,4 @@ const mapDispatchToProps = ( dispatch ) => {
 export default connect (
     mapStateToProps, 
     mapDispatchToProps
-)(App);
+)(Users);

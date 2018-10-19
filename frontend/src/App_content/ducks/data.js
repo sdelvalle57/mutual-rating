@@ -2,10 +2,10 @@
 
 export const ADD_NEW_ENROLLED = '[Data] Add enrolled users';
 export const UPDATE_USER_DATA = '[Data] Update user data';
-export const GET_USERS_AVERAGE = '[Data] Retrieve users average';
 export const SET_CURRENT_AGENT = '[Data] Update Current Agent';
 export const RATE_AGENT  = '[Data] Rate Selected Agent';
 export const RECEIVE_RATINGS = '[Data] Save ratings for current agent';
+export const LOAD_ENROLLED = '[Data] Load all enrolled agents';
 
 // Initial state of store.data (see reducers.js)
 let INIT_DATA_STATE = {
@@ -26,17 +26,12 @@ let INIT_DATA_STATE = {
 const dataReducer = (state = INIT_DATA_STATE, action) => {
     switch (action.type) {
         case ADD_NEW_ENROLLED:
-            // Great, now we have to merge two arrays and remove duplicates
-            // TODO: how does it work exactly (new Set)?
-            let arr = [action.payload, state.enrolled];
             return {
                 ...state,
-                enrolled: [...new Set([].concat(...arr))]
+                enrolled: action.payload
             };
 
         case UPDATE_USER_DATA:
-            // Reset receivedReviews
-            action.payload.receivedReviews = [];
             return {
                 ...state, 
                 user: action.payload,

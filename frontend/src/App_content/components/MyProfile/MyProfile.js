@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GO_TO_RATING, CHANGE_MODAL } from '../../ducks/ui';
+import { GO_TO_USER } from '../../ducks/ui';
 import Star from '../common/Star';
 import Modal from '../common/Modal';
 import List from '../common/List';
@@ -8,7 +8,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 
 const Header = withRouter(({ history, ...props }) => (
     <header className="App-header">
-        <button className="btn btn-secondary right" onClick={() => { props. history.push('/User') }}>Search users &rarr;</button>
+        <button className="btn btn-secondary right" onClick={() => { props.handelGoToUser(); history.push('/User') }}>Search users &rarr;</button>
     </header>
 ));
 
@@ -18,13 +18,13 @@ class MyProfile extends Component {
 
     render() {
         // First we have to check if user is already loaded from server
-        /*if(!this.props.currentAgent.name)
-            return (<Redirect to='/' />)*/
+        if(!this.props.user.name)
+            return (<Redirect to='/' />)
 
         return (
             <div className="App col-lg-5 m-auto">
                 <Modal {...this.props}/>
-                <Header />
+                <Header {...this.props}/>
                 <Star {...this.props}/>
                 <List {...this.props.currentAgent}/>
             </div>
@@ -36,8 +36,6 @@ class MyProfile extends Component {
 const mapStateToProps = ( state ) => {
     return {
         currentAgent: state.data.currentAgent,
-        enrolled: state.data.enrolled,
-        modal: state.ui.modal,
         user: state.data.user
     }
 };
@@ -46,17 +44,10 @@ const mapStateToProps = ( state ) => {
 // Those functions are passed to Component as props with help of connect() below
 const mapDispatchToProps = ( dispatch ) => {
     return {
-        handleOptionChange: (Hash) => {
+        handelGoToUser: (Hash) => {
             dispatch({
-                type: GO_TO_RATING,
-                payload: Hash
+                type: GO_TO_USER
             });
-        },
-        closeModal: () => {
-            dispatch({type: CHANGE_MODAL, payload: {
-                isShowing: false,
-                text: ''
-            }});
         }
     }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './SignUp.css';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class SignUp extends Component {
     constructor(props) {
@@ -41,6 +42,10 @@ class SignUp extends Component {
     };
 
     render() {
+        // First we have to check if user is already loaded from server
+        if(this.props.user && this.props.user.name)
+            return (<Redirect to='/' />);
+
         if (this.state.chk) {
             return (
                 <div className="sign-up-page">
@@ -112,7 +117,7 @@ class SignUp extends Component {
 const mapStateToProps = ( state ) => {
     return {
         loading: state.ui.loading,
-        currentAgent: state.data.currentAgent
+        user: state.data.user
     }
 };
 

@@ -12,15 +12,15 @@ class StartPage extends Component {
     }
 
     render() {
-        return (
-            <div className="start-page">
-                <h1 className="start-page-header">Hold up ! Looking if you already exist in the DNA.</h1>
-                <div className="start-page-summary-spinner">
+        if (this.props.loading)
+            return (
+                <div className="opening-spinner">
                     <Loader type="TailSpin" color="#01a2eb" height={80} width={80} />
-                </div>
-            </div>
-
-        );
+                </div>);
+        else if(this.props.currentAgent && this.props.currentAgent.name)
+            return (<Redirect to='/MyProfile' />)
+        else
+            return (<Redirect to='/SignUp' />)
     }
 }
 
