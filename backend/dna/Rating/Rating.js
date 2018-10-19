@@ -172,27 +172,32 @@ function getAgentsAverage (params)
  */
 function getAgentsAverageInCategory (params)
 {
-  var totalRatingInCategory = 0;
-  // Grab all the entries associated with the RatingLink of the specified ratee below.
-  var entryArray = getLinks(params.Ratee.toString(), "RatedBy", {Load: true});
-  var totalUsersRated = entryArray.length;
-  var avgRatingInCategory;
+  try{
+    var totalRatingInCategory = 0;
+    // Grab all the entries associated with the RatingLink of the specified ratee below.
+    var entryArray = getLinks(params.Ratee.toString(), "RatedBy", {Load: true});
+    var totalUsersRated = entryArray.length;
+    var avgRatingInCategory;
 
-  if(totalUsersRated > 0){
-      //For each through the Rating entries and grab only the values, and add'em to the totalRating.
-      for (var entryObject in entryArray){
-        if(entryArray[entryObject].Entry.category == params.category){
-          totalRatingInCategory = totalRatingInCategory
-            + parseInt(entryArray[entryObject].Entry.value, 10);
+    if(totalUsersRated > 0){
+        //For each through the Rating entries and grab only the values, and add'em to the totalRating.
+        for (var entryObject in entryArray){
+          if(entryArray[entryObject].Entry.category == params.category){
+            totalRatingInCategory = totalRatingInCategory
+              + parseInt(entryArray[entryObject].Entry.value, 10);
+          }
         }
-      }
-      avgRatingInCategory = totalRating / totalUsersRated //At the end, average things up,
-  }else{
-      avgRating = null;
-  }
-  var ratingEntry = {
-    "rater": "<hash>",
-    "rating": "<string>"
+        avgRatingInCategory = totalRating / totalUsersRated //At the end, average things up,
+        return {"Success": true,
+                    "AverageRating": avgRatingInCategory};
+    }else{
+        avgRating = null;
+    }
+  }catch (error) {
+    console.log("getAgentsAverageInCategory() errored out.");
+    console.log(error);
+    return {"Success": true,
+                "AverageRating": null}
   }
 }
 
