@@ -19,9 +19,15 @@ const Star = () => {
 
 const List = (props) => {
     return (
-        <ul className="list-group list-of-stars">
-            {props.categoryRatings.map((e, i) => <li key={i} className="list-group-item d-flex align-items-center"><Star /><span className="badge">{e.categoryValue.toFixed(1)}</span><span>{e.categoryName}</span></li>)}
-        </ul>
+        <div>
+            {props.categoryRatings.map((e, i) => 
+                <div key={i} className="">
+                    <div className="progress">
+                        <div className="progress-bar" role="progressbar" style={{width: '75%'}}></div>
+                    </div>
+                </div>)}
+        </div>
+        
     )
 }
 

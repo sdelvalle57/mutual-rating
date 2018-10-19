@@ -8,7 +8,14 @@ import Slider from '../common/Slider';
 import Selector from '../common/Selector';
 import Modal from '../common/Modal';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
+
+const Header = withRouter(({ history }) => (
+    <header className="App-header">
+        <button className="btn btn-secondary left" onClick={() => { history.push('/MyProfile') }}>&larr; Back</button>
+        <button className="btn btn-secondary right" onClick={() => { history.push('/Rate') }}>Rate &rarr;</button>
+    </header>
+));
 
 class App extends Component {
     componentDidMount() {
@@ -22,7 +29,7 @@ class App extends Component {
         return (
             <div className="App col-lg-5 m-auto">
                 <Modal {...this.props}/>
-                <header className="App-header"></header>
+                <Header />
                 <Star {...this.props}/>
                 <Selector {...this.props}/>
             </div>

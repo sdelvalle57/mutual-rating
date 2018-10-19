@@ -42,7 +42,7 @@ code {
     min-height: 42vh;
     font-size: calc(10px + 2vmin);
     color: white;
-    padding: 40px;
+    padding: 10px;
 }
 
 .star-outer {
@@ -174,4 +174,25 @@ code {
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     position: absolute;
+}
+
+.App-header {
+    height: 60px;
+}
+
+.App-header .btn {
+    background: none;
+    color: #ffffff;
+    border: solid 1px #fff;
+    margin-top: 10px;
+}
+
+.logo {
+    max-height: 50px;
+    width: 50px;
+}
+
+.logo img {
+    height: 100%;
+    width: 100%;
 }
