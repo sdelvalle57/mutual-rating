@@ -74,7 +74,7 @@ function getAgentsRating (params)
 {
   try{
     var listOfRatesAndRating = []
-    var listOfRatedBy = getLinks(params.Ratee, "ratedBy", {Load: true})
+    var listOfRatedBy = getLinks(params.ratee, "ratedBy", {Load: true})
 
       for(var ratedByLinkEntry in listOfRatedBy){
           var rate = {
@@ -132,7 +132,7 @@ function getAgentsAverage (params)
     {
         var totalRating = 0;
         // Grab all the entries associated with the RatingLink of the specified ratee below.
-        var entryArray = getLinks(params.Ratee.toString(), "ratedBy", {Load: true});
+        var entryArray = getLinks(params.ratee.toString(), "ratedBy", {Load: true});
         // Pretty self explanatory below.
         var totalUsersRated = entryArray.length;
         var avgRating;
@@ -175,7 +175,7 @@ function getAgentsAverageInCategory (params)
   try{
     var totalRatingInCategory = 0;
     // Grab all the entries associated with the RatingLink of the specified ratee below.
-    var entryArray = getLinks(params.Ratee.toString(), "ratedBy", {Load: true});
+    var entryArray = getLinks(params.ratee.toString(), "ratedBy", {Load: true});
     var totalUsersRated = entryArray.length;
     var avgRatingInCategory;
 
@@ -228,7 +228,7 @@ function rateAgent (params)
         return null;
     }
 
-    var match = find(interacts, function(x) {return x.Entry.ratee == params.Ratee;});
+    var match = find(interacts, function(x) {return x.Entry.ratee == params.ratee;});
     if (match == null)
     {
         var ratingEntry = {
@@ -258,7 +258,7 @@ function rateAgent (params)
 
         var pairing = {
             "rater": App.Agent.Hash,
-            "ratee": params.Ratee,
+            "ratee": params.ratee,
             "category": params.category
         }
         // TODO Try Catch around commits
@@ -302,8 +302,8 @@ function enrollUser (param)
 {
     try
     {
-        if(!anchorExists("user", param.UserName)){
-          var userAnchorHash = anchor("user", param.UserName)
+        if(!anchorExists("user", param.userName)){
+          var userAnchorHash = anchor("user", param.userName)
           commit("EnrollLink", { Links: [{
               Base: userAnchorHash,
               Link: App.Agent.Hash,
@@ -349,7 +349,7 @@ function getUserData (params)
 {
     var result = getAgentsAverage({ "ratee": App.Agent.Hash });
     var entryHash = commit(param.ratee, "RatedBy")
-    var categoryRatingsArray = getLinks(params.Ratee.toString(), "ratedBy",
+    var categoryRatingsArray = getLinks(params.ratee.toString(), "ratedBy",
                                 {Load: true});
     var userData = {
         "name": App.Agent.String,
@@ -392,35 +392,35 @@ function anchorExists(anchorType, anchorText)
 function validateCommit (entryName, entry, header, pkg, sources) {
   switch (entryName) {
     case "Rating":
-      return true;
+      return true
     case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true;
+      return true
     case "EnrollLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true;
+      return true
     case "RatedByLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true;
+      return true
     case "PairingLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true;
+      return true
     case "InteractionLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true;
+      return true
     default:
       // invalid entry name
-      return false;
+      return false
   }
 }
 
