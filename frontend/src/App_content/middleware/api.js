@@ -5,7 +5,7 @@ import {
     SET_CURRENT_AGENT, 
     RATE_AGENT,
     RECEIVE_RATINGS } from '../ducks/data';
-import { INIT_UI, GO_TO_HOME, CHANGE_MODAL, SHOW_ALL_RATINGS } from '../ducks/ui';
+import { INIT_UI, GO_TO_HOME, CHANGE_MODAL, SHOW_ALL_RATINGS, CHANGE_LOADER } from '../ducks/ui';
 import { 
     getAllEnrolled, 
     getUsersData, 
@@ -16,6 +16,11 @@ import {
 const apiMiddleware = ( {dispatch, getState} ) => next => action => {
     switch (action.type) {
         case INIT_UI:
+            // Show loader spinner
+            dispatch({
+                type: CHANGE_LOADER, 
+                payload: true
+            });
             // Get all users enrolled in this app
             getAllEnrolled()
                 // on receive emit ADD_NEW_ENROLLED 
@@ -31,6 +36,24 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                     })
                 })
                 // Catch any errors 
+                .catch(e => console.log(e));
+
+            // Get current user's data
+            getUsersData()
+                // on receive emit UPDATE_USER_DATA
+                .then(r => {
+                    if (r.success)
+                        dispatch({
+                            type: UPDATE_USER_DATA, 
+                            payload: r.user
+                        });
+                    // Let UI know loading's finished
+                    dispatch({
+                        type: CHANGE_LOADER, 
+                        payload: false
+                    });
+                })
+                // Catch any errors 
                 .catch(e => {
                     dispatch({type: CHANGE_MODAL, payload: {
                         isShowing: true,
@@ -39,18 +62,6 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                     }});
                     console.log(e);
                 });
-
-            // Get current user's data
-            getUsersData()
-                // on receive emit UPDATE_USER_DATA
-                .then(r => {
-                    dispatch({
-                        type: UPDATE_USER_DATA, 
-                        payload: r
-                    })
-                })
-                // Catch any errors 
-                .catch(e => console.log(e));
 
             // Pass event further down the chain in case you needed to update UI or something
             return next(action);
@@ -65,7 +76,7 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                             type: SET_CURRENT_AGENT, 
                             payload: {
                                 Rating: obj.AverageRating,
-                                ReceivedReviews: []
+                                receivedReviews: []
                             }
                         });
                     }

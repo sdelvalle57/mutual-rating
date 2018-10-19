@@ -1,5 +1,4 @@
 import React from 'react';
-import List from '../common/List';
 
 class MySlider extends React.Component {
 
@@ -23,10 +22,6 @@ class MySlider extends React.Component {
                         </select>
                     </form>
                 </div>
-                <div className="slider-buttons">
-                    <button className="btn btn-secondary middle" onClick={this.props.handleDownClick}>&darr; Ratings received</button>
-                </div>
-                <List {...this.props.currentAgent}/>
             </div>
         )
     }

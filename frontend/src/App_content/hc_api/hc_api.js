@@ -103,24 +103,40 @@ export const rateAgent = (obj) => {
  */
 export const getUsersData = (obj) => {
 
-    return fetch('/fn/Rating/getUserData', obj).then(handleErrors).then(r => r.json());
+    // return fetch('/fn/Rating/getUserData', obj).then(handleErrors).then(r => r.json());
 
-    // return data;
-
-    // console.log(data);
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve({
+                success: 'true',
+                user: {
+                    name: 'Bob',
+                    hash: 'b723974209bcd',
+                    overallRating: 9.2,
+                    categoryRatings: [
+                        {
+                            categoryName: 'Stubbornness',
+                            categoryValue: 9.9
+                        },
+                        {
+                            categoryName: 'Tidiness',
+                            categoryValue: 0.1
+                        }
+                    ]
+                }
+            })
+        }, 200);
+    });
 
     // return new Promise((resolve, reject) => {
-    //     if (obj === undefined)
-    //         resolve({
-    //             name: 'PJ',
-    //             hash: 'p2349872349872498',
-    //             average: '3.7'
-    //         })
-    //     else
+        
     //     resolve({
-    //         name: 'Bob',
-    //         hash: 'b723974209bcd',
-    //         average: '9.2'
+    //         success: 'true',
+    //         user: {
+    //             name: 'Bob',
+    //             hash: 'b723974209bcd',
+    //             average: '9.2'
+    //         }
     //     })
     // });
 

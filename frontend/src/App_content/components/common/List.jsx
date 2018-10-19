@@ -17,12 +17,18 @@ const Star = () => {
     )
 }
 
-const Modal = (props) => {
+const List = (props) => {
     return (
-        <ul className="list-group list-of-stars">
-            {props.ReceivedReviews.map((e, i) => <li key={i} className="list-group-item d-flex align-items-center"><Star /><span className="badge">{e.Value.toFixed(1)}</span><span>from {e.Rater}</span></li>)}
-        </ul>
+        <div>
+            {props.categoryRatings.map((e, i) => 
+                <div key={i} className="">
+                    <div className="progress">
+                        <div className="progress-bar" role="progressbar" style={{width: '75%'}}></div>
+                    </div>
+                </div>)}
+        </div>
+        
     )
 }
 
-export default Modal;
+export default List;

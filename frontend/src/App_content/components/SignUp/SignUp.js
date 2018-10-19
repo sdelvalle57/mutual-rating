@@ -8,7 +8,6 @@ import { INIT_UI } from '../../ducks/ui';
 class SignUp extends Component {
     constructor(props){
         super(props);
-
         this.handleChangeInput=this.handleChangeInput.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
         this.state = {
@@ -106,6 +105,14 @@ class SignUp extends Component {
         }
     }
     
+=======
+class App extends Component {
+    render() {
+        return (
+            <h1>Hello!</h1>
+        );
+    }
+>>>>>>> 80f37e16288271d474b0f1770ea00227c63ae0fd
 }
 
 
