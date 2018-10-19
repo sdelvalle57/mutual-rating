@@ -29,6 +29,31 @@ function handleErrors(response) {
 }
 
 /**
+ * Enroll curent user in the app
+ * @param {string} name - selected name for user
+ * @return {Promise} Promise of a fetched result in a form of an array of all the list elements
+ */
+export const enrollUser = (obj) => {
+    if (obj.userName === 'bob')
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({
+                    success: 'false'
+                })
+            }, 200);
+        });
+    else 
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({
+                    success: 'true'
+                })
+            }, 200);
+        });
+    // return fetchPOST('/fn/Rating/enrollUser', obj).then(handleErrors).then(r => r.json());
+}
+
+/**
  * Get all users enrolled in this app
  * @return {Promise} Promise of a fetched result in a form of an array of all the list elements
  */
