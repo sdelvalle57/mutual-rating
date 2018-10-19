@@ -1,9 +1,9 @@
 html {
     min-height: 100%;
-    background: #1393af; /* Old browsers */
-    background: -moz-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);
-    background: -webkit-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);
-    background: linear-gradient(135deg, #1393af 0%, #57c4df 100%);
+    /*background: #1393af; !* Old browsers *!*/
+    /*background: -moz-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);*/
+    /*background: -webkit-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);*/
+    /*background: linear-gradient(135deg, #1393af 0%, #57c4df 100%);*/
 }
 
 body {
@@ -158,20 +158,4 @@ code {
     left: 1.0rem;
     right: 0;
     z-index: 0;
-}
-
-.summary-spinner {
-    position: absolute;
-    top: 5px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #ffffffde;
-}
-
-.summary-spinner > div {
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    position: absolute;
 }
