@@ -1,33 +1,30 @@
 import React, { Component } from 'react';
 import './SignUp.css';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import store from '../../../store';
-import { INIT_UI } from '../../ducks/ui';
 
 class SignUp extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.handleChangeInput=this.handleChangeInput.bind(this);
-        this.handleSubmit=this.handleSubmit.bind(this);
+        this.handleChangeInput = this.handleChangeInput.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             signUpName: '',
-            name:'blah',
-            namechk:'blah',
-            chk:1
+            name: 'blah',
+            namechk: 'blah',
+            chk: 1
         }
     }
 
-    handleChangeInput(e){
+    handleChangeInput(e) {
         this.setState({
             [e.target.name]: e.target.value
         });
     }
 
-    handleSubmit(e){
+    handleSubmit(e) {
         e.preventDefault();
 
-        if(this.state.signUpName === this.state.namechk){
+        if (this.state.signUpName === this.state.namechk) {
             this.setState({chk: 0, name: this.state.signUpName});
             this.handleReset();
         }
@@ -43,9 +40,9 @@ class SignUp extends Component {
         });
     };
 
-    render(){
-        if(this.state.chk){
-            return(
+    render() {
+        if (this.state.chk) {
+            return (
                 <div className="sign-up-page">
 
                     <h1 className="sign-up-page-header">Mutual - Rating</h1>
@@ -65,7 +62,8 @@ class SignUp extends Component {
                             </input>
                             <div className="feedback">Only geniuses can give a unique name.</div>
                             <br/>
-                            <button type="button" onClick={this.handleSubmit} className="btn btn-primary btn-sm">Check</button>
+                            <button type="button" onClick={this.handleSubmit} className="btn btn-primary btn-sm">Check
+                            </button>
                         </form>
                     </div>
 
@@ -74,7 +72,7 @@ class SignUp extends Component {
 
         }
         else {
-            return(
+            return (
                 <div className="sign-up-page">
 
                     <h1 className="sign-up-page-header">Mutual - Rating</h1>
@@ -84,19 +82,24 @@ class SignUp extends Component {
                     <div className="sign-up-page-form">
 
                         <form className="form-group has-danger">
-                            <label className="form-control-label col-form-label col-form-label-lg" htmlFor="inputDanger1">Name</label>
+                            <label className="form-control-label col-form-label col-form-label-lg"
+                                   htmlFor="inputDanger1">Name</label>
                             <input
                                 type="text"
                                 onChange={this.handleChangeInput}
-                                value={ this.state.signUpName }
+                                value={this.state.signUpName}
                                 className="form-control is-invalid form-control-lg sign-up-page-input"
                                 id="inputInvalid"
                                 name="signUpName"
                                 placeholder="Enter your name">
                             </input>
-                            <div className="invalid-feedback">Someone with "{this.state.name}" already exists. Try another?</div>
+                            <div className="invalid-feedback">Someone with "{this.state.name}" already exists. Try
+                                another?
+                            </div>
                             <br/>
-                            <button type="button" onClick={this.handleSubmit} className="btn btn-primary btn-sm">Check Again</button>
+                            <button type="button" onClick={this.handleSubmit} className="btn btn-primary btn-sm">Check
+                                Again
+                            </button>
                         </form>
                     </div>
 
@@ -104,17 +107,7 @@ class SignUp extends Component {
             );
         }
     }
-    
-=======
-class App extends Component {
-    render() {
-        return (
-            <h1>Hello!</h1>
-        );
-    }
->>>>>>> 80f37e16288271d474b0f1770ea00227c63ae0fd
 }
-
 
 const mapStateToProps = ( state ) => {
     return {

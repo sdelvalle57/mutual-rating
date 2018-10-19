@@ -158,8 +158,6 @@ code {
     left: 1.0rem;
     right: 0;
     z-index: 0;
-<<<<<<< HEAD
-=======
 }
 
 .opening-spinner {
@@ -197,5 +195,4 @@ code {
 .logo img {
     height: 100%;
     width: 100%;
->>>>>>> 80f37e16288271d474b0f1770ea00227c63ae0fd
 }

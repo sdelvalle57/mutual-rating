@@ -21,12 +21,6 @@ class StartPage extends Component {
             </div>
 
         );
-        if (this.props.loading)
-            return (<div className="opening-spinner"><Loader type="TailSpin" color="#01a2eb" height={80} width={80} /></div>);
-        else if(this.props.currentAgent.name)
-            return (<Redirect to='/MyProfile' />)
-        else
-            return (<Redirect to='/SignUp' />)
     }
 }
 
