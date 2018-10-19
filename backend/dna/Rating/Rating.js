@@ -122,9 +122,9 @@ function getAgentsRatingInCategory (params)
  * of that Ratee.
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "Ratee": "<agenthash>" }
- * @return {type} { "Success": true,
-                             "AverageRating: 7"}
+ * @param {json} { "ratee": "<agenthash>" }
+ * @return {type} { "success": true,
+                             "averageRating: 7"}
  */
 function getAgentsAverage (params)
 {
@@ -150,16 +150,16 @@ function getAgentsAverage (params)
             avgRating = null;
         }
 
-        return {"Success": true,
-                    "AverageRating": avgRating}; //Because getAgentsAverage's calling type is json.
+        return {"success": true,
+                    "averageRating": avgRating}; //Because getAgentsAverage's calling type is json.
     }
     catch (error)
     {
         console.log("getAgentsAverage() errored out.");
         console.log(error);
 
-        return {"Success": false,
-                    "AverageRating": null};
+        return {"success": false,
+                    "averageRating": null};
     }
 }
 
@@ -286,8 +286,10 @@ function enrollUser (param)
               Base: userAnchorHash,
               Link: App.Agent.Hash,
               Tag: "Enrolled"
-          }]})
-        }else{
+          }]}) // TODO Make EnrollLink bidirectional to link Agent Hash with a single username
+        }
+        else
+        {
           return { "Success": false };
         }
         return { "Success": true };
@@ -306,31 +308,48 @@ function enrollUser (param)
  * @exposure {public}
  * @param {json} { "ratee": <agenthash> } (defaults to `App.Agent.Hash` if nothing provided)
  * @return {json} {
-                                success: 'true',
-                                user: {
-                                            name: 'Bob',
-                                            hash: 'b723974209bcd',
-                                            overallRating: 9.2,
-                                            categoryRatings:
-                                            [{
-                                                    categoryName: 'Stubbornness',
-                                                    categoryValue: 9.9
-                                            },
-                                            {
-                                                categoryName: 'Tidiness',
-                                                categoryValue: 0.1
-                                            }]
+                                "success": App.Agent.String,
+                                "user":
+                                {
+                                    name: 'Bob',
+                                    hash: 'b723974209bcd',
+                                    overallRating: 9.2,
+                                    categoryRatings:
+                                    [
+                                        {
+                                            categoryName: 'Stubbornness',
+                                            categoryValue: 9.9
+                                        },
+                                        {
+                                            categoryName: 'Tidiness',
+                                            categoryValue: 0.1
                                         }
+                                    ]
+                                }
                             }
  */
 function getUserData (params)
 {
-    var result = getAgentsAverage({ "Ratee": App.Agent.Hash });
-    var userData = {
-        "Name": App.Agent.String,
-        "Hash": App.Agent.Hash,
-        "Rating": result.AverageRating
+    var communityAvg = getAgentsAverage({ "Ratee": App.Agent.Hash });
+    var categories = getLinks(App.Agent.Hash, "RatedIn");
+    // TODO Weed out extras from categories here - list of category names only needed.
+    var categoryAvgs = [];
+    for (var i = 0; i < categories.length; i++)
+    {
+        categoryAvgs.push(getAgentsAverageInCategory(actions[i]);
     }
+    var userData =
+    {
+        "success": true,
+        "user":
+        {
+            name: "",
+            hash: App.Agent.Hash,
+            overallRating: communityAvg.averageRating,
+            categoryRatings: categoryAvgs
+        }
+    }
+
     return userData;
 }
 
