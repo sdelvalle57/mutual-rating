@@ -10,9 +10,7 @@ class MySlider extends React.Component {
 
     render() {
         return(
-            <div>
-                <div>
-                    <form className="form-group" onChange={this.handleChange}>
+                    <form className="form-group selector" onChange={this.handleChange}>
                         <select className="form-control" id="userForm" defaultValue="placeholder">
                             <option value="placeholder" disabled >Select user to rate</option>
                             {this.props.enrolled.map((el, i) => { 
@@ -21,8 +19,6 @@ class MySlider extends React.Component {
                             })}
                         </select>
                     </form>
-                </div>
-            </div>
         )
     }
 }

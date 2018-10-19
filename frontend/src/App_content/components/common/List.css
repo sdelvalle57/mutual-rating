@@ -1,0 +1,39 @@
+.cat-wrapper {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.cat-wrapper .progress {
+    height: calc(18px + 2vmin);
+    border-radius: 5px;
+    flex: 1;
+    background: #ffa547f0; 
+    background: -moz-linear-gradient(135deg, #4279f5 0%, #ffa547f0 50%, #fd4a38 100%);
+    background: -webkit-linear-gradient(135deg, #4279f5 0%, #ffa547f0 50%, #fd4a38 100%);
+    background: linear-gradient(135deg, #4279f5 0%, #ffa547f0 50%, #fd4a38 100%);
+    margin-left: auto;
+    position: relative;
+}
+
+.cat-wrapper .progress-bar {
+    background: #76c5d7;
+    margin-left: auto;
+}
+
+.cat-name {
+    flex: 1;
+    text-align: left;
+}
+
+.cat-value {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    border: 0;
+    height: 100%;
+    line-height: calc(11px + 3vmin);
+    font-size: calc(7px + 2vmin);
+    font-weight: 600;
+}

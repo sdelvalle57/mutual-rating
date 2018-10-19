@@ -6,20 +6,20 @@ import List from '../common/List';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 
-const Header = withRouter(({ history }) => (
+const Header = withRouter(({ history, ...props }) => (
     <header className="App-header">
-        <button className="btn btn-secondary right" onClick={() => { history.push('/User') }}>Search users &rarr;</button>
+        <button className="btn btn-secondary right" onClick={() => { props. history.push('/User') }}>Search users &rarr;</button>
     </header>
 ));
 
-class App extends Component {
+class MyProfile extends Component {
     componentDidMount() {
     }
 
     render() {
         // First we have to check if user is already loaded from server
-        if(!this.props.currentAgent.name)
-            return (<Redirect to='/' />)
+        /*if(!this.props.currentAgent.name)
+            return (<Redirect to='/' />)*/
 
         return (
             <div className="App col-lg-5 m-auto">
@@ -65,4 +65,4 @@ const mapDispatchToProps = ( dispatch ) => {
 export default connect (
     mapStateToProps, 
     mapDispatchToProps
-)(App);
+)(MyProfile);

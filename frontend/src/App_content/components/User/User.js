@@ -10,9 +10,10 @@ import Modal from '../common/Modal';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 
-const Header = withRouter(({ history }) => (
+const Header = withRouter(({ history, ...props  }) => (
     <header className="App-header">
         <button className="btn btn-secondary left" onClick={() => { history.push('/MyProfile') }}>&larr; Back</button>
+        <Selector {...props}/>
         <button className="btn btn-secondary right" onClick={() => { history.push('/Rate') }}>Rate &rarr;</button>
     </header>
 ));
@@ -29,9 +30,8 @@ class App extends Component {
         return (
             <div className="App col-lg-5 m-auto">
                 <Modal {...this.props}/>
-                <Header />
+                <Header {...this.props} />
                 <Star {...this.props}/>
-                <Selector {...this.props}/>
             </div>
         );
     }

@@ -1,9 +1,9 @@
 html {
     min-height: 100%;
-    /*background: #1393af; !* Old browsers *!*/
-    /*background: -moz-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);*/
-    /*background: -webkit-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);*/
-    /*background: linear-gradient(135deg, #1393af 0%, #57c4df 100%);*/
+    background: #1393af; 
+    background: -moz-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);
+    background: -webkit-linear-gradient(-45deg, #1393af 0%, #57c4df 100%);
+    background: linear-gradient(135deg, #1393af 0%, #57c4df 100%);
 }
 
 body {
@@ -43,6 +43,7 @@ code {
     font-size: calc(10px + 2vmin);
     color: white;
     padding: 10px;
+    max-width: 570px;
 }
 
 .star-outer {
@@ -178,6 +179,9 @@ code {
 
 .App-header {
     height: 60px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .App-header .btn {
@@ -185,6 +189,10 @@ code {
     color: #ffffff;
     border: solid 1px #fff;
     margin-top: 10px;
+}
+
+.App-header .btn.right {
+    margin-left: auto;
 }
 
 .logo {
@@ -195,4 +203,9 @@ code {
 .logo img {
     height: 100%;
     width: 100%;
+}
+
+.form-group.selector {
+    width: 100%;
+    margin: 7px 20px 0;
 }

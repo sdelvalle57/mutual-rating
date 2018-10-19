@@ -119,6 +119,10 @@ export const getUsersData = (obj) => {
                             categoryValue: 9.9
                         },
                         {
+                            categoryName: 'Grumpiness',
+                            categoryValue: 5.7
+                        },
+                        {
                             categoryName: 'Tidiness',
                             categoryValue: 0.1
                         }

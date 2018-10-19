@@ -13,6 +13,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 const Header = withRouter(({ history }) => (
     <header className="App-header">
         <button className="btn btn-secondary left" onClick={() => { history.push('/User') }}>&larr; Back</button>
+        <button className="btn btn-secondary right" onClick={() => { history.push('/User') }}>&#x2713; Rate</button>
     </header>
 ));
 
@@ -30,7 +31,6 @@ class App extends Component {
                 <Modal {...this.props}/>
                 <Header />
                 <Star {...this.props}/>
-                <Selector {...this.props}/>
             </div>
         );
     }
