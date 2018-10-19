@@ -129,15 +129,15 @@ export const rateAgent = (obj) => {
 export const getUsersData = (obj) => {
 
     // return fetch('/fn/Rating/getUserData', obj).then(handleErrors).then(r => r.json());
-    return new Promise((resolve, reject) => {
+    /*return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve({
                 success: 'false'
             })
         }, 200);
-    });
+    });*/
 
-    /*if (obj)
+    if (obj)
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve({
@@ -190,5 +190,5 @@ export const getUsersData = (obj) => {
                 }
             })
         }, 200);
-    });*/
+    });
 }

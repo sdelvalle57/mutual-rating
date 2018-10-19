@@ -4,14 +4,17 @@ import {
     SET_CURRENT_AGENT, 
     RATE_AGENT,
     RECEIVE_RATINGS,
-    LOAD_ENROLLED } from '../ducks/data';
+    LOAD_ENROLLED,
+    SET_ENROLL_STATUS,
+    HANDLE_ENROLL } from '../ducks/data';
 import { INIT_UI, GO_TO_HOME, CHANGE_MODAL, SHOW_ALL_RATINGS, CHANGE_LOADER, CHANGE_OPTION } from '../ducks/ui';
 import { 
     getAllEnrolled, 
     getUsersData, 
     //getAgentsAverage, 
     rateAgent, 
-    getAgentsRating } from '../hc_api/hc_api';
+    getAgentsRating,
+    enrollUser } from '../hc_api/hc_api';
 
 const apiMiddleware = ( {dispatch, getState} ) => next => action => {
     switch (action.type) {
@@ -99,6 +102,33 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                     console.log(e);
                 });
 
+            // Termitate action here
+            return ;
+
+        case HANDLE_ENROLL:
+            // Get current user's data
+            enrollUser(action.payload)
+                .then(r => {
+                    if (r.success)
+                        dispatch({
+                            type: SET_ENROLL_STATUS, 
+                            payload: true
+                        });
+                    else
+                        dispatch({
+                            type: SET_ENROLL_STATUS, 
+                            payload: false
+                        });
+                })
+                // Catch any errors 
+                .catch(e => {
+                    dispatch({type: CHANGE_MODAL, payload: {
+                        isShowing: true,
+                        error: true,
+                        text: "Can't connect to the server"
+                    }});
+                    console.log(e);
+                });
 
             // Termitate action here
             return ;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './SignUp.css';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { HANDLE_ENROLL } from '../../ducks/data';
 
 class SignUp extends Component {
     constructor(props) {
@@ -117,7 +118,8 @@ class SignUp extends Component {
 const mapStateToProps = ( state ) => {
     return {
         loading: state.ui.loading,
-        user: state.data.user
+        user: state.data.user,
+        enrollStatus: state.data.enrollStatus
     }
 };
 
@@ -125,8 +127,11 @@ const mapStateToProps = ( state ) => {
 // Those functions are passed to Component as props with help of connect() below
 const mapDispatchToProps = ( dispatch ) => {
     return {
-        method1: () => {
-
+        handleEnroll: (name) => {
+            dispatch({
+                action: HANDLE_ENROLL,
+                payload: name
+            });
         }
     }
 }

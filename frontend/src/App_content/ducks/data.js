@@ -6,10 +6,13 @@ export const SET_CURRENT_AGENT = '[Data] Update Current Agent';
 export const RATE_AGENT  = '[Data] Rate Selected Agent';
 export const RECEIVE_RATINGS = '[Data] Save ratings for current agent';
 export const LOAD_ENROLLED = '[Data] Load all enrolled agents';
+export const HANDLE_ENROLL = '[Data] Handle user enrollnmnet';
+export const SET_ENROLL_STATUS = '[Data] Set enrollnmnet status';
 
 // Initial state of store.data (see reducers.js)
 let INIT_DATA_STATE = {
     enrolled: [],
+    enrollStatus: true,
     user: {
         hash: "",
         name: "",
@@ -62,6 +65,9 @@ const dataReducer = (state = INIT_DATA_STATE, action) => {
         case SET_CURRENT_AGENT:
             if (!action.payload) return state;
             return {...state, currentAgent: {...state.currentAgent, ...action.payload}};
+
+        case SET_ENROLL_STATUS:
+            return {...state, enrollStatus: action.payload};
 
         default:
             return state;
