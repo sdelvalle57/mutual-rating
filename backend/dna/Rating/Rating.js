@@ -124,10 +124,12 @@ function getAgentsAverage (params)
 }
 
 /*
+ * The Categories can be how ever much user specifies.
+ *
  * Publishes a rating entry. Accepts the Ratee's Hash & Rating Value.
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "Ratee": "<agenthash>", "Value":"7" }
+ * @param {json} { "Ratee": "<agenthash>", "Values": ["Categories" ...] }
  * @return {json} { "Success": true,
                             "EntryHash": "<entryHash>",
                             "InteractionHash": "<interactionHash>"}
@@ -152,8 +154,8 @@ function rateAgent (params)
     if (match == null)
     {
         var ratingEntry = {
-            "rater": App.Agent.Hash, 
-            "value": parseInt(params.Value),
+            "rater": App.Agent.Hash,
+            "value": params.Values, // - Lee
             "category": params.category.toString()
         }
         // TODO Try Catch around commits
@@ -181,17 +183,18 @@ function rateAgent (params)
             Tag: "Pairings"
         }]})
 
+        //return {"Success": true,
+        //            "EntryHash": entryHash,
+        //            "InteractionHash": interactionHash};
         return {"Success": true,
-                    "EntryHash": entryHash,
-                    "InteractionHash": interactionHash};
+                    "Values": params.Values};
     }
     else
     {
         console.log("Rating already exists.")
 
         return {"Success": false,
-                    "EntryHash": null,
-                    "InteractionHash": match.Hash};
+                    "Values": params.Values};
 
     }
 }

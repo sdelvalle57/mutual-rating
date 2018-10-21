@@ -31,7 +31,7 @@
     },
     "category": {
       "$id": "#/properties/category",
-      "type": "string",
+      "type": "array",
       "title": "The Category Schema",
       "default": "",
       "examples": [
