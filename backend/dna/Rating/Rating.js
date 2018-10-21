@@ -131,8 +131,7 @@ function getAgentsAverage (params)
  * @exposure {public}
  * @param {json} { "Ratee": "<agenthash>", "Values": ["Categories" ...] }
  * @return {json} { "Success": true,
-                            "EntryHash": "<entryHash>",
-                            "InteractionHash": "<interactionHash>"}
+                            "Values": ["Categories" ...]}
  */
 function rateAgent (params)
 {
@@ -155,7 +154,7 @@ function rateAgent (params)
     {
         var ratingEntry = {
             "rater": App.Agent.Hash,
-            "value": params.Values, // - Lee
+            "values": params.Values, // - Lee
             "category": params.category.toString()
         }
         // TODO Try Catch around commits

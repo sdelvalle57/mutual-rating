@@ -20,18 +20,18 @@
       ],
       "pattern": "^(.*)$"
     },
-    "value": {
-      "$id": "#/properties/value",
-      "type": "integer",
+    "values": {
+      "$id": "#/properties/values",
+      "type": "array",
       "title": "The Value Schema",
-      "default": 0,
+      "default": "",
       "examples": [
         5
       ]
     },
     "category": {
       "$id": "#/properties/category",
-      "type": "array",
+      "type": "string",
       "title": "The Category Schema",
       "default": "",
       "examples": [
