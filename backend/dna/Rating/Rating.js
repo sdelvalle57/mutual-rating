@@ -22,39 +22,25 @@
  */
 function genesis ()
 {
+    enrollUser({});
+
     return true;
 }
 
 
 /*
  * Return all the enrolled users.
-
  * @callingType {json}
  * @exposure {public}
  * @param {json} {  }
- * @return {json} [ {hash:"QmY...",
-                            entryType:"<entry-type>",
-                            entry:"<entry value here>",
-                            source:"<source-hash>"} ]
+ * @return {json} [ {Hash:"QmY...",
+                            EntryType:"<entry-type>",
+                            Entry:"<entry value here>",
+                            Source:"<source-hash>"} ]
  */
 function getAllEnrolled (params)
 {
-    return getLinks(App.DNA.Hash, "enrolled", { Load: true });
-}
-
-/*
- * Create a new Category Anchor - and return Anchor details.
-
- * @callingType {json}
- * @exposure {public}
- * @param {json} { "categoryName": "<categorystring>" }
- * @return {json} [ {anchorHash:"QmY...",
-                            anchorType:"<created-anchor-type>",
-                            anchorText:"<created-anchor-text>"} ]
- */
-function createCategory (params)
-{
-
+    return getLinks(App.DNA.Hash, "Enrolled", { Load: true });
 }
 
 /*
@@ -62,59 +48,33 @@ function createCategory (params)
  *
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "ratee": "<agenthash>" }
- * @return {json} {"success": true,
-                                          "entries": [
-                                                              "rater": "<hash>": ["Rating": "<string>", "category": "<categorystring>"],
-                                                              "rater": "<hash>": ["Rating": "<string>", "category": "<categorystring>"]
-                                                           ]
-                                          }
+ * @param {json} { "Ratee": "<agenthash>" }
+ * @return {json}[] {"Result": true, "Entries": ["Rater": "<hash>", "Rating": "<string>"]}
  */
 function getAgentsRating (params)
 {
   try{
     var listOfRatesAndRating = []
-    var listOfRatedBy = getLinks(params.ratee, "ratedBy", {Load: true})
+    var listOfRatedBy = getLinks(params.Ratee, "RatedBy", {Load: true})
 
       for(var ratedByLinkEntry in listOfRatedBy){
           var rate = {
-              "rater": listOfRatedBy[ratedByLinkEntry].Entry.rater,
-              "value": listOfRatedBy[ratedByLinkEntry].Entry.value,
-              "category": listOfRatedBy[ratedByLinkEntry].Entry.category
+              "Rater": listOfRatedBy[ratedByLinkEntry].Entry.rater,
+              "Value": listOfRatedBy[ratedByLinkEntry].Entry.value
           }
           listOfRatesAndRating.push(rate)
       }
     var result = {
-      "success": true,
-      "entries": listOfRatesAndRating
+      "Success": true,
+      "Entries": listOfRatesAndRating
     }
     return result;
   }catch(error){
     debug(error);
-    var result = {"success": false,
-                  "entries": null}
+    var result = {"Success": false,
+                  "Entries": null}
     return result
   }
-}
-
-/*
- * Accepts a Ratee hash-string and a Category string,
- * and returns all of the ratings that Ratee received in that Category.
- *
- * @callingType {json}
- * @exposure {public}
- * @param {json} { "ratee": "<agenthash>",
-                            "category": "<categoryAnchorText>"}
- * @return {json} {"success": true,
-                            "entries": [
-                                            "rater": "<hash>",
-                                            "rating": "<string>"
-                                        ]
-                            }
- */
-function getAgentsRatingInCategory (params)
-{
-
 }
 
 /*
@@ -122,9 +82,9 @@ function getAgentsRatingInCategory (params)
  * of that Ratee.
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "ratee": "<agenthash>" }
- * @return {type} { "success": true,
-                             "averageRating: 7"}
+ * @param {json} { "Ratee": "<agenthash>" }
+ * @return {type} { "Success": true,
+                             "AverageRating: 7"}
  */
 function getAgentsAverage (params)
 {
@@ -132,9 +92,11 @@ function getAgentsAverage (params)
     {
         var totalRating = 0;
         // Grab all the entries associated with the RatingLink of the specified ratee below.
-        var entryArray = getLinks(params.ratee.toString(), "ratedBy", {Load: true});
+        var entryArray = getLinks(params.Ratee.toString(), "RatedBy", {Load: true});
+
         // Pretty self explanatory below.
         var totalUsersRated = entryArray.length;
+
         var avgRating;
 
         if(totalUsersRated > 0){
@@ -147,78 +109,36 @@ function getAgentsAverage (params)
         else{
             avgRating = null;
         }
-        return {"success": true,
-                    "averageRating": avgRating}; //Because getAgentsAverage's calling type is json.
+
+        return {"Success": true,
+                    "AverageRating": avgRating}; //Because getAgentsAverage's calling type is json.
     }
     catch (error)
     {
         console.log("getAgentsAverage() errored out.");
         console.log(error);
 
-        return {"success": false,
-                    "averageRating": null};
+        return {"Success": false,
+                    "AverageRating": null};
     }
 }
 
 /*
-* Accepts a Ratee hash-string & a Category string, for which
-* Ratee all ratings in that category are aggregated and returned.
-
-* @callingType {json}
-* @exposure {public}
-* @param {json} { "ratee": "<agenthash>",
-                            "category": "<categoryAnchor>"}
-* @return {type} { "success": true,
-                            "averageRating: 7"}
- */
-function getAgentsAverageInCategory (params)
-{
-  try{
-    var totalRatingInCategory = 0;
-    // Grab all the entries associated with the RatingLink of the specified ratee below.
-    var entryArray = getLinks(params.ratee.toString(), "ratedBy", {Load: true});
-    var totalUsersRated = entryArray.length;
-    var avgRatingInCategory;
-
-    if(totalUsersRated > 0){
-        //For each through the Rating entries and grab only the values, and add'em to the totalRating.
-        for (var entryObject in entryArray){
-          if(entryArray[entryObject].Entry.category == params.category){
-            totalRatingInCategory = totalRatingInCategory
-              + parseInt(entryArray[entryObject].Entry.value, 10);
-          }
-        }
-        avgRatingInCategory = totalRating / totalUsersRated //At the end, average things up,
-        return {"success": true,
-                    "averageRating": avgRatingInCategory};
-    }else{
-        avgRating = null;
-    }
-  }catch (error) {
-    console.log("getAgentsAverageInCategory() errored out.");
-    console.log(error);
-    return {"Success": true,
-                "AverageRating": null}
-  }
-}
-
-/*
+ * The Categories can be how ever much user specifies.
+ *
  * Publishes a rating entry. Accepts the Ratee's Hash & Rating Value.
-
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "ratee": "<agenthash>",
-                            "value": "7",
-                            "category": "<anchorText>",
-                            "categoryAnchor": "<anchorHash>"}
- * @return {json} { "success": true,
-                            "entryHash": "<entryHash>",
-                            "interactionHash": "<interactionHash>"}
+ * @param {json} { "Ratee": "<agenthash>", "Values": ["Categories" ...] }
+ * @return {json} { "Success": true,
+                            "Values": ["Categories" ...]}
  */
 function rateAgent (params)
 {
-    // TODO Change this code below to lookup interactions by hash
-    var interacts = getLinks(App.Agent.Hash, "interactions", { Load : true })
+    // Hard code category into params:
+    params.category = 'general';
+
+    var interacts = getLinks(App.Agent.Hash, "Interactions", { Load : true })
 
     var find = function(items, f) {
         for (var i=0; i < items.length; i++)
@@ -229,64 +149,51 @@ function rateAgent (params)
         return null;
     }
 
-    var match = find(interacts, function(x) {return x.Entry.ratee == params.ratee;});
+    var match = find(interacts, function(x) {return x.Entry.ratee == params.Ratee;});
     if (match == null)
     {
         var ratingEntry = {
             "rater": App.Agent.Hash,
-            "value": parseInt(params.value),
+            "values": params.Values, // - Lee
             "category": params.category.toString()
         }
         // TODO Try Catch around commits
         var entryHash = commit("Rating", ratingEntry)
         commit("RatedByLink", { Links: [{
-            Base: params.ratee,
+            Base: params.Ratee,
             Link: entryHash,
-            Tag: "ratedBy"
+            Tag: "RatedBy"
         }]})
-
-        commit("RatedInLink", { Links: [{
-            Base: params.ratee,
-            Link: params.categoryAnchor,
-            Tag: "ratedIn"
-        }]})
-
-        commit("RateeHashLink", { Links: [{
-            Base: params.categoryAnchor,
-            Link: entryHash,
-            Tag: "ratedIn"
-        }]})
-
         var pairing = {
             "rater": App.Agent.Hash,
-            "ratee": params.ratee,
-            "category": params.category
+            "ratee": params.Ratee
         }
         // TODO Try Catch around commits
         var interactionHash = commit("Interaction", pairing)
         commit("InteractionLink", { Links: [{
             Base: App.Agent.Hash,
             Link: interactionHash,
-            Tag: "interactions"
+            Tag: "Interactions"
         }]})
 
         commit("PairingLink", { Links: [{
             Base: interactionHash,
             Link: entryHash,
-            Tag: "pairings"
+            Tag: "Pairings"
         }]})
 
-        return {"success": true,
-                    "entryHash": entryHash,
-                    "interactionHash": interactionHash};
+        //return {"Success": true,
+        //            "EntryHash": entryHash,
+        //            "InteractionHash": interactionHash};
+        return {"Success": true,
+                    "Values": params.Values};
     }
     else
     {
         console.log("Rating already exists.")
 
-        return {"success": false,
-                    "entryHash": null,
-                    "interactionHash": match.Hash};
+        return {"Success": false,
+                    "Values": params.Values};
 
     }
 }
@@ -296,32 +203,26 @@ function rateAgent (params)
  * Called at Genesis - additional load-time functionality goes here.
  * @callingType {json}
  * @exposure {zome}
- * @param {json} {"userName": "<username>"}
- * @return {json} { "success": true }
+ * @param {json} Empty JSON.
+ * @return {json} { "Success": true }
  */
-function enrollUser (param)
+function enrollUser (params)
 {
     try
     {
-        if(!anchorExists("user", param.userName)){
-          var userAnchorHash = anchor("user", param.userName)
-          commit("EnrollLink", { Links: [{
-              Base: userAnchorHash,
-              Link: App.Agent.Hash,
-              Tag: "Enrolled"
-          }]}) // TODO Make EnrollLink bidirectional to link Agent Hash with a single username
-        }
-        else
-        {
-          return { "Success": false };
-        }
-        return { "success": true };
+        commit("EnrollLink", { Links: [{
+            Base: App.DNA.Hash,
+            Link: App.Agent.Hash,
+            Tag: "Enrolled"
+        }]})
+
+        return { "Success": true };
     }
     catch (error)
     {
         console.log("enrollUser() errored out.");
         console.log(error);
-        return { "success": false }
+        return { "Success": false }
     }
 }
 
@@ -329,67 +230,20 @@ function enrollUser (param)
  * Upon call with an empty JSON, returns the current user's metadata.
  * @callingType {json}
  * @exposure {public}
- * @param {json} { "ratee": <agenthash> } (defaults to `App.Agent.Hash` if nothing provided)
- * @return {json} {
-                                "success": App.Agent.String,
-                                "user":
-                                {
-                                    name: 'Bob',
-                                    hash: 'b723974209bcd',
-                                    overallRating: 9.2,
-                                    categoryRatings:
-                                    [
-                                        {
-                                            categoryName: 'Stubbornness',
-                                            categoryValue: 9.9
-                                        },
-                                        {
-                                            categoryName: 'Tidiness',
-                                            categoryValue: 0.1
-                                        }
-                                    ]
-                                }
-                            }
+ * @param {json} {  }
+ * @return {json} { "Name": "user@mailserver.com",
+                            "Hash": "<agenthash>",
+                            "Rating": "7"}
  */
 function getUserData (params)
 {
-    var communityAvg = getAgentsAverage({ "Ratee": App.Agent.Hash });
-    var categories = getLinks(App.Agent.Hash, "RatedIn");
-    // TODO Weed out extras from categories here - list of category names only needed.
-    var categoryAvgs = [];
-    for (var i = 0; i < categories.length; i++)
-    {
-        categoryAvgs.push(getAgentsAverageInCategory(actions[i]);
+    var result = getAgentsAverage({ "Ratee": App.Agent.Hash });
+    var userData = {
+        "Name": App.Agent.String,
+        "Hash": App.Agent.Hash,
+        "Rating": result.AverageRating
     }
-    var userData =
-    {
-        "success": true,
-        "user":
-        {
-            name: "",
-            hash: App.Agent.Hash,
-            overallRating: communityAvg.averageRating,
-            categoryRatings: categoryAvgs
-        }
-    }
-
     return userData;
-}
-
-function anchor(anchorType, anchorText)
-{
-    return call('anchors', 'anchor', {
-        anchorType: anchorType,
-        anchorText: anchorText
-    }).replace(/"/g, '');
-}
-
-function anchorExists(anchorType, anchorText)
-{
-    return call('anchors', 'exists', {
-        anchorType: anchorType,
-        anchorText: anchorText
-    });
 }
 
 // -----------------------------------------------------------------
@@ -408,35 +262,35 @@ function anchorExists(anchorType, anchorText)
 function validateCommit (entryName, entry, header, pkg, sources) {
   switch (entryName) {
     case "Rating":
-      return true
+      return true;
     case "Interaction":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true
+      return true;
     case "EnrollLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true
+      return true;
     case "RatedByLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true
+      return true;
     case "PairingLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true
+      return true;
     case "InteractionLink":
       // be sure to consider many edge cases for validating
       // do not just flip this to true without considering what that means
       // the action will ONLY be successfull if this returns true, so watch out!
-      return true
+      return true;
     default:
       // invalid entry name
-      return false
+      return false;
   }
 }
 
