@@ -105,7 +105,7 @@ export const getAgentsAverage = (obj) => {
  * Record agent's new rating from other agent
  * @param {Object} obj 
  * @param {string} obj.hash - Rated Agent's hash
- * @param {array} obj.values - array of ratings in format {categoryName: categoryValue}
+ * @param {object} obj.values - object of ratings in format {categoryName: categoryValue, etc}
  * @return {Promise} Promise of a fetched result in a form of an array of all the entries
  */
 export const rateAgent = (obj) => {
