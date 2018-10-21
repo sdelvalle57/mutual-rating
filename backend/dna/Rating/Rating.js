@@ -154,6 +154,7 @@ function getAgentsAverage (params)
     {
         console.log("getAgentsAverage() errored out.");
         console.log(error);
+
         return {"success": false,
                     "averageRating": null};
     }
@@ -307,10 +308,12 @@ function enrollUser (param)
           commit("EnrollLink", { Links: [{
               Base: userAnchorHash,
               Link: App.Agent.Hash,
-              Tag: "enrolled"
-          }]})
-        }else{
-          return { "success": false };
+              Tag: "Enrolled"
+          }]}) // TODO Make EnrollLink bidirectional to link Agent Hash with a single username
+        }
+        else
+        {
+          return { "Success": false };
         }
         return { "success": true };
     }
@@ -328,35 +331,48 @@ function enrollUser (param)
  * @exposure {public}
  * @param {json} { "ratee": <agenthash> } (defaults to `App.Agent.Hash` if nothing provided)
  * @return {json} {
-                                success: 'true',
-                                user: {
-                                            name: 'Bob',
-                                            hash: 'b723974209bcd',
-                                            overallRating: 9.2,
-                                            categoryRatings:
-                                            [{
-                                                    categoryName: 'Stubbornness',
-                                                    categoryValue: 9.9
-                                            },
-                                            {
-                                                categoryName: 'Tidiness',
-                                                categoryValue: 0.1
-                                            }]
+                                "success": App.Agent.String,
+                                "user":
+                                {
+                                    name: 'Bob',
+                                    hash: 'b723974209bcd',
+                                    overallRating: 9.2,
+                                    categoryRatings:
+                                    [
+                                        {
+                                            categoryName: 'Stubbornness',
+                                            categoryValue: 9.9
+                                        },
+                                        {
+                                            categoryName: 'Tidiness',
+                                            categoryValue: 0.1
                                         }
+                                    ]
+                                }
                             }
  */
 function getUserData (params)
 {
-    var result = getAgentsAverage({ "ratee": App.Agent.Hash });
-    var entryHash = commit(param.ratee, "RatedBy")
-    var categoryRatingsArray = getLinks(params.ratee.toString(), "ratedBy",
-                                {Load: true});
-    var userData = {
-        "name": App.Agent.String,
-        "hash": App.Agent.Hash,
-        "rating": result.AverageRating,
-        "categoryRatings":
+    var communityAvg = getAgentsAverage({ "Ratee": App.Agent.Hash });
+    var categories = getLinks(App.Agent.Hash, "RatedIn");
+    // TODO Weed out extras from categories here - list of category names only needed.
+    var categoryAvgs = [];
+    for (var i = 0; i < categories.length; i++)
+    {
+        categoryAvgs.push(getAgentsAverageInCategory(actions[i]);
     }
+    var userData =
+    {
+        "success": true,
+        "user":
+        {
+            name: "",
+            hash: App.Agent.Hash,
+            overallRating: communityAvg.averageRating,
+            categoryRatings: categoryAvgs
+        }
+    }
+
     return userData;
 }
 
