@@ -7,7 +7,7 @@ import {
     LOAD_ENROLLED,
     SET_ENROLL_STATUS,
     HANDLE_ENROLL } from '../ducks/data';
-import { INIT_UI, GO_TO_HOME, CHANGE_MODAL, SHOW_ALL_RATINGS, CHANGE_LOADER, CHANGE_OPTION } from '../ducks/ui';
+import { INIT_UI, CHANGE_MODAL, SHOW_ALL_RATINGS, CHANGE_LOADER, CHANGE_OPTION } from '../ducks/ui';
 import { 
     getAllEnrolled, 
     getUsersData, 
@@ -136,23 +136,25 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
         case RATE_AGENT:
             // Make API Call first
             rateAgent({
-                Ratee: getState().data.currentAgent.Hash,
-                Value: getState().ui.sliderValue
+                Ratee: getState().data.currentAgent.hash,
+                Value: action.payload.sliderValues
             })
                 .then(obj => {
                     // If successful then cheer it up
-                    if (obj.Success) {
+                    if (obj.success) {
+                        // Show success modal
                         dispatch({type: CHANGE_MODAL, payload: {
                             isShowing: true,
                             error: false,
-                            text: 'Thanks for rating ' + getState().data.currentAgent.Name
+                            text: 'Thanks for rating ' + getState().data.currentAgent.name
                         }});
-                        dispatch({type: GO_TO_HOME});
+                        // TODO: Merge state.data.currentAgent.currentAgent with obj.response.newValues
+                        // with help of UPDATE_USER_DATA
                     } else {
                         dispatch({type: CHANGE_MODAL, payload: {
                             isShowing: true,
                             error: true,
-                            text: 'Oops, you have already rated ' + getState().data.currentAgent.Name
+                            text: 'Oops, you have already rated ' + getState().data.currentAgent.name
                         }});
                     }
                 })

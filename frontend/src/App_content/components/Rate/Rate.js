@@ -1,22 +1,88 @@
 import React, { Component } from 'react';
-import { SHOW_ALL_RATINGS } from '../../ducks/ui';
 import { RATE_AGENT } from '../../ducks/data';
-import { GO_TO_RATING, GO_TO_HOME, CHANGE_MODAL, UPDATE_SLIDER } from '../../ducks/ui';
-import Star from '../common/Star'
-// import Slider from '../common/Slider';
+import { GO_TO_RATING } from '../../ducks/ui';
+import Star from '../common/Star';
+import List from '../common/List';
 import Modal from '../common/Modal';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import Tooltip from 'rc-tooltip';
 
-const Header = withRouter(({ history }) => (
+const Header = withRouter(({ history, ...props }) => (
     <header className="App-header">
-        <button className="btn btn-secondary left" onClick={() => { history.push('/User') }}>&larr; Back</button>
-        <button className="btn btn-secondary right" onClick={() => { history.push('/User') }}>&#x2713; Rate</button>
+        <button className="btn btn-secondary left" onClick={() => { props.handelGoToRating(); history.push('/User') }}>&larr; Back</button>
+        <button className="btn btn-secondary right" onClick={() => { props.handelRate(props.sliderValues) }}>&#x2713; Rate</button>
     </header>
 ));
 
-class App extends Component {
+const Handle = Slider.Handle;
+
+const MyHandle = (props) => {
+    const { value, dragging, index, ...restProps } = props;
+    return (
+        <Tooltip
+            prefixCls="rc-slider-tooltip"
+            overlay={value}
+            visible={dragging}
+            placement="top"
+            key={index}
+        >
+            <Handle value={value} {...restProps} />
+        </Tooltip>
+    );
+};
+
+class Rate extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentAgent: props.currentAgent,
+            sliderValues: props.currentAgent.categoryRatings.filter(e => e.categoryValue === null)
+        }
+    }
     componentDidMount() {
+        
+    }
+
+    handleSliderChange(e, cat) {
+        let arr = this.state.sliderValues.map(el => {
+            if (el.categoryName === cat) 
+                return {categoryName: cat, categoryValue: e}
+            else 
+                return el
+        });
+        this.calculateOverallRating();
+        this.setState({sliderValues: arr});
+        // console.log(this.state);
+    }
+
+    calculateOverallRating() {
+        let i = 0, sum = 0;
+        // Calculate all sliders
+        this.state.sliderValues.map(el => {
+            if (el.categoryValue !== null) {
+                sum += el.categoryValue;
+                i++;
+            }
+            return el;
+        });
+        // Add to it existing ratings
+        this.state.currentAgent.categoryRatings.map(el => {
+            if (el.categoryValue !== null) {
+                sum += el.categoryValue;
+                i++;
+            }
+            return el;
+        });
+        
+        let av = parseInt(10 * sum / i)/10;
+
+        this.setState(({currentAgent}) => ({currentAgent: {
+            ...currentAgent, 
+            overallRating: av
+        }}));
     }
 
     render() {
@@ -27,8 +93,35 @@ class App extends Component {
         return (
             <div className="App col-lg-5 m-auto">
                 <Modal {...this.props}/>
-                <Header />
-                <Star {...this.props}/>
+                <Header {...this.props} {...this.state}/>
+                <Star {...this.state}/>
+                <List {...this.props.currentAgent}/>
+                <div>
+                    {this.state.sliderValues.map((el, i) => {
+                        let style = {width: (100 - el.categoryValue / 9 * 100).toString() + '%'};
+                        return (
+                            <div key={i} className="cat-wrapper">
+                                <div className="cat-name">{el.categoryName}</div>
+                                <div className="progress">
+                                    <div className="progress-bar" role="progressbar" style={style}></div>
+                                    <div className="cat-value">{el.categoryValue}</div>
+                                    <Slider 
+                                        min={0} 
+                                        max={9} 
+                                        step={0.1} 
+                                        defaultValue={5} 
+                                        handle={MyHandle} 
+                                        onChange={
+                                            e => {this.handleSliderChange(e, el.categoryName)}} 
+                                        onAfterChange={
+                                            e => {this.calculateOverallRating()}} 
+                                        className="cat-slider" 
+                                    />
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         );
     }
@@ -38,8 +131,6 @@ class App extends Component {
 const mapStateToProps = ( state ) => {
     return {
         currentAgent: state.data.currentAgent,
-        enrolled: state.data.enrolled,
-        modal: state.ui.modal,
         user: state.data.user
     }
 };
@@ -48,38 +139,15 @@ const mapStateToProps = ( state ) => {
 // Those functions are passed to Component as props with help of connect() below
 const mapDispatchToProps = ( dispatch ) => {
     return {
-        handleOptionChange: (Hash) => {
+        handelGoToRating: () => {
             dispatch({
-                type: GO_TO_RATING,
-                payload: Hash
+                type: GO_TO_RATING
             });
         },
-        handleBackClick: () => {
+        handelRate: (arr) => {
             dispatch({
-                type: GO_TO_HOME, 
-                payload: 'home'
-            });
-        }, 
-        handleRateClick: () => {
-            dispatch({
-                type: RATE_AGENT
-            });
-        },
-        handleDownClick: () => {
-            dispatch({
-                type: SHOW_ALL_RATINGS
-            });
-        },
-        closeModal: () => {
-            dispatch({type: CHANGE_MODAL, payload: {
-                isShowing: false,
-                text: ''
-            }});
-        },
-        handleSliderChange: (e) => {
-            dispatch({
-                type: UPDATE_SLIDER,
-                payload: e
+                type: RATE_AGENT,
+                payload: arr
             });
         }
     }
@@ -89,4 +157,4 @@ const mapDispatchToProps = ( dispatch ) => {
 export default connect (
     mapStateToProps, 
     mapDispatchToProps
-)(App);
+)(Rate);

@@ -109,10 +109,12 @@ export const getAgentsAverage = (obj) => {
  * @return {Promise} Promise of a fetched result in a form of an array of all the entries
  */
 export const rateAgent = (obj) => {
-    // return new Promise((resolve, reject) => {
-    //     resolve({});
-    // });
-    return fetchPOST('/fn/Rating/rateAgent', obj).then(handleErrors).then(r => r.json());
+    return new Promise((resolve, reject) => {
+        resolve({
+            success: true
+        });
+    });
+    // return fetchPOST('/fn/Rating/rateAgent', obj).then(handleErrors).then(r => r.json());
 }
 
 /**
@@ -153,11 +155,11 @@ export const getUsersData = (obj) => {
                             },
                             {
                                 categoryName: 'Grumpiness',
-                                categoryValue: 2.0
+                                categoryValue: null
                             },
                             {
                                 categoryName: 'Tidiness',
-                                categoryValue: 8
+                                categoryValue: null
                             }
                         ]
                     }

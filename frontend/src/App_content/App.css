@@ -106,18 +106,6 @@ code {
     float: right;
 }
 
-.slider-buttons {
-    padding: 20px 10px;
-}
-
-.rc-slider-handle {
-    margin-left: -11px;
-    margin-top: -11px;
-    width: 28px;
-    height: 28px;
-    border-width: 4px;
-}
-
 .modal-active {
     display: initial !important;
 }
@@ -208,4 +196,67 @@ code {
 .form-group.selector {
     width: 100%;
     margin: 7px 20px 0;
+}
+
+.cat-wrapper {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.cat-wrapper .progress {
+    height: calc(18px + 2vmin);
+    border-radius: 5px;
+    flex: 1;
+    background: #ffa547f0; 
+    background: -moz-linear-gradient(135deg, #4279f5 0%, #ffa547f0 50%, #fd4a38 100%);
+    background: -webkit-linear-gradient(135deg, #4279f5 0%, #ffa547f0 50%, #fd4a38 100%);
+    background: linear-gradient(135deg, #4279f5 0%, #ffa547f0 50%, #fd4a38 100%);
+    margin-left: auto;
+    position: relative;
+}
+
+.cat-wrapper .progress-bar {
+    background: #76c5d7;
+    margin-left: auto;
+    transition: width 0.1s ease;
+}
+
+.cat-name {
+    flex: 1;
+    text-align: left;
+}
+
+.cat-value {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    border: 0;
+    height: 100%;
+    line-height: calc(11px + 3vmin);
+    font-size: calc(7px + 2vmin);
+    font-weight: 600;
+}
+
+.cat-slider {
+    flex: 1;
+}
+
+.rc-slider.cat-slider {
+    position: absolute;
+    top: calc(1px + 1.2vmin);
+}
+
+.cat-slider .rc-slider-handle {
+    margin-left: -12px;
+    margin-top: -10px;
+    width: 24px;
+    height: 24px;
+    border-width: 4px;
+    background: rgba(255, 255, 255, 0.64);
+}
+
+.cat-slider .rc-slider-track, .cat-slider .rc-slider-rail {
+    display: none;
 }

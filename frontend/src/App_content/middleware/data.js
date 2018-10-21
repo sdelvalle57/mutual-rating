@@ -7,7 +7,6 @@ const dataMiddleware = ( { dispatch, getState } ) => next => action => {
         // First check it anything selected:
         if (getState().data && getState().data.currentAgent && getState().data.currentAgent.hash) {
             // Download all the ratings from user for currentAgent
-
         } else {
             dispatch({type: CHANGE_MODAL, payload: {
                 isShowing: true,
@@ -15,14 +14,12 @@ const dataMiddleware = ( { dispatch, getState } ) => next => action => {
                 text: "Please select user to rate"
             }});
         }
-        
-
-        /*if (obj.Rating === undefined) dispatch({type: GET_USERS_AVERAGE, payload: action.payload});
-        dispatch({type: SET_CURRENT_AGENT, payload: obj});*/
         return next(action); // Pass event to data reducer
+
     } else if (action.type === GO_TO_HOME) {
         dispatch({type: SET_CURRENT_AGENT, payload: getState().data.user});
         return next(action); // Pass event to data reducer
+
     } else if (action.type === GO_TO_USER) {
         // Empty currentAgent
         dispatch({type: SET_CURRENT_AGENT, payload: {

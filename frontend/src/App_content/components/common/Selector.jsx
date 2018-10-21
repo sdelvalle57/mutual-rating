@@ -10,15 +10,15 @@ class MySlider extends React.Component {
 
     render() {
         return(
-                    <form className="form-group selector" onChange={this.handleChange}>
-                        <select className="form-control" id="userForm" defaultValue="placeholder">
-                            <option value="placeholder" disabled >Select user</option>
-                            {this.props.enrolled.map((el, i) => { 
-                                // Filter out yourself
-                                return (el.hash !== this.props.user.hash) ? <option key={i} value={el.hash}>{el.name}</option> : null
-                            })}
-                        </select>
-                    </form>
+            <form className="form-group selector" onChange={this.handleChange}>
+                <select className="form-control" id="userForm" defaultValue={(this.props.currentAgent.hash !== null) ? this.props.currentAgent.hash : 'placeholder'}>
+                    <option value="placeholder" disabled >Select user</option>
+                    {this.props.enrolled.map((el, i) => {
+                        // Filter out yourself
+                        return (el.hash !== this.props.user.hash) ? <option key={i} value={el.hash}>{el.name}</option> : null
+                    })}
+                </select>
+            </form>
         )
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 class Star extends React.Component {
-
+    
     render() {
         return (
             <div className="star-outer">
