@@ -105,13 +105,14 @@ export const getAgentsAverage = (obj) => {
  * Record agent's new rating from other agent
  * @param {Object} obj 
  * @param {string} obj.hash - Rated Agent's hash
- * @param {int} obj.value - numerical value of rating [1,10]
+ * @param {array} obj.values - array of ratings in format {categoryName: categoryValue}
  * @return {Promise} Promise of a fetched result in a form of an array of all the entries
  */
 export const rateAgent = (obj) => {
     return new Promise((resolve, reject) => {
         resolve({
-            success: true
+            success: true,
+            values: obj.values
         });
     });
     // return fetchPOST('/fn/Rating/rateAgent', obj).then(handleErrors).then(r => r.json());
@@ -148,20 +149,10 @@ export const getUsersData = (obj) => {
                         name: 'Alice',
                         hash: 'a355343974209bcd',
                         overallRating: 6.3,
-                        categoryRatings: [
-                            {
-                                categoryName: 'Stubbornness',
-                                categoryValue: 6.2
-                            },
-                            {
-                                categoryName: 'Grumpiness',
-                                categoryValue: null
-                            },
-                            {
-                                categoryName: 'Tidiness',
-                                categoryValue: null
-                            }
-                        ]
+                        categoryRatings: {
+                            'Stubbornness': 6.2,
+                            'Grumpiness': null, 
+                            'Tidiness': null }
                     }
                 })
             }, 200);
@@ -175,20 +166,10 @@ export const getUsersData = (obj) => {
                     name: 'Bob',
                     hash: 'b723974209bcd',
                     overallRating: 9.2,
-                    categoryRatings: [
-                        {
-                            categoryName: 'Stubbornness',
-                            categoryValue: 9.9
-                        },
-                        {
-                            categoryName: 'Grumpiness',
-                            categoryValue: 5.7
-                        },
-                        {
-                            categoryName: 'Tidiness',
-                            categoryValue: 0.1
-                        }
-                    ]
+                    categoryRatings: {
+                        'Stubbornness': 9.9,
+                        'Grumpiness': 5.7, 
+                        'Tidiness': 0.4 }
                 }
             })
         }, 200);

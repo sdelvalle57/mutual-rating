@@ -136,8 +136,8 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
         case RATE_AGENT:
             // Make API Call first
             rateAgent({
-                Ratee: getState().data.currentAgent.hash,
-                Value: action.payload.sliderValues
+                hash: getState().data.currentAgent.hash,
+                values: action.payload
             })
                 .then(obj => {
                     // If successful then cheer it up
@@ -148,8 +148,14 @@ const apiMiddleware = ( {dispatch, getState} ) => next => action => {
                             error: false,
                             text: 'Thanks for rating ' + getState().data.currentAgent.name
                         }});
-                        // TODO: Merge state.data.currentAgent.currentAgent with obj.response.newValues
-                        // with help of UPDATE_USER_DATA
+
+                        // Merge state.data.currentAgent.categoryRatings with obj.values
+                        dispatch({
+                            type: SET_CURRENT_AGENT, 
+                            payload: {
+                                categoryRatings: {...getState().data.currentAgent.categoryRatings, ...obj.values}
+                            }
+                        });
                     } else {
                         dispatch({type: CHANGE_MODAL, payload: {
                             isShowing: true,

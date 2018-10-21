@@ -13,7 +13,7 @@ import Tooltip from 'rc-tooltip';
 const Header = withRouter(({ history, ...props }) => (
     <header className="App-header">
         <button className="btn btn-secondary left" onClick={() => { props.handelGoToRating(); history.push('/User') }}>&larr; Back</button>
-        <button className="btn btn-secondary right" onClick={() => { props.handelRate(props.sliderValues) }}>&#x2713; Rate</button>
+        <button className="btn btn-secondary right" onClick={() => { props.handelRate(props.sliderValues) }}>&#x2713; Save</button>
     </header>
 ));
 
@@ -39,42 +39,37 @@ class Rate extends Component {
         super(props);
         this.state = {
             currentAgent: props.currentAgent,
-            sliderValues: props.currentAgent.categoryRatings.filter(e => e.categoryValue === null)
+            sliderValues: this.getSliderValues(props)
         }
     }
-    componentDidMount() {
-        
+    componentWillReceiveProps(nextProps) {
+        this.setState({ sliderValues: this.getSliderValues(nextProps) });
     }
 
-    handleSliderChange(e, cat) {
-        let arr = this.state.sliderValues.map(el => {
-            if (el.categoryName === cat) 
-                return {categoryName: cat, categoryValue: e}
-            else 
-                return el
-        });
+    handleSliderChange(val, cat) {
         this.calculateOverallRating();
-        this.setState({sliderValues: arr});
-        // console.log(this.state);
+        this.setState({
+            sliderValues: { ...this.state.sliderValues, ...{[cat]: val}}
+        });
     }
 
     calculateOverallRating() {
         let i = 0, sum = 0;
         // Calculate all sliders
-        this.state.sliderValues.map(el => {
-            if (el.categoryValue !== null) {
-                sum += el.categoryValue;
+        Object.keys(this.state.sliderValues).map(k => {
+            if (this.state.sliderValues[k] !== null) {
+                sum += this.state.sliderValues[k];
                 i++;
             }
-            return el;
+            return k;
         });
         // Add to it existing ratings
-        this.state.currentAgent.categoryRatings.map(el => {
-            if (el.categoryValue !== null) {
-                sum += el.categoryValue;
+        Object.keys(this.state.currentAgent.categoryRatings).map(k => {
+            if (this.state.currentAgent.categoryRatings[k] !== null) {
+                sum += this.state.currentAgent.categoryRatings[k];
                 i++;
             }
-            return el;
+            return k;
         });
         
         let av = parseInt(10 * sum / i)/10;
@@ -83,6 +78,45 @@ class Rate extends Component {
             ...currentAgent, 
             overallRating: av
         }}));
+    }
+
+    getSliderValues(props) {
+        return Object.keys(props.currentAgent.categoryRatings).reduce((obj, k) => {
+            return (
+                props.currentAgent.categoryRatings[k] === null) 
+                    ? {...obj, [k]: props.currentAgent.categoryRatings[k]} 
+                    : obj
+        }, {})
+    }
+
+    Sliders() {
+        if (!this.state.sliderValues) return;
+        return (
+            Object.keys(this.state.sliderValues).map((k, i) => {
+                let style = {width: (100 - this.state.sliderValues[k] / 9 * 100).toString() + '%'};
+                return (
+                    <div key={i} className="cat-wrapper">
+                        <div className="cat-name">{k}</div>
+                        <div className="progress">
+                            <div className="progress-bar" role="progressbar" style={style}></div>
+                            <div className="cat-value">{this.state.sliderValues[k]}</div>
+                            <Slider 
+                                min={0} 
+                                max={9} 
+                                step={0.1} 
+                                defaultValue={5} 
+                                handle={MyHandle} 
+                                onChange={
+                                    e => {this.handleSliderChange(e, k)}} 
+                                onAfterChange={
+                                    e => {this.calculateOverallRating()}} 
+                                className="cat-slider" 
+                            />
+                        </div>
+                    </div>
+                );
+            })
+        );
     }
 
     render() {
@@ -97,30 +131,7 @@ class Rate extends Component {
                 <Star {...this.state}/>
                 <List {...this.props.currentAgent}/>
                 <div>
-                    {this.state.sliderValues.map((el, i) => {
-                        let style = {width: (100 - el.categoryValue / 9 * 100).toString() + '%'};
-                        return (
-                            <div key={i} className="cat-wrapper">
-                                <div className="cat-name">{el.categoryName}</div>
-                                <div className="progress">
-                                    <div className="progress-bar" role="progressbar" style={style}></div>
-                                    <div className="cat-value">{el.categoryValue}</div>
-                                    <Slider 
-                                        min={0} 
-                                        max={9} 
-                                        step={0.1} 
-                                        defaultValue={5} 
-                                        handle={MyHandle} 
-                                        onChange={
-                                            e => {this.handleSliderChange(e, el.categoryName)}} 
-                                        onAfterChange={
-                                            e => {this.calculateOverallRating()}} 
-                                        className="cat-slider" 
-                                    />
-                                </div>
-                            </div>
-                        );
-                    })}
+                    {this.Sliders()}
                 </div>
             </div>
         );

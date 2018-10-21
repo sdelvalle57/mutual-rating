@@ -26,7 +26,7 @@ const dataMiddleware = ( { dispatch, getState } ) => next => action => {
             hash: null,
             name: null,
             overallRating: null,
-            categoryRatings: []
+            categoryRatings: {}
         }});
         // Load all enrolled
         dispatch({type: LOAD_ENROLLED});

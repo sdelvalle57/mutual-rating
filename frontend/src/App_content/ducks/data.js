@@ -22,7 +22,7 @@ let INIT_DATA_STATE = {
         hash: null,
         name: null,
         overallRating: null,
-        categoryRatings: []
+        categoryRatings: {}
     }
 };
 
